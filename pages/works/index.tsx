@@ -46,7 +46,7 @@ const works = () => {
 
             <div className='ml-[17%] py-6 fixed z-20 italic'>
                 <div className='flex justify-center h-full fixed flex-col'>
-                    <h1 className='text-a-2 text-7xl font-bold pb-2'>My Works</h1>
+                    <h1 className='text-a-2 text-7xl font-bold pb-2 uppercase'>My Works</h1>
                     <p className='text-white w-40 text-2xl'>Here is a list of projects Ive worked on</p>
                 </div>
             </div>

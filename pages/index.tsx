@@ -16,10 +16,13 @@ export default function Home() {
             </main>
 
       <main className='w-[85%] h-screen bg-black flex ml-[15%]'>
-        <div className="absolute  w-[85%] h-full bg-[url('/daf.jpg')] bg-cover bg-center saturate-0">
+        <div className="absolute z-0 w-[85%] h-full bg-[url('/daf3.jpeg')] bg-cover bg-center saturate-0">
           <div className='absolute backdrop-brightness-[0.3] h-full w-full' />
         </div>
-        <div className="w-full h-full relative flex flex-col items-center justify-center">
+        <div className="absolute z-10 w-[85%] h-full bg-[url('/daf5.png')] bg-cover bg-center opacity-20">
+          <div className='absolute h-full w-full' />
+        </div>
+        <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
           <h1 className='text-7xl font-bold text-a-2 italic'>D A F F A</h1>
           <h1 className='text-7xl font-bold text-a-2 italic'>W I J A Y A</h1>
           <p className='text-xl text-white pt-5 italic'>FRONTEND WEB DEVELOPER</p>
