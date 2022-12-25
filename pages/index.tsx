@@ -12,8 +12,8 @@ export default function Home() {
       </Head>
 
       <main className='h-screen flex fixed w-[15%] h-full z-50'>
-                <Sidebar />
-            </main>
+        <Sidebar />
+      </main>
 
       <main className='w-[85%] h-screen bg-black flex ml-[15%]'>
         <div className="absolute z-0 w-[85%] h-full bg-[url('/daf3.jpeg')] bg-cover bg-center saturate-0">

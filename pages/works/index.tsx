@@ -18,7 +18,7 @@ const projects = [
         url: "http://ummrn-daffacindy.vercel.app/",
     },
     {
-        
+
         type: 1,
         name: "SEAL TodoList",
         image: "bg-[url(/seal.png)]",
@@ -44,6 +44,7 @@ const works = () => {
                 <Background />
             </main>
 
+            {/* title */}
             <div className='ml-[17%] py-6 fixed z-20 italic'>
                 <div className='flex justify-center h-full fixed flex-col'>
                     <h1 className='text-a-2 text-7xl font-bold pb-2 uppercase'>My Works</h1>
@@ -51,6 +52,7 @@ const works = () => {
                 </div>
             </div>
 
+            {/* content */}
             <div className='ml-[15%] py-6 relative z-10'>
                 <div className='flex flex-col ml-[16%] space-y-6 italic'>
                     {projects.map((item: any, idx: number) => (
