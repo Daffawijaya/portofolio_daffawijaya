@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Background from '../components/Background'
 import Sidebar from '../components/Sidebar'
-import {  SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
+import { SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
 import { HiPencil } from "react-icons/hi";
 
 const techstack = [
@@ -68,6 +68,21 @@ const techstack = [
 ]
 
 const skills = [
+    {
+        name: "Python",
+        icon: <SiPython className='h-10 w-10' />,
+        color: "hover:text-[#F2B92F]",
+    },
+    {
+        name: "C",
+        icon: <SiCsharp className='h-10 w-10' />,
+        color: "hover:text-[#045494]",
+    },
+    {
+        name: "Arduino",
+        icon: <SiArduino className='h-10 w-10' />,
+        color: "hover:text-[#009297]",
+    },
     {
         name: "Coreldraw",
         icon: <HiPencil className='h-10 w-10' />,
