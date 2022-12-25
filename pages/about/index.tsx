@@ -122,23 +122,23 @@ const experience = [
         item: [
             {
                 name: "Social Economic Accelerator Lab",
-                image: "bg-[url(/sipp2.png)]",
-                url: "https://sipp-dev.vercel.app",
+                image: "bg-[url(/experience/seal2.png)]",
+                url: "https://seal.or.id/",
             },
         ]
     },
     {
-        title: "Orgnization",
+        title: "Organization",
         item: [
             {
                 name: "Ikasti",
-                image: "bg-[url(/sipp2.png)]",
-                url: "https://sipp-dev.vercel.app",
+                image: "bg-[url(/experience/ikasto.png)]",
+                url: "https://www.instagram.com/ikastiofficial/",
             },
             {
                 name: "OSIS",
-                image: "bg-[url(/sipp2.png)]",
-                url: "https://sipp-dev.vercel.app",
+                image: "bg-[url(/experience/osis.jpg)]",
+                url: "https://www.instagram.com/ospk_smagatgr/",
             },
         ]
     },
@@ -146,14 +146,14 @@ const experience = [
         title: "School",
         item: [
             {
-                name: "SMA Negeri 3 Unggulan Tenggarong",
-                image: "bg-[url(/sipp2.png)]",
-                url: "https://sipp-dev.vercel.app",
+                name: "Muhammadiyah Malang University",
+                image: "bg-[url(/experience/umm.png)]",
+                url: "https://www.umm.ac.id/",
             },
             {
-                name: "Muhammadiyah Malang University",
-                image: "bg-[url(/sipp2.png)]",
-                url: "https://sipp-dev.vercel.app",
+                name: "SMA Negeri 3 Unggulan Tenggarong",
+                image: "bg-[url(/experience/smaga.png)]",
+                url: "http://www.sman3tenggarong.sch.id/",
             },
         ]
     },
@@ -161,20 +161,25 @@ const experience = [
         title: "Certification",
         item: [
             {
+                name: "SEAL Internship Graduation",
+                image: "bg-[url(/experience/seal2.png)]",
+                url: "https://drive.google.com/drive/folders/1aZC3UCn4BrejdHdKp9TVio0IC7iX_hST",
+            },
+            {
                 name: "AWS Academy Cloud Architecting",
-                image: "bg-[url(/sipp2.png)]",
-                url: "https://sipp-dev.vercel.app",
+                image: "bg-[url(/experience/aws.jpg)]",
+                url: "https://www.credly.com/badges/1c7ecf10-0045-4431-9791-d43ec0e1ac0c/linked_in_profile",
             },
             {
                 name: "IC3 Digital Literacy",
-                image: "bg-[url(/sipp2.png)]",
-                url: "https://sipp-dev.vercel.app",
+                image: "bg-[url(/experience/IC3.png)]",
+                url: "https://drive.google.com/file/d/1FiavmAuL1vkFKUZi4xMWKIjpFSNKOimw/view",
             },
         ]
     },
 ]
 
-const about = () => {
+const About = () => {
     return (
         <>
             <Head>
@@ -261,35 +266,30 @@ const about = () => {
                 </div>
 
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
-                    <div className='items-center flex w-full h-full p-6 space-x-14'>
+                    <div className='items-center flex w-full h-full p-6 space-x-14 relative z-10'>
                         <div className='relative flex flex-col w-[50%]'>
                             <p className='text-white text-xl'>My</p>
-                            <h1 className='text-a-2 text-6xl font-bold uppercase pb-6'>Experience</h1>
-                            <p className='text-white text-xl'>this is my related experience and also the certification that i have</p>
+                            <h1 className='text-a-2 text-6xl font-bold uppercase pb-6'>Experiences</h1>
+                            <p className='text-white text-xl'>This is my related experience and also the certification that i have.</p>
                         </div>
-                        <div className='w-full h-[95%] overflow-y-auto flex flex-col space-y-7'>
+                        <div className='w-full h-[100%] overflow-y-auto flex flex-col space-y-7'>
                             {experience.map((item: any, idx: number) => (
                                 <div key={idx}>
                                     <h1 className='text-white text-2xl font-bold pb-2'>{item.title}</h1>
-                                    <div className='flex space-x-1 overflow-x-auto w-[100%]'>
+                                    <div className='flex space-x-1 overflow-x-auto w-full'>
                                         {item.item.map((item: any, idx: number) => (
-                                            <Link href={item.url} key={idx} className='w-full min-w-80'>
-                                                <div className={`h-28 min-w-80 relative flex items-center ${item.image} bg-cover bg-center overflow-hidden`}>
-                                                    <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                                        <div className='absolute text-white flex items-center justify-center h-full w-full'>
-                                                            <p className='font-bold text-xl uppercase text-center'>{item.name}</p>
-                                                        </div>
+                                            <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
+                                                <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                    <div className='absolute text-white flex items-center justify-center h-full w-full'>
+                                                        <p className='font-bold text-xl uppercase text-center'>{item.name}</p>
                                                     </div>
-
                                                 </div>
                                             </Link>
                                         ))}
                                     </div>
                                 </div>
                             ))}
-
                         </div>
-
                     </div>
                 </div>
 
@@ -298,5 +298,5 @@ const about = () => {
     )
 }
 
-export default about
+export default About
 

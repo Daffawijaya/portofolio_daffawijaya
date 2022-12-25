@@ -21,12 +21,12 @@ const projects = [
 
         type: 1,
         name: "SEAL TodoList",
-        image: "bg-[url(/seal.png)]",
+        image: "bg-[url(/experience/seal2.png)]",
         url: "https://mini-project-todolist-seal-5.vercel.app",
     },
 ]
 
-const works = () => {
+const Works = () => {
     return (
         <>
             <Head>
@@ -53,8 +53,8 @@ const works = () => {
             </div>
 
             {/* content */}
-            <div className='ml-[15%] py-6 relative z-10'>
-                <div className='flex flex-col ml-[16%] space-y-6 italic'>
+            <div className='ml-[15%] py-6 relative z-10 '>
+                <div className='flex flex-col ml-[16%] space-y-6 italic '>
                     {projects.map((item: any, idx: number) => (
                         <div key={idx}>
                             {item.type === 2 ?
@@ -86,5 +86,5 @@ const works = () => {
     )
 }
 
-export default works
+export default Works
 
