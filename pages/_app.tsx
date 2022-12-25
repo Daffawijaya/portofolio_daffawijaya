@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Tomorrow } from '@next/font/google'
+import NextProgress from 'nextjs-progressbar'
 
 const tomorrow =  Tomorrow({
   subsets: ['latin'],
@@ -10,6 +11,7 @@ const tomorrow =  Tomorrow({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={tomorrow.className}>
+      <NextProgress color='#A3D800' height={2}/>
       <Component {...pageProps} />
     </main>
   )

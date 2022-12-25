@@ -40,7 +40,7 @@ const SidebarMenu = () => {
                     <div onClick={(e) => e.stopPropagation()} className='bg-a-2 h-full w-[67%] px-[10%] flex flex-col items-start justify-center'>
                         <div className='font-bold text-7xl text-start'>
                             {menu.map((item: any, idx: number) => (
-                                <Link key={idx} href={item.url}>
+                                <Link key={idx} href={item.url} >
                                     <h1 className={`my-1 hover:text-black duration-300 italic  ${router.pathname === item.url ? "text-black" : "text-white"}`}>{item.name}</h1>
                                 </Link>
                             ))}
