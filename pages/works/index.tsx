@@ -6,21 +6,21 @@ import Link from 'next/link'
 const projects = [
     {
         type: 1,
-        name: "SIPP",
+        name: "SIPP: Sistem Informasi Penataan dan Penaatan",
         image: "bg-[url(/sipp2.png)]",
         url: "https://sipp-dev.vercel.app",
     },
 
     {
         type: 2,
-        name: "UMMRN Reengineering",
-        image: "bg-[url(/ummrn.png)]",
+        name: "UMM research network Re-engineering",
+        image: "bg-[url(/experience/umm.png)]",
         url: "http://ummrn-daffacindy.vercel.app/",
     },
     {
 
         type: 1,
-        name: "SEAL TodoList",
+        name: "SEAL: Simple Todo List",
         image: "bg-[url(/experience/seal2.png)]",
         url: "https://mini-project-todolist-seal-5.vercel.app",
     },
@@ -59,9 +59,9 @@ const Works = () => {
                         <div key={idx}>
                             {item.type === 2 ?
                                 <Link href={item.url}>
-                                    <div className={`relative mr-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden`}>
+                                    <div className={`relative mr-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
                                         <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                            <div className='pr-[20%] relative text-white items-center justify-end flex h-full w-full'>
+                                            <div className='px-[20%] relative text-white items-center justify-end flex h-full w-full'>
                                                 <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
                                             </div>
                                         </div>
@@ -71,7 +71,7 @@ const Works = () => {
                                 <Link href={item.url}>
                                     <div className={`relative ml-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
                                         <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                            <div className='mx-[20%] relative text-white items-center justify-start flex h-full w-full'>
+                                            <div className='px-[20%] relative text-white items-center justify-start flex h-full w-full'>
                                                 <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
                                             </div>
                                         </div>
