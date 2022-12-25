@@ -3,6 +3,7 @@ import Background from '../components/Background'
 import Sidebar from '../components/Sidebar'
 import { SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
 import { HiPencil } from "react-icons/hi";
+import Link from 'next/link';
 
 const techstack = [
     {
@@ -115,6 +116,64 @@ const skills = [
     },
 ]
 
+const experience = [
+    {
+        title: "Internship",
+        item: [
+            {
+                name: "Social Economic Accelerator Lab",
+                image: "bg-[url(/sipp2.png)]",
+                url: "https://sipp-dev.vercel.app",
+            },
+        ]
+    },
+    {
+        title: "Orgnization",
+        item: [
+            {
+                name: "Ikasti",
+                image: "bg-[url(/sipp2.png)]",
+                url: "https://sipp-dev.vercel.app",
+            },
+            {
+                name: "OSIS",
+                image: "bg-[url(/sipp2.png)]",
+                url: "https://sipp-dev.vercel.app",
+            },
+        ]
+    },
+    {
+        title: "School",
+        item: [
+            {
+                name: "SMA Negeri 3 Unggulan Tenggarong",
+                image: "bg-[url(/sipp2.png)]",
+                url: "https://sipp-dev.vercel.app",
+            },
+            {
+                name: "Muhammadiyah Malang University",
+                image: "bg-[url(/sipp2.png)]",
+                url: "https://sipp-dev.vercel.app",
+            },
+        ]
+    },
+    {
+        title: "Certification",
+        item: [
+            {
+                name: "AWS Academy Cloud Architecting",
+                image: "bg-[url(/sipp2.png)]",
+                url: "https://sipp-dev.vercel.app",
+            },
+            {
+                name: "IC3 Digital Literacy",
+                image: "bg-[url(/sipp2.png)]",
+                url: "https://sipp-dev.vercel.app",
+            },
+        ]
+    },
+]
+
 const about = () => {
     return (
         <>
@@ -185,21 +244,55 @@ const about = () => {
                             <p className='text-white text-xl'>For a complement or just a hobby, I also use technology outside my professional field and of course it will still be updated in the future.</p>
                         </div>
                         <div className='flex flex-col w-full'>
-                                <div className='flex flex-col w-full py-5 pr-[20%]'>
-                                    <p className='text-white text-2xl font-semibold pb-6'>Here is the List</p>
-                                    <div className='grid grid-cols-5 gap-4'>
-                                        {skills.map((item: any, idx: number) => (
-                                            <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
-                                                <div>{item.icon}</div>
-                                                <div className='text-[#828282]'>{item.name}</div>
-                                            </div>
-                                        ))}
-                                    </div>
+                            <div className='flex flex-col w-full py-5 pr-[20%]'>
+                                <p className='text-white text-2xl font-semibold pb-6'>Here is the List</p>
+                                <div className='grid grid-cols-5 gap-4'>
+                                    {skills.map((item: any, idx: number) => (
+                                        <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
+                                            <div>{item.icon}</div>
+                                            <div className='text-[#828282]'>{item.name}</div>
+                                        </div>
+                                    ))}
                                 </div>
+                            </div>
                         </div>
                     </div>
                     <h1 className='absolute text-b-2 text-5xl right-0 bottom-20 -rotate-90 font-bold'>OTHER</h1>
                 </div>
+
+                <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
+                    <div className='items-center flex w-full h-full p-6 space-x-14'>
+                        <div className='relative flex flex-col w-[50%]'>
+                            <p className='text-white text-xl'>My</p>
+                            <h1 className='text-a-2 text-6xl font-bold uppercase pb-6'>Experience</h1>
+                            <p className='text-white text-xl'>this is my related experience and also the certification that i have</p>
+                        </div>
+                        <div className='w-full h-[95%] overflow-y-auto flex flex-col space-y-7'>
+                            {experience.map((item: any, idx: number) => (
+                                <div key={idx}>
+                                    <h1 className='text-white text-2xl font-bold pb-2'>{item.title}</h1>
+                                    <div className='flex space-x-1 overflow-x-auto w-[100%]'>
+                                        {item.item.map((item: any, idx: number) => (
+                                            <Link href={item.url} key={idx} className='w-full min-w-80'>
+                                                <div className={`h-28 min-w-80 relative flex items-center ${item.image} bg-cover bg-center overflow-hidden`}>
+                                                    <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                        <div className='absolute text-white flex items-center justify-center h-full w-full'>
+                                                            <p className='font-bold text-xl uppercase text-center'>{item.name}</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </>
     )

@@ -59,19 +59,21 @@ const works = () => {
                         <div key={idx}>
                             {item.type === 2 ?
                                 <Link href={item.url}>
-                                    <div className={`relative mr-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
-                                        <div className='absolute inset-0 h-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' />
-                                        <div className='mx-[20%] relative text-white mt-7'>
-                                            <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
+                                    <div className={`relative mr-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden`}>
+                                        <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                            <div className='pr-[20%] relative text-white items-center justify-end flex h-full w-full'>
+                                                <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
+                                            </div>
                                         </div>
                                     </div>
                                 </Link>
                                 :
                                 <Link href={item.url}>
-                                    <div className={`relative ml-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden`}>
-                                        <div className='absolute inset-0 h-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' />
-                                        <div className='mx-[20%] relative text-white mt-7'>
-                                            <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
+                                    <div className={`relative ml-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
+                                        <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                            <div className='mx-[20%] relative text-white items-center justify-start flex h-full w-full'>
+                                                <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
+                                            </div>
                                         </div>
                                     </div>
                                 </Link>
