@@ -6,9 +6,10 @@ import Link from 'next/link'
 const projects = [
     {
         type: 1,
-        name: "SIPP: Sistem Informasi Penataan dan Penaatan",
-        image: "bg-[url(/sipp2.png)]",
+        name: "SIPP: Sistem Informasi Penataan dan Penaatan Kota Batu",
+        image: "bg-[url(/batu.png)]",
         url: "https://sipp-dev.vercel.app",
+        year: "December 2022"
     },
 
     {
@@ -16,13 +17,15 @@ const projects = [
         name: "UMM research network Re-engineering",
         image: "bg-[url(/experience/umm.png)]",
         url: "http://ummrn-daffacindy.vercel.app/",
+        year: "November 2022"
     },
     {
 
         type: 1,
-        name: "SEAL: Simple Todo List",
+        name: "SEAL: Simple Todo List Bounding Project",
         image: "bg-[url(/experience/seal2.png)]",
         url: "https://mini-project-todolist-seal-5.vercel.app",
+        year: "August 2022"
     },
 ]
 
@@ -61,8 +64,9 @@ const Works = () => {
                                 <Link href={item.url}>
                                     <div className={`relative mr-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
                                         <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                            <div className='px-[20%] relative text-white items-center justify-end flex h-full w-full'>
-                                                <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
+                                            <div className='px-[20%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                <p className='font-bold text-3xl uppercase text-right text-white w-full'>{item.name}</p>
+                                                <p className='text-right capitalize w-full'>{item.year}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -71,8 +75,9 @@ const Works = () => {
                                 <Link href={item.url}>
                                     <div className={`relative ml-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
                                         <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                            <div className='px-[20%] relative text-white items-center justify-start flex h-full w-full'>
-                                                <h1 className='font-bold text-3xl uppercase'>{item.name}</h1>
+                                            <div className='px-[20%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                <p className='font-bold text-3xl uppercase text-left text-white w-full'>{item.name}</p>
+                                                <p className='text-left capitalize w-full'>{item.year}</p>
                                             </div>
                                         </div>
                                     </div>

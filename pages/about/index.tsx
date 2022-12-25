@@ -121,9 +121,10 @@ const experience = [
         title: "Internship",
         item: [
             {
-                name: "Social Economic Accelerator Lab",
+                name: "MBKM × Social Economic Accelerator Lab",
                 image: "bg-[url(/experience/seal2.png)]",
                 url: "https://seal.or.id/",
+                year: "August 2022 - December 2022"
             },
         ]
     },
@@ -134,26 +135,30 @@ const experience = [
                 name: "Ikasti",
                 image: "bg-[url(/experience/ikasto.png)]",
                 url: "https://www.instagram.com/ikastiofficial/",
+                year: "August 2020 - Present"
             },
             {
                 name: "OSIS",
                 image: "bg-[url(/experience/osis.jpg)]",
                 url: "https://www.instagram.com/ospk_smagatgr/",
+                year: "July 2017 - July 2018"
             },
         ]
     },
     {
-        title: "School",
+        title: "Education",
         item: [
             {
                 name: "Muhammadiyah Malang University",
                 image: "bg-[url(/experience/umm.png)]",
                 url: "https://www.umm.ac.id/",
+                year: "August 2019 - Present"
             },
             {
                 name: "SMA Negeri 3 Unggulan Tenggarong",
                 image: "bg-[url(/experience/smaga.png)]",
                 url: "http://www.sman3tenggarong.sch.id/",
+                year: "June 2016 - June 2019"
             },
         ]
     },
@@ -161,19 +166,22 @@ const experience = [
         title: "Certification",
         item: [
             {
-                name: "SEAL Internship Graduation",
+                name: "SEAL Internship Graduate",
                 image: "bg-[url(/experience/seal2.png)]",
                 url: "https://drive.google.com/drive/folders/1aZC3UCn4BrejdHdKp9TVio0IC7iX_hST",
+                year: "December 2022"
             },
             {
                 name: "AWS Academy Cloud Architecting",
                 image: "bg-[url(/experience/aws.jpg)]",
                 url: "https://www.credly.com/badges/1c7ecf10-0045-4431-9791-d43ec0e1ac0c/linked_in_profile",
+                year: "November 2022"
             },
             {
                 name: "IC3 Digital Literacy",
                 image: "bg-[url(/experience/IC3.png)]",
                 url: "https://drive.google.com/file/d/1FiavmAuL1vkFKUZi4xMWKIjpFSNKOimw/view",
+                year: "November 2019"
             },
         ]
     },
@@ -280,8 +288,9 @@ const About = () => {
                                         {item.item.map((item: any, idx: number) => (
                                             <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
                                                 <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                                    <div className='absolute text-white flex items-center justify-center h-full w-full'>
-                                                        <p className='font-bold text-xl uppercase text-center'>{item.name}</p>
+                                                    <div className='absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                        <p className='font-bold text-xl uppercase text-center text-white'>{item.name}</p>
+                                                        <p className='text-xs capitalize text-center '>{item.year}</p>
                                                     </div>
                                                 </div>
                                             </Link>
