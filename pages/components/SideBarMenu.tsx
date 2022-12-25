@@ -2,6 +2,7 @@ import React from 'react'
 import { HiMenu } from "react-icons/hi";
 import { useState } from 'react'
 import Link from 'next/link';
+import Router, { useRouter } from 'next/router';
 
 const menu = [
     {
@@ -24,6 +25,7 @@ const menu = [
 
 const SidebarMenu = () => {
 
+    const router = useRouter()
     const [show, setShow] = useState(false)
 
     return (
@@ -39,7 +41,7 @@ const SidebarMenu = () => {
                         <div className='font-bold text-7xl text-start'>
                             {menu.map((item: any, idx: number) => (
                                 <Link key={idx} href={item.url}>
-                                    <h1 className='my-1 hover:text-black text-white duration-300 italic'>{item.name}</h1>
+                                    <h1 className={`my-1 hover:text-black duration-300 italic  ${router.pathname === item.url ? "text-black" : "text-white"}`}>{item.name}</h1>
                                 </Link>
                             ))}
                         </div>
