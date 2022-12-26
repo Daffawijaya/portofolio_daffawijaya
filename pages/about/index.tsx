@@ -211,35 +211,35 @@ const About = () => {
 
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex justify-center h-full flex-col p-6'>
-                        <p className='text-white text-2xl'>Hello!, I am</p>
-                        <h1 className='text-a-2 text-7xl font-bold uppercase'>DAFA <span className='text-white'>YAN WIJAYA</span></h1>
-                        <p className='text-white text-2xl'>Frontend Developer and Graphic Designer</p>
-                        <div className='flex space-x-4 w-full pt-4'>
-                            <div className='p-[2%] bg-b-2 saturate-50 hover:saturate-100'>
-                                <div className='w-[450px] h-[300px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
+                        <p className='text-white text-lg lg:text-2xl'>Hello!, I am</p>
+                        <h1 className='text-a-2 text-5xl lg:text-7xl font-bold uppercase'>DAFA <span className='text-white'>YAN WIJAYA</span></h1>
+                        <p className='text-white text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</p>
+                        <div className='flex lg:flex-row flex-col lg:space-x-4 w-full pt-4'>
+                            <div className='p-[2%] bg-b-2 saturate-50 hover:saturate-100 mb-4'>
+                                <div className='lg:w-[450px] lg:h-[300px] w-full h-[250px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
                             </div>
-                            <p className='text-a-2 text-2xl font-medium w-[40%]'>I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</p>
+                            <p className='text-a-2 text-lg lg:text-2xl font-medium w-full lg:w-[40%]'>I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</p>
                         </div>
                     </div>
-                    <h1 className='absolute text-b-2 text-5xl right-0 bottom-28 -rotate-90 font-bold'>ABOUT</h1>
+                    <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-28 -rotate-90 font-bold'>ABOUT</h1>
                 </div>
 
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
-                    <div className='flex items-center w-full h-full p-6 space-x-14'>
-                        <div className='flex flex-col w-[50%]'>
-                            <p className='text-white text-xl'>Professional</p>
-                            <h1 className='text-a-2 text-6xl font-bold uppercase pb-6'>techstacks</h1>
-                            <p className='text-white text-xl'>This is a list of technologies that I use in my profession as a frontend developer. Because I am still in the learning stage, in the future this list will continue to be updated.</p>
+                    <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
+                        <div className='flex flex-col lg:w-[50%]'>
+                            <p className='text-white md:text-xl text-sm'>Professional</p>
+                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold uppercase lg:pb-6 pb-3'>techstacks</h1>
+                            <p className='text-white text-sm lg:text-xl pb-3'>This is a list of technologies that I use in my profession as a frontend developer. Because I am still in the learning stage, in the future this list will continue to be updated.</p>
                         </div>
                         <div className='flex flex-col w-full'>
                             {techstack.map((item: any, idx: number) => (
-                                <div className='flex flex-col w-full py-5 pr-[20%]' key={idx}>
-                                    <p className='text-white text-2xl font-semibold pb-6'>{item.title}</p>
-                                    <div className='grid grid-cols-5 gap-4'>
+                                <div className='flex flex-col w-full lg:py-5 py-1 lg:py-2 lg:pr-[20%]' key={idx}>
+                                    <p className='text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6'>{item.title}</p>
+                                    <div className='grid lg:grid-cols-5 grid-cols-3 lg:gap-4'>
                                         {item.item.map((item: any, idx: number) => (
                                             <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
                                                 <div>{item.icon}</div>
-                                                <div className='text-[#828282]'>{item.name}</div>
+                                                <div className='text-[#828282] text-xs lg:text-base'>{item.name}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -247,51 +247,51 @@ const About = () => {
                             ))}
                         </div>
                     </div>
-                    <h1 className='absolute text-b-2 text-5xl right-0 bottom-40 -rotate-90 font-bold'>TECHSTACK</h1>
+                    <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-40 -rotate-90 font-bold'>TECHSTACK</h1>
                 </div>
 
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
-                    <div className='flex items-center w-full h-full p-6 space-x-14'>
-                        <div className='flex flex-col w-[50%]'>
-                            <p className='text-white text-xl'>Another</p>
-                            <h1 className='text-a-2 text-6xl font-bold uppercase pb-6'>skills</h1>
-                            <p className='text-white text-xl'>For a complement or just a hobby, I also use technology outside my professional field and of course it will still be updated in the future.</p>
+                    <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
+                        <div className='flex flex-col lg:w-[50%]'>
+                            <p className='text-white text-lg lg:text-xl'>Another</p>
+                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold uppercase lg:pb-6 pb-3'>skills</h1>
+                            <p className='text-white lg:text-xl text-sm'>For a complement or just a hobby, I also use technology outside my professional field and of course it will still be updated in the future.</p>
                         </div>
                         <div className='flex flex-col w-full'>
-                            <div className='flex flex-col w-full py-5 pr-[20%]'>
-                                <p className='text-white text-2xl font-semibold pb-6'>Here is the List</p>
-                                <div className='grid grid-cols-5 gap-4'>
+                            <div className='flex flex-col w-full py-5 lg:pr-[20%]'>
+                                <p className='text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6'>Here is the List</p>
+                                <div className='grid lg:grid-cols-5 grid-cols-3 lg:gap-4'>
                                     {skills.map((item: any, idx: number) => (
                                         <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
                                             <div>{item.icon}</div>
-                                            <div className='text-[#828282]'>{item.name}</div>
+                                            <div className='text-[#828282] text-xs lg:text-base'>{item.name}</div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h1 className='absolute text-b-2 text-5xl right-0 bottom-20 -rotate-90 font-bold'>OTHER</h1>
+                    <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-20 -rotate-90 font-bold'>OTHER</h1>
                 </div>
 
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
-                    <div className='items-center flex w-full h-full p-6 space-x-14 relative z-10'>
-                        <div className='relative flex flex-col w-[50%]'>
-                            <p className='text-white text-xl'>My</p>
-                            <h1 className='text-a-2 text-6xl font-bold uppercase pb-6'>Experiences</h1>
-                            <p className='text-white text-xl'>This is my related experience and also the certification that i have.</p>
+                    <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
+                        <div className='relative flex flex-col lg:w-[50%] pb-3'>
+                            <p className='text-white text-sm lg:text-xl'>My</p>
+                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold uppercase pb-3 lg:pb-6'>Experiences</h1>
+                            <p className='text-white text-sm lg:text-xl'>This is my related experience and also the certification that i have.</p>
                         </div>
-                        <div className='w-full h-[100%] overflow-y-auto flex flex-col space-y-7'>
+                        <div className='w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7'>
                             {experience.map((item: any, idx: number) => (
                                 <div key={idx}>
-                                    <h1 className='text-white text-2xl font-bold pb-2'>{item.title}</h1>
+                                    <h1 className='text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
                                     <div className='flex space-x-1 overflow-x-auto w-full'>
                                         {item.item.map((item: any, idx: number) => (
-                                            <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
+                                            <Link href={item.url} key={idx} className={`w-full lg:min-w-[240px] min-w-[80px] lg:h-28 h-20 flex items-center ${item.image} bg-cover bg-center w-full`}>
                                                 <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
                                                     <div className='px-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                        <p className='font-bold text-xl uppercase text-center text-white'>{item.name}</p>
-                                                        <p className='text-xs capitalize text-center '>{item.year}</p>
+                                                        <p className='font-bold text-xs lg:text-xl uppercase text-center text-white'>{item.name}</p>
+                                                        <p className='text-[7px] lg:text-xs capitalize text-center '>{item.year}</p>
                                                     </div>
                                                 </div>
                                             </Link>

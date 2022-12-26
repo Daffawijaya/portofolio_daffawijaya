@@ -13,21 +13,21 @@ const contact = [
             {
                 name: "Daffa Wijaya",
                 image: "bg-[url(/icon/li.png)]",
-                icon: <SiLinkedin className='md:h-10 md:w-10 w-4 h-4' />,
+                icon: <SiLinkedin className='lg:h-10 lg:w-10 w-4 h-4' />,
                 color: "hover:text-[#EAD41C]",
                 url: "https://www.linkedin.com/in/daffa-wijaya-621a04255/"
             },
             {
                 name: "@daffawijayaaa",
                 image: "bg-[url(/icon/ig.jpg)]",
-                icon: <SiInstagram className='md:h-10 md:w-10 w-4 h-4' />,
+                icon: <SiInstagram className='lg:h-10 lg:w-10 w-4 h-4' />,
                 color: "hover:text-[#EAD41C]",
                 url: "https://www.instagram.com/daffawijayaaa/"
             },
             {
                 name: "Daffawijaya",
                 image: "bg-[url(/icon/gh.png)]",
-                icon: <SiGithub className='md:h-10 md:w-10 w-4 h-4' />,
+                icon: <SiGithub className='lg:h-10 lg:w-10 w-4 h-4' />,
                 color: "hover:text-[#2F72BC]",
                 url: "https://github.com/Daffawijaya"
             },
@@ -59,28 +59,28 @@ const Contact = () => {
                 <div className='ml-[15%] relative z-10 h-screen italic'>
                     <div className='flex xl:flex-row flex-col xl:items-center items-start xl:justify-start justify-center w-full h-full p-6 xl:space-x-14 space-x-0 space-y-14 relative z-20'>
                         <div className='flex flex-col w-[50%] space-y-1'>
-                            <p className='text-a-2 text-xl md:text-3xl font-bold'>Indonesia</p>
-                            <p className='text-white text-base md:text-xl'>Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java</p>
-                            <a className='text-[#828282] hover:underline font-medium text-base md:text-xl' href='https://goo.gl/maps/NBknBQpL43MXpbrb9'>View Map</a>
+                            <p className='text-a-2 text-xl lg:text-3xl font-bold'>Indonesia</p>
+                            <p className='text-white text-base lg:text-xl'>Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java</p>
+                            <a className='text-[#828282] hover:underline font-medium text-base lg:text-xl' href='https://goo.gl/maps/NBknBQpL43MXpbrb9'>View Map</a>
                         </div>
 
                         <div className='flex flex-col w-full space-y-10'>
                             <div className='flex flex-col space-y-1'>
-                                <p className='text-white md:text-xl text-base'>If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</p>
+                                <p className='text-white lg:text-xl text-base'>If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</p>
                                 <div className='flex space-x-2 flex-row items-center'>
                                     <p><HiOutlineMail className='h-5 w-5 text-[#828282]' /></p>
-                                    <a className='text-[#828282] hover:underline md:text-base text-xs font-medium' href='https://mail.google.com/mail/u/0/?view=cm&tf=1&fs=1&to=daffayanwijaya@gmail.com'>daffayanwijaya@gmail.com</a>
+                                    <a className='text-[#828282] hover:underline lg:text-xl text-base font-medium' href='https://mail.google.com/mail/u/0/?view=cm&tf=1&fs=1&to=daffayanwijaya@gmail.com'>daffayanwijaya@gmail.com</a>
                                 </div>
                             </div>
                             <div className='w-full h-full overflow-y-auto flex flex-col space-y-7'>
                                 {contact.map((item: any, idx: number) => (
                                     <div key={idx}>
-                                        <h1 className='text-white text-lg md:text-2xl font-bold pb-2'>{item.title}</h1>
-                                        <div className='flex flex-col space-y-1 md:space-y-0 md:flex-row md:space-x-1.5 overflow-x-auto w-full'>
+                                        <h1 className='text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
+                                        <div className='flex flex-col space-y-1 lg:space-y-0 lg:flex-row lg:space-x-1.5 overflow-x-auto w-full'>
                                             {item.item.map((item: any, idx: number) => (
-                                                <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-14 md:h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
+                                                <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-14 lg:h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
                                                     <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-contrast-[0.9] hover:backdrop-contrast-[1]' >
-                                                        <div className='px-2 space-y-1 md:space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300'>
+                                                        <div className='px-2 space-y-1 lg:space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300'>
                                                             <p className='uppercase text-center text-white'>{item.icon}</p>
                                                             <p className='text-xs text-center'>{item.name}</p>
                                                         </div>
@@ -93,7 +93,7 @@ const Contact = () => {
                             </div>
                         </div>
                     </div>
-                    <h1 className='absolute text-b-2 text-5xl right-0 bottom-24 -rotate-90 font-bold'>CONTACT</h1>
+                    <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-24 -rotate-90 font-bold'>CONTACT</h1>
                 </div>
 
             </div>

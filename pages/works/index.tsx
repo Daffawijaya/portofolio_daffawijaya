@@ -47,48 +47,50 @@ const Works = () => {
             <main className='h-screen bg-black flex fixed w-screen z-10'>
                 <Background />
             </main>
-
-            {/* title */}
-            <div className='ml-[17%] py-6 fixed z-20 italic'>
-                <div className='flex justify-center h-full fixed flex-col'>
-                    <h1 className='text-a-2 text-7xl font-bold pb-2 uppercase'>Works</h1>
-                    <span className='text-white w-40 text-2xl'>Here is a list of projects Ive worked on</span>
-                </div>
-            </div>
             
+            <div className='relative z-20 flex flex-col justify-center min-h-screen'>
+                {/* title */}
+                <div className='ml-[17%] py-6 lg:fixed relative z-20 italic h-full'>
+                    <div className='flex justify-center h-full flex-col'>
+                        <h1 className='text-a-2 text-5xl lg:text-7xl font-bold pb-2 uppercase'>Works</h1>
+                        <span className='text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl'>Here is a list of projects Ive worked on</span>
+                    </div>
+                </div>
 
-            {/* content */}
-            <div className='ml-[15%] py-6 relative z-10 '>
-                <div className='flex flex-col ml-[16%] space-y-6 italic '>
-                    {projects.map((item: any, idx: number) => (
-                        <div key={idx}>
-                            {item.type === 2 ?
-                                <Link href={item.url}>
-                                    <div className={`relative mr-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
-                                        <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                            <div className='px-[20%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                <p className='font-bold text-3xl uppercase text-right text-white w-full'>{item.name}</p>
-                                                <p className='text-right capitalize w-full'>{item.year}</p>
+                {/* content */}
+                <div className='ml-[15%] py-6 relative z-10 '>
+                    <div className='flex flex-col lg:ml-[16%] space-y-6 italic '>
+                        {projects.map((item: any, idx: number) => (
+                            <div key={idx}>
+                                {item.type === 2 ?
+                                    <Link href={item.url}>
+                                        <div className={`relative mr-[20%] lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
+                                            <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                    <p className='font-bold lg:text-3xl text-xl uppercase text-right text-white w-full'>{item.name}</p>
+                                                    <p className='text-right capitalize w-full lg:text-base text-xs'>{item.year}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
-                                :
-                                <Link href={item.url}>
-                                    <div className={`relative ml-[20%] h-64 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
-                                        <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                            <div className='px-[20%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                <p className='font-bold text-3xl uppercase text-left text-white w-full'>{item.name}</p>
-                                                <p className='text-left capitalize w-full'>{item.year}</p>
+                                    </Link>
+                                    :
+                                    <Link href={item.url}>
+                                        <div className={`relative ml-[20%] lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
+                                            <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                    <p className='lg:text-3xl text-xl font-bold lg:text-3xl uppercase text-left text-white w-full'>{item.name}</p>
+                                                    <p className='text-left capitalize w-full lg:text-base text-xs'>{item.year}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            }
-                        </div>
-                    ))}
+                                    </Link>
+                                }
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
+
             <Contact />
         </>
     )
