@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Background from '../components/Background'
 import Sidebar from '../components/Sidebar'
-import { SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
+import { SiRedux, SiFramer,SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
 import { HiPencil } from "react-icons/hi";
 import Link from 'next/link';
 import Contact from '../components/Contact';
@@ -50,6 +50,16 @@ const techstack = [
                 name: "Bootstrap",
                 icon: <SiBootstrap className='h-10 w-10' />,
                 color: "hover:text-[#523A76]",
+            },
+            {
+                name: "Framer",
+                icon: <SiFramer className='h-10 w-10' />,
+                color: "hover:text-[#DC01C2]",
+            },
+            {
+                name: "Redux",
+                icon: <SiRedux className='h-10 w-10' />,
+                color: "hover:text-[#7046B3]",
             },
         ]
     },
@@ -244,7 +254,7 @@ const About = () => {
                                     delay: 0.4,
                                     duration: 1,
                                 }}
-                                className='z-10 p-4 relative bg-b-2 saturate-50 hover:saturate-100 mb-4'>
+                                className='z-10 p-4 relative bg-b-2 saturate-50 hover:saturate-100 mb-4 hover:bg-a-2 hover:bg-opacity-30'>
                                 <div className='lg:w-[450px] lg:h-[300px] w-full h-[250px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
                             </motion.div>
                             <motion.p
