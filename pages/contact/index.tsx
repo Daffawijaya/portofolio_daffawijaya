@@ -13,21 +13,21 @@ const contact = [
             {
                 name: "Daffa Wijaya",
                 image: "bg-[url(/icon/li.png)]",
-                icon: <SiLinkedin className='md:h-10 md:w-10 w-6 h-6' />,
+                icon: <SiLinkedin className='md:h-10 md:w-10 w-4 h-4' />,
                 color: "hover:text-[#EAD41C]",
                 url: "https://www.linkedin.com/in/daffa-wijaya-621a04255/"
             },
             {
                 name: "@daffawijayaaa",
                 image: "bg-[url(/icon/ig.jpg)]",
-                icon: <SiInstagram className='md:h-10 md:w-10 w-6 h-6' />,
+                icon: <SiInstagram className='md:h-10 md:w-10 w-4 h-4' />,
                 color: "hover:text-[#EAD41C]",
                 url: "https://www.instagram.com/daffawijayaaa/"
             },
             {
                 name: "Daffawijaya",
                 image: "bg-[url(/icon/gh.png)]",
-                icon: <SiGithub className='md:h-10 md:w-10 w-6 h-6' />,
+                icon: <SiGithub className='md:h-10 md:w-10 w-4 h-4' />,
                 color: "hover:text-[#2F72BC]",
                 url: "https://github.com/Daffawijaya"
             },
@@ -76,12 +76,12 @@ const Contact = () => {
                                 {contact.map((item: any, idx: number) => (
                                     <div key={idx}>
                                         <h1 className='text-white text-lg md:text-2xl font-bold pb-2'>{item.title}</h1>
-                                        <div className='flex flex-col space-y-1 md:space-y-0 md:flex-row md:space-x-1.5 overflow-x-auto w-full '>
+                                        <div className='flex flex-col space-y-1 md:space-y-0 md:flex-row md:space-x-1.5 overflow-x-auto w-full'>
                                             {item.item.map((item: any, idx: number) => (
                                                 <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-14 md:h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
                                                     <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-contrast-[0.9] hover:backdrop-contrast-[1]' >
-                                                        <div className='px-2 space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300'>
-                                                            <p className='font-bold text-xl uppercase text-center text-white'>{item.icon}</p>
+                                                        <div className='px-2 space-y-1 md:space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300'>
+                                                            <p className='uppercase text-center text-white'>{item.icon}</p>
                                                             <p className='text-xs text-center'>{item.name}</p>
                                                         </div>
                                                     </div>
