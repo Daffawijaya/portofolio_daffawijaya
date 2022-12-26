@@ -18,7 +18,7 @@ export default function Home() {
       </main>
 
       <main className='w-[85%] h-screen bg-black flex ml-[15%]'>
-        <div className="absolute z-0 w-[85%] h-full bg-[url('/daf9.png')] bg-cover bg-center">
+        <div className="absolute z-0 w-[85%] h-full bg-[url('/daf8.png')] bg-cover bg-center">
           <div className='absolute backdrop-brightness-[0.3] h-full w-full' />
         </div>
         <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
