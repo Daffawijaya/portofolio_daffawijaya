@@ -5,6 +5,7 @@ import { SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, Si
 import { HiPencil } from "react-icons/hi";
 import Link from 'next/link';
 import Contact from '../components/Contact';
+import { motion } from 'framer-motion';
 
 const techstack = [
     {
@@ -211,17 +212,59 @@ const About = () => {
 
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex justify-center h-full flex-col p-6'>
-                        <p className='text-white text-lg lg:text-2xl'>Hello!, I am</p>
-                        <h1 className='text-a-2 text-5xl lg:text-7xl font-bold uppercase'>DAFA <span className='text-white'>YAN WIJAYA</span></h1>
-                        <p className='text-white text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</p>
-                        <div className='flex lg:flex-row flex-col lg:space-x-4 w-full pt-4'>
-                            <div className='p-[2%] bg-b-2 saturate-50 hover:saturate-100 mb-4 duration-300 hover:scale-[102%]'>
+                        <motion.p
+                            initial={{ left: -100, opacity: 0 }}
+                            animate={{ left: 0, opacity: 100 }}
+                            transition={{
+                                delay: 0.2,
+                                duration: 1,
+                            }}
+                            className='text-white text-lg lg:text-2xl relative'>Hello!, I am</motion.p>
+                        <motion.h1
+                            initial={{ left: -200, opacity: 0 }}
+                            animate={{ left: 0, opacity: 100 }}
+                            transition={{
+                                delay: 0,
+                                duration: 1,
+                            }}
+                            className='relative text-a-2 text-5xl lg:text-7xl font-bold uppercase'>DAFA <span className='text-white'>YAN WIJAYA</span></motion.h1>
+                        <motion.p
+                            initial={{ left: -200, opacity: 0 }}
+                            animate={{ left: 0, opacity: 100 }}
+                            transition={{
+                                delay: 1,
+                                duration: 1,
+                            }}
+                            className='text-white relative text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</motion.p>
+                        <div className='relative flex lg:flex-row flex-col lg:space-x-4 w-full pt-4'>
+                            <motion.div
+                                initial={{ left: -200, opacity: 0 }}
+                                animate={{ left: 0, opacity: 100 }}
+                                transition={{
+                                    delay: 0.4,
+                                    duration: 1,
+                                }}
+                                className='z-10 p-4 relative bg-b-2 saturate-50 hover:saturate-100 mb-4'>
                                 <div className='lg:w-[450px] lg:h-[300px] w-full h-[250px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
-                            </div>
-                            <p className='text-a-2 text-lg lg:text-2xl font-medium w-full lg:w-[40%]'>I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</p>
+                            </motion.div>
+                            <motion.p
+                                initial={{ left: -200, opacity: 0 }}
+                                animate={{ left: 0, opacity: 100 }}
+                                transition={{
+                                    delay: 1,
+                                    duration: 1,
+                                }}
+                                className='z-0 relative text-a-2 text-lg lg:text-2xl font-medium w-full lg:w-[40%]'>I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</motion.p>
                         </div>
                     </div>
-                    <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-28 -rotate-90 font-bold'>ABOUT</h1>
+                    <motion.h1
+                        initial={{ bottom: -100, opacity: 0 }}
+                        animate={{ bottom: 100, opacity: 100 }}
+                        transition={{
+                            delay: 1.3,
+                            duration: 1.5,
+                        }}
+                        className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-28 -rotate-90 font-bold'>ABOUT</motion.h1>
                 </div>
 
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>

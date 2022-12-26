@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Sidebar from './components/Sidebar'
 import Contact from './components/Contact'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 export default function Home() {
   return (
@@ -22,9 +23,16 @@ export default function Home() {
           <div className='absolute backdrop-brightness-[0.3] h-full w-full' />
         </div>
         <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
-          <button className='lg:h-[290px] lg:w-[400px] sm:h-[220px] sm:w-[300px] h-[180px] w-[240px] duration-300 hover:scale-[102%]'>
+          <motion.button
+            initial={{ bottom: -100, opacity: 0 }}
+            animate={{ bottom: 0, opacity: 100 }}
+            transition={{
+              delay: 0,
+              duration: 1.5,
+            }}
+            className='relative lg:h-[290px] lg:w-[400px] sm:h-[220px] sm:w-[300px] h-[180px] w-[240px]'>
             <Image alt='anjay' src={`/dafaaalogo2.png`} width={400} height={400} className="w-full h-full duration-300" />
-          </button>
+          </motion.button>
         </div>
       </main>
       <Contact />

@@ -3,6 +3,7 @@ import Background from '../components/Background'
 import Sidebar from '../components/Sidebar'
 import Link from 'next/link'
 import Contact from '../components/Contact'
+import { motion } from 'framer-motion'
 
 const projects = [
     {
@@ -52,8 +53,26 @@ const Works = () => {
                 {/* title */}
                 <div className='ml-[17%] lg:py-6 pb-3 lg:fixed relative z-20 italic lg:h-full'>
                     <div className='flex justify-center h-full flex-col'>
-                        <h1 className='text-a-2 text-5xl lg:text-7xl font-bold pb-2 uppercase'>Works</h1>
-                        <span className='text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl'>Here is a list of projects Ive worked on</span>
+                        <motion.h1
+                            initial={{ left: -200, opacity: 0 }}
+                            animate={{ left: 0, opacity: 100 }}
+                            transition={{
+                                delay: 0,
+                                duration: 1,
+                            }}
+                            className='relative text-a-2 text-5xl lg:text-7xl font-bold pb-2 uppercase'>
+                            Works
+                        </motion.h1>
+                        <motion.span
+                            initial={{ left: -200, opacity: 0 }}
+                            animate={{ left: 0, opacity: 100 }}
+                            transition={{
+                                delay: 0.2,
+                                duration: 1,
+                            }}
+                            className='relative text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl'>
+                            Here is a list of projects Ive worked on
+                        </motion.span>
                     </div>
                 </div>
 
@@ -61,31 +80,43 @@ const Works = () => {
                 <div className='ml-[15%] pt-6 pb-3 relative z-10 '>
                     <div className='flex flex-col lg:ml-[16%] space-y-6 italic '>
                         {projects.map((item: any, idx: number) => (
-                            <div key={idx}>
+                            <motion.div
+                                initial={{ top: -400, opacity: 0 }}
+                                animate={{ top: 0, opacity: 100 }}
+                                transition={{
+                                    delay: 0.8,
+                                    duration: 1,
+                                }}
+                                key={idx} className='relative'>
                                 {item.type === 2 ?
-                                    <Link href={item.url}>
-                                        <div className={`relative mr-[20%] lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
-                                            <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                                <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                    <p className='font-bold lg:text-3xl text-xl uppercase text-right text-white w-full'>{item.name}</p>
-                                                    <p className='text-right capitalize w-full lg:text-base text-xs'>{item.year}</p>
+                                    <div className='mr-[20%] relative'>
+                                        <Link href={item.url}>
+                                            <div className={`lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
+                                                <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                    <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                        <p className='font-bold lg:text-3xl text-xl uppercase text-right text-white w-full'>{item.name}</p>
+                                                        <p className='text-right capitalize w-full lg:text-base text-xs'>{item.year}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </Link>
+                                        </Link>
+                                    </div>
+
                                     :
-                                    <Link href={item.url}>
-                                        <div className={`relative ml-[20%] lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
-                                            <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                                <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                    <p className='lg:text-3xl text-xl font-bold lg:text-3xl uppercase text-left text-white w-full'>{item.name}</p>
-                                                    <p className='text-left capitalize w-full lg:text-base text-xs'>{item.year}</p>
+                                    <div className='ml-[20%] relative'>
+                                        <Link href={item.url}>
+                                            <div className={`lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
+                                                <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                    <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                        <p className='lg:text-3xl text-xl font-bold lg:text-3xl uppercase text-left text-white w-full'>{item.name}</p>
+                                                        <p className='text-left capitalize w-full lg:text-base text-xs'>{item.year}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </Link>
+                                        </Link>
+                                    </div>
                                 }
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>

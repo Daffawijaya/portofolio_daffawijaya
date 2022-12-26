@@ -5,6 +5,7 @@ import { SiInstagram, SiLinkedin, SiGithub } from "react-icons/si";
 import { HiOutlineMail } from "react-icons/hi";
 import Link from 'next/link';
 import Contacts from '../components/Contact';
+import { motion } from 'framer-motion';
 
 const contact = [
     {
@@ -56,25 +57,66 @@ const Contact = () => {
             {/* content */}
             <div className='h-screen'>
 
-                <div className='ml-[15%] relative z-10 h-screen italic'>
+                <div className='ml-[15%] relative z-10 h-screen italic overflow-auto scrollbar-hide'>
                     <div className='flex xl:flex-row flex-col xl:items-center items-start xl:justify-start justify-center w-full h-full p-6 xl:space-x-14 space-x-0 space-y-14 relative z-20'>
                         <div className='flex flex-col w-[50%] space-y-1'>
-                            <p className='text-a-2 text-xl lg:text-3xl font-bold'>Indonesia</p>
-                            <p className='text-white text-base lg:text-xl'>Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java</p>
-                            <a className='text-[#828282] hover:underline font-medium text-base lg:text-xl' href='https://goo.gl/maps/NBknBQpL43MXpbrb9'>View Map</a>
+                            <motion.p
+                                initial={{ left: -200, opacity: 0 }}
+                                animate={{ left: 0, opacity: 100 }}
+                                transition={{
+                                    delay: 0,
+                                    duration: 1,
+                                }}
+                                className='relative text-a-2 text-xl lg:text-3xl font-bold'>Indonesia</motion.p>
+                            <motion.p
+                                initial={{ left: -200, opacity: 0 }}
+                                animate={{ left: 0, opacity: 100 }}
+                                transition={{
+                                    delay: 0.2,
+                                    duration: 1,
+                                }}
+                                className='relative text-white text-base lg:text-xl'>Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java</motion.p>
+                            <motion.a
+                                initial={{ left: -200, opacity: 0 }}
+                                animate={{ left: 0, opacity: 100 }}
+                                transition={{
+                                    delay: 0.6,
+                                    duration: 1,
+                                }}
+                                className='relative text-[#828282] hover:underline font-medium text-base lg:text-xl' href='https://goo.gl/maps/NBknBQpL43MXpbrb9'>View Map</motion.a>
                         </div>
 
                         <div className='flex flex-col w-full space-y-10'>
                             <div className='flex flex-col space-y-1'>
-                                <p className='text-white lg:text-xl text-base'>If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</p>
-                                <div className='flex space-x-2 flex-row items-center'>
+                                <motion.p
+                                    initial={{ top: -200, opacity: 0 }}
+                                    animate={{ top: 0, opacity: 100 }}
+                                    transition={{
+                                        delay: 1,
+                                        duration: 1,
+                                    }}
+                                    className='relative text-white lg:text-xl text-base'>If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</motion.p>
+                                <motion.div
+                                    initial={{ top: -200, opacity: 0 }}
+                                    animate={{ top: 0, opacity: 100 }}
+                                    transition={{
+                                        delay: 0.8,
+                                        duration: 1,
+                                    }}
+                                    className='relative flex space-x-2 flex-row items-center'>
                                     <p><HiOutlineMail className='h-5 w-5 text-[#828282]' /></p>
                                     <a className='text-[#828282] hover:underline lg:text-xl text-base font-medium' href='https://mail.google.com/mail/u/0/?view=cm&tf=1&fs=1&to=daffayanwijaya@gmail.com'>daffayanwijaya@gmail.com</a>
-                                </div>
+                                </motion.div>
                             </div>
                             <div className='w-full h-full overflow-y-auto flex flex-col space-y-7'>
                                 {contact.map((item: any, idx: number) => (
-                                    <div key={idx}>
+                                    <motion.div key={idx}
+                                        initial={{ top: -200, opacity: 0 }}
+                                        animate={{ top: 0, opacity: 100 }}
+                                        transition={{
+                                            delay: 1.2,
+                                            duration: 1,
+                                        }} className='relative'>
                                         <h1 className='text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
                                         <div className='flex flex-col space-y-1 lg:space-y-0 lg:flex-row lg:space-x-1.5 overflow-x-auto w-full'>
                                             {item.item.map((item: any, idx: number) => (
@@ -88,12 +130,19 @@ const Contact = () => {
                                                 </Link>
                                             ))}
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
                     </div>
-                    <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-24 -rotate-90 font-bold'>CONTACT</h1>
+                    <motion.h1
+                        initial={{ bottom: -100, opacity: 0 }}
+                        animate={{ bottom: 100, opacity: 100 }}
+                        transition={{
+                            delay: 1.5,
+                            duration: 1.5,
+                        }}
+                        className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-24 -rotate-90 font-bold'>CONTACT</motion.h1>
                 </div>
 
             </div>

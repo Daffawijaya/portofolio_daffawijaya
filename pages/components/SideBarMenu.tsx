@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router';
 import { SiInstagram, SiLinkedin, SiGithub } from "react-icons/si";
 import Link from 'next/link';
-import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const icon = [
     {
@@ -66,7 +66,7 @@ const SidebarMenu = () => {
                             <div className='font-bold text-5xl lg:text-7xl text-start'>
                                 {menu.map((item: any, idx: number) => (
                                     <Link key={idx} href={item.url} >
-                                        <h1 className={`my-1 hover:text-black duration-300 italic  ${router.pathname === item.url ? "text-black" : "text-white"}`}>{item.name}</h1>
+                                        <h1 className={`my-1 hover:text-black duration-300 italic hover:translate-x-1 duration-300 ${router.pathname === item.url ? "text-black" : "text-white"}`}>{item.name}</h1>
                                     </Link>
                                 ))}
                             </div>
