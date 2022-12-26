@@ -22,7 +22,7 @@ export default function Home() {
           <div className='absolute backdrop-brightness-[0.3] h-full w-full' />
         </div>
         <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
-          <button className='lg:h-[290px] lg:w-[400px] h-[220px] w-[300px] duration-300 hover:scale-[102%]'>
+          <button className='lg:h-[290px] lg:w-[400px] sm:h-[220px] sm:w-[300px] h-[180px] w-[240px] duration-300 hover:scale-[102%]'>
             <Image alt='anjay' src={`/dafaaalogo2.png`} width={400} height={400} className="w-full h-full duration-300" />
           </button>
         </div>
