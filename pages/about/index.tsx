@@ -215,7 +215,7 @@ const About = () => {
                         <h1 className='text-a-2 text-5xl lg:text-7xl font-bold uppercase'>DAFA <span className='text-white'>YAN WIJAYA</span></h1>
                         <p className='text-white text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</p>
                         <div className='flex lg:flex-row flex-col lg:space-x-4 w-full pt-4'>
-                            <div className='p-[2%] bg-b-2 saturate-50 hover:saturate-100 mb-4'>
+                            <div className='p-[2%] bg-b-2 saturate-50 hover:saturate-100 mb-4 duration-300 hover:scale-[102%]'>
                                 <div className='lg:w-[450px] lg:h-[300px] w-full h-[250px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
                             </div>
                             <p className='text-a-2 text-lg lg:text-2xl font-medium w-full lg:w-[40%]'>I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</p>

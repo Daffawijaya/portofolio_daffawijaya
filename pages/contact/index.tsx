@@ -54,7 +54,7 @@ const Contact = () => {
             </main>
 
             {/* content */}
-            <div className='overflow-scroll h-screen'>
+            <div className='h-screen'>
 
                 <div className='ml-[15%] relative z-10 h-screen italic'>
                     <div className='flex xl:flex-row flex-col xl:items-center items-start xl:justify-start justify-center w-full h-full p-6 xl:space-x-14 space-x-0 space-y-14 relative z-20'>
