@@ -47,10 +47,10 @@ const Works = () => {
             <main className='h-screen bg-black flex fixed w-screen z-10'>
                 <Background />
             </main>
-            
-            <div className='relative z-20 flex flex-col justify-center min-h-screen'>
+
+            <div className='relative z-20 flex flex-col justify-center pt-6 h-screen overflow-auto scrollbar-hide'>
                 {/* title */}
-                <div className='ml-[17%] py-6 lg:fixed relative z-20 italic h-full'>
+                <div className='ml-[17%] lg:py-6 pb-3 lg:fixed relative z-20 italic lg:h-full'>
                     <div className='flex justify-center h-full flex-col'>
                         <h1 className='text-a-2 text-5xl lg:text-7xl font-bold pb-2 uppercase'>Works</h1>
                         <span className='text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl'>Here is a list of projects Ive worked on</span>
@@ -58,7 +58,7 @@ const Works = () => {
                 </div>
 
                 {/* content */}
-                <div className='ml-[15%] py-6 relative z-10 '>
+                <div className='ml-[15%] pt-6 pb-3 relative z-10 '>
                     <div className='flex flex-col lg:ml-[16%] space-y-6 italic '>
                         {projects.map((item: any, idx: number) => (
                             <div key={idx}>
