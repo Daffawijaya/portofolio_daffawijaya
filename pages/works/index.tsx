@@ -7,7 +7,6 @@ import { motion } from 'framer-motion'
 
 const projects = [
     {
-        type: 1,
         name: "SIPP: Sistem Informasi Penataan dan Penaatan Kota Batu",
         image: "bg-[url(/batu.png)]",
         url: "https://sipp-dev.vercel.app",
@@ -15,15 +14,12 @@ const projects = [
     },
 
     {
-        type: 2,
         name: "UMM research network Re-engineering",
         image: "bg-[url(/experience/umm.png)]",
         url: "http://ummrn-daffacindy.vercel.app/",
         year: "November 2022"
     },
     {
-
-        type: 1,
         name: "SEAL: Simple Todo List Bounding Project",
         image: "bg-[url(/experience/seal2.png)]",
         url: "https://mini-project-todolist-seal-5.vercel.app",
@@ -88,21 +84,7 @@ const Works = () => {
                                     duration: 1,
                                 }}
                                 key={idx} className='relative'>
-                                {item.type === 2 ?
-                                    <div className='mr-[20%] relative'>
-                                        <Link href={item.url}>
-                                            <div className={`lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
-                                                <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                                    <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                        <p className='font-bold lg:text-3xl text-xl uppercase text-right text-white w-full'>{item.name}</p>
-                                                        <p className='text-right capitalize w-full lg:text-base text-xs'>{item.year}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    </div>
-
-                                    :
+                                {idx % 2 == 0 ?
                                     <div className='ml-[20%] relative'>
                                         <Link href={item.url}>
                                             <div className={`lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
@@ -110,6 +92,19 @@ const Works = () => {
                                                     <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
                                                         <p className='lg:text-3xl text-xl font-bold lg:text-3xl uppercase text-left text-white w-full'>{item.name}</p>
                                                         <p className='text-left capitalize w-full lg:text-base text-xs'>{item.year}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className='mr-[20%] relative'>
+                                        <Link href={item.url}>
+                                            <div className={`lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
+                                                <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                    <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                        <p className='font-bold lg:text-3xl text-xl uppercase text-right text-white w-full'>{item.name}</p>
+                                                        <p className='text-right capitalize w-full lg:text-base text-xs'>{item.year}</p>
                                                     </div>
                                                 </div>
                                             </div>
