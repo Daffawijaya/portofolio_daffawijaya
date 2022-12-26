@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Sidebar from './components/Sidebar'
 import Contact from './components/Contact'
+import Image from 'next/image'
 
 export default function Home() {
   return (
@@ -24,9 +25,10 @@ export default function Home() {
           <div className='absolute h-full w-full' />
         </div>
         <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
-          <h1 className='text-5xl lg:text-7xl font-bold text-a-2 italic'>D A F F A</h1>
-          <h1 className='text-5xl lg:text-7xl font-bold text-a-2 italic'>W I J A Y A</h1>
-          <p className='text-md lg:text-xl text-white pt-5 italic'>FRONTEND WEB DEVELOPER</p>
+          <button className='lg:h-[290px] lg:w-[400px] h-[220px] w-[300px] duration-300'>
+            <Image alt='anjay' src={`/dafaaalogo2.png`} width={400} height={400} className="w-full h-full duration-300" />
+          </button>
+          
         </div>
       </main>
 

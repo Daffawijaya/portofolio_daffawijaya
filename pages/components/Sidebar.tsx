@@ -24,7 +24,7 @@ const Sidebar = () => {
     return (
         <main className='bg-black h-full w-full px-6 py-8 flex flex-col justify-between items-center'>
             <button className='lg:rotate-0 rotate-90 lg:absolute lg:h-[80px] lg:w-[180px] w-24 h-10 left-20 top-6 hover:translate-x-1 duration-300'>
-                <Image alt='anjay' src={`/dafalogo.png`} width={1000} height={1000} className="w-full h-full duration-300" />
+                <Image alt='anjay' src={`/dafalogo.png`} width={180} height={180} className="w-full h-full duration-300" />
             </button>
             <div>
             </div>
