@@ -23,7 +23,7 @@ const Sidebar = () => {
 
     return (
         <main className='bg-black h-full w-full px-6 py-8 flex flex-col justify-between items-center'>
-            <button className='absolute h-[80px] w-[180px] left-20 top-6 hover:translate-x-1 duration-300'>
+            <button className='md:rotate-0 rotate-90 md:absolute md:h-[80px] md:w-[180px] w-24 h-10 left-20 top-6 hover:translate-x-1 duration-300'>
                 <Image alt='anjay' src={`/dafalogo.png`} width={1000} height={1000} className="w-full h-full duration-300" />
             </button>
             <div>
@@ -31,7 +31,7 @@ const Sidebar = () => {
             <div>
                 <SidebarMenu />
             </div>
-            <div className='flex space-x-4'>
+            <div className='flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4'>
                 {icon.map((item: any, idx: number) => (
                     <Link href={item.url} key={idx}>
                         <div className='text-transparent flex flex-col items-center justify-center'>

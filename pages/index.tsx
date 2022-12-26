@@ -24,9 +24,9 @@ export default function Home() {
           <div className='absolute h-full w-full' />
         </div>
         <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
-          <h1 className='text-7xl font-bold text-a-2 italic'>D A F F A</h1>
-          <h1 className='text-7xl font-bold text-a-2 italic'>W I J A Y A</h1>
-          <p className='text-xl text-white pt-5 italic'>FRONTEND WEB DEVELOPER</p>
+          <h1 className='text-5xl md:text-7xl font-bold text-a-2 italic'>D A F F A</h1>
+          <h1 className='text-5xl md:text-7xl font-bold text-a-2 italic'>W I J A Y A</h1>
+          <p className='text-md md:text-xl text-white pt-5 italic'>FRONTEND WEB DEVELOPER</p>
         </div>
       </main>
 
