@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Background from '../components/Background'
 import Sidebar from '../components/Sidebar'
 import Link from 'next/link'
+import Contact from '../components/Contact'
 
 const projects = [
     {
@@ -50,10 +51,11 @@ const Works = () => {
             {/* title */}
             <div className='ml-[17%] py-6 fixed z-20 italic'>
                 <div className='flex justify-center h-full fixed flex-col'>
-                    <h1 className='text-a-2 text-7xl font-bold pb-2 uppercase'>My Works</h1>
-                    <p className='text-white w-40 text-2xl'>Here is a list of projects Ive worked on</p>
+                    <h1 className='text-a-2 text-7xl font-bold pb-2 uppercase'>Works</h1>
+                    <span className='text-white w-40 text-2xl'>Here is a list of projects Ive worked on</span>
                 </div>
             </div>
+            
 
             {/* content */}
             <div className='ml-[15%] py-6 relative z-10 '>
@@ -87,6 +89,7 @@ const Works = () => {
                     ))}
                 </div>
             </div>
+            <Contact />
         </>
     )
 }

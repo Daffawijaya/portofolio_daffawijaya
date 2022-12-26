@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Sidebar from './components/Sidebar'
+import Contact from './components/Contact'
 
 export default function Home() {
   return (
@@ -28,6 +29,8 @@ export default function Home() {
           <p className='text-xl text-white pt-5 italic'>FRONTEND WEB DEVELOPER</p>
         </div>
       </main>
+
+      <Contact />
     </>
   )
 }

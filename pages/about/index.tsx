@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar'
 import { SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
 import { HiPencil } from "react-icons/hi";
 import Link from 'next/link';
+import Contact from '../components/Contact';
 
 const techstack = [
     {
@@ -168,7 +169,7 @@ const experience = [
             {
                 name: "SEAL Internship Graduate",
                 image: "bg-[url(/experience/seal2.png)]",
-                url: "https://drive.google.com/drive/folders/1aZC3UCn4BrejdHdKp9TVio0IC7iX_hST",
+                url: "https://drive.google.com/file/d/1kA6ukvDQoVK4PAAmr2n_N-OeKnwLoxuw/view?usp=sharing",
                 year: "December 2022"
             },
             {
@@ -288,7 +289,7 @@ const About = () => {
                                         {item.item.map((item: any, idx: number) => (
                                             <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
                                                 <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                                    <div className='absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                    <div className='px-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
                                                         <p className='font-bold text-xl uppercase text-center text-white'>{item.name}</p>
                                                         <p className='text-xs capitalize text-center '>{item.year}</p>
                                                     </div>
@@ -303,6 +304,7 @@ const About = () => {
                 </div>
 
             </div>
+            <Contact />
         </>
     )
 }
