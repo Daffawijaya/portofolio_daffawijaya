@@ -287,7 +287,7 @@ const About = () => {
                 </div>
 
                 {/* techstack */}
-                <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
+                {/* <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='flex flex-col lg:w-[50%]'>
                             <p className='text-black dark:text-white md:text-xl text-sm'>Professional</p>
@@ -311,10 +311,10 @@ const About = () => {
                         </div>
                     </div>
                     <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-40 -rotate-90 font-bold'>TECHSTACK</h1>
-                </div>
+                </div> */}
 
                 {/*other skill */}
-                <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
+                {/* <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='flex flex-col lg:w-[50%]'>
                             <p className='text-black dark:text-white text-lg lg:text-xl'>Another</p>
@@ -336,10 +336,10 @@ const About = () => {
                         </div>
                     </div>
                     <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-20 -rotate-90 font-bold'>OTHER</h1>
-                </div>
+                </div> */}
 
                 {/* experience */}
-                <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
+                {/* <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='relative flex flex-col lg:w-[50%] pb-3'>
                             <p className='text-black dark:text-white text-sm lg:text-xl'>My</p>
@@ -366,7 +366,7 @@ const About = () => {
                             ))}
                         </div>
                     </div>
-                </div>
+                </div> */}
 
             </div>
             <ThemeSwitcher />
