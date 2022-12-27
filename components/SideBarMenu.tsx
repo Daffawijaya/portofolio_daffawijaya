@@ -55,7 +55,7 @@ const SidebarMenu = () => {
             <AnimatePresence>
                 {show &&
                     <motion.div
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 0.6 }}
                         initial={{ left: -1500 }}
                         animate={{ left: 0 }}
                         exit={{ left: -1500 }}
@@ -66,14 +66,14 @@ const SidebarMenu = () => {
                             <div></div>
                             <div className='font-bold text-5xl lg:text-7xl text-start'>
                                 {menu.map((item: any, idx: number) => (
-                                    <Link key={idx} href={item.url} >
+                                    <Link key={idx} href={item.url} onClick={()=>setShow(false)}>
                                         <h1 className={`my-1 hover:text-black duration-300 italic hover:translate-x-1 duration-300 ${router.pathname === item.url ? "text-black" : "text-white"}`}>{item.name}</h1>
                                     </Link>
                                 ))}
                             </div>
                             <div className='flex space-x-4 justify-end flex w-full'>
                                 {icon.map((item: any, idx: number) => (
-                                    <Link href={item.url} key={idx}>
+                                    <Link href={item.url} key={idx} onClick={()=>setShow(false)}>
                                         <div className='text-transparent flex flex-col items-center justify-center'>
                                             <p className='font-bold text-xl uppercase text-center text-white hover:text-black duration-300'>{item.icon}</p>
                                         </div>
