@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Contact from '../../components/Contact'
 import { motion } from 'framer-motion'
 
-export const projects = [
+const projects = [
     {
         name: "SIPP: Sistem Informasi Penataan dan Penaatan Kota Batu",
         image: "bg-[url(/batu.png)]",
@@ -20,7 +20,7 @@ export const projects = [
         year: "November 2022"
     },
     {
-        name: "SEAL: Simple Todo List Bounding Project",
+        name: "SEAL Bounding Project: Todo List app for student",
         image: "bg-[url(/experience/seal2.png)]",
         url: "https://mini-project-todolist-seal-5.vercel.app",
         year: "August 2022"
@@ -90,7 +90,7 @@ const Works = () => {
                                             <div className={`lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-start`}>
                                                 <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
                                                     <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                        <p className='lg:text-3xl text-xl font-bold lg:text-3xl uppercase text-left text-white w-full'>{item.name}</p>
+                                                        <p className='lg:text-3xl text-xl font-bold lg:text-3xl capitalize text-left text-white w-full'>{item.name}</p>
                                                         <p className='text-left capitalize w-full lg:text-base text-xs'>{item.year}</p>
                                                     </div>
                                                 </div>
@@ -103,7 +103,7 @@ const Works = () => {
                                             <div className={`lg:h-64 h-40 flex items-center ${item.image} bg-cover bg-center overflow-hidden justify-end`}>
                                                 <div className='absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
                                                     <div className='lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                        <p className='font-bold lg:text-3xl text-xl uppercase text-right text-white w-full'>{item.name}</p>
+                                                        <p className='font-bold lg:text-3xl text-xl capitalize text-right text-white w-full'>{item.name}</p>
                                                         <p className='text-right capitalize w-full lg:text-base text-xs'>{item.year}</p>
                                                     </div>
                                                 </div>

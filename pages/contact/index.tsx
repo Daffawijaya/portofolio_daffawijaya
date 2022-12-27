@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 import { SiInstagram, SiLinkedin, SiGithub } from "react-icons/si";
 
-export const contact = [
+const contact = [
     {
         title: "Or you can find me at:",
         item: [
