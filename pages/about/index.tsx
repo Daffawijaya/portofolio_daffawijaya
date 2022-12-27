@@ -241,10 +241,12 @@ const About = () => {
                                 duration: 1,
                             }}
                             className='relative text-4xl lg:text-6xl font-semibold flex sm:flex-row flex-col sm:items-end items-start'>
-                            <div className='relative lg:h-[65px] lg:w-[200px] h-[42px] w-[130px] min-w-[130px] sm:py-1'>
-                                <Image alt='anjay' src={`/dafamaha.png`} width={180} height={180} className="w-full h-full" />
+                            <div className='pr-0.5'>
+                                <button className="bg-[url('/aa.png')] bg-cover lg:h-[50px] lg:w-[180px] bg-center w-[110px] h-[32px]">
+                                </button>
                             </div>
-                            <span className='text-black dark:text-white pr-4'>Yan</span>
+
+                            <span className='text-black dark:text-white pr-2'>Yan</span>
                             <span className='text-black dark:text-white'>Wijaya</span>
                         </motion.h1>
                         <motion.p
