@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Contact from '../../components/Contact';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { SiRedux, SiFramer,SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
+import { SiRedux, SiFramer, SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
 import { HiPencil } from "react-icons/hi";
 import ThemeSwitcher from '../../components/ThemeSwitcher';
 
@@ -349,14 +349,22 @@ const About = () => {
                         <div className='w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7'>
                             {experience.map((item: any, idx: number) => (
                                 <div key={idx}>
-                                    <h1 className='text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
+                                    <h1 className='pb-1 dark:text-white text-black text-lg lg:text-2xl font-bold'>{item.title}</h1>
                                     <div className='flex space-x-1 overflow-x-auto'>
                                         {item.item.map((item: any, idx: number) => (
-                                            <Link href={item.url} key={idx} className={`w-full lg:min-w-[240px] min-w-[80px] lg:h-28 h-20 flex items-center ${item.image} bg-cover bg-center`}>
-                                                <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
-                                                    <div className='px-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
-                                                        <p className='font-bold text-xs lg:text-xl capitalize text-center text-white'>{item.name}</p>
-                                                        <p className='text-[7px] lg:text-xs capitalize text-center '>{item.year}</p>
+                                            // <Link href={item.url} key={idx} className={`w-full lg:min-w-[240px] min-w-[80px] lg:h-28 h-20 flex items-center ${item.image} bg-cover bg-center`}>
+                                            //     <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                            //         <div className='px-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                            //             <p className='font-bold text-xs lg:text-xl capitalize text-center text-white'>{item.name}</p>
+                                            //             <p className='text-[7px] lg:text-xs capitalize text-center '>{item.year}</p>
+                                            //         </div>
+                                            //     </div>
+                                            // </Link>
+                                            <Link href={item.url} key={idx} className={`w-full min-w-[100px] h-20 lg:h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
+                                                <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-contrast-[0.9] hover:backdrop-contrast-[1]' >
+                                                    <div className='px-2 space-y-1 lg:space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300'>
+                                                        {/* <p className='font-bold text-xs lg:text-xl capitalize text-center text-white '>{item.name}</p> */}
+                                                        <p className='text-[7px] lg:text-xs text-center'>{item.year}</p>
                                                     </div>
                                                 </div>
                                             </Link>
