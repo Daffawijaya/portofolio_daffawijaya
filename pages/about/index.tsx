@@ -297,7 +297,7 @@ const About = () => {
                         <div className='flex flex-col w-full'>
                             {techstack.map((item: any, idx: number) => (
                                 <div className='flex flex-col w-full lg:py-5 py-1 lg:py-2 lg:pr-[20%]' key={idx}>
-                                    <p className='text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6'>{item.title}</p>
+                                    <p className='text-black dark:text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6'>{item.title}</p>
                                     <div className='grid lg:grid-cols-5 grid-cols-3 lg:gap-4'>
                                         {item.item.map((item: any, idx: number) => (
                                             <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
@@ -323,7 +323,7 @@ const About = () => {
                         </div>
                         <div className='flex flex-col w-full'>
                             <div className='flex flex-col w-full py-5 lg:pr-[20%]'>
-                                <p className='text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6'>Here is the List</p>
+                                <p className='text-black dark:text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6'>Here is the List</p>
                                 <div className='grid lg:grid-cols-5 grid-cols-3 lg:gap-4'>
                                     {skills.map((item: any, idx: number) => (
                                         <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
