@@ -25,7 +25,7 @@ const Sidebar = () => {
         <main className='bg-gradient-to-r dark:from-black from-white h-full w-full px-6 py-8 flex flex-col justify-between items-center'>
             <button className="dark:bg-[url('/dafalogo2.png')] bg-[url('/dafalogo2i.png')] bg-cover lg:rotate-0 rotate-90 lg:absolute lg:h-[71px] bg-center lg:w-[180px] w-[100px] h-[40px] lg:left-20 relative top-6 hover:translate-x-1 duration-300">
             </button>
-            <div>
+            <div className='lg:flex hidden'>
             </div>
             <div>
                 <SidebarMenu />

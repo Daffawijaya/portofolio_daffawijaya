@@ -48,7 +48,7 @@ const SidebarMenu = () => {
     return (
         <>
             <button
-                onClick={() => setShow(true)} className="hover:scale-105 duration-300 lg:rotate-0 rotate-90 mb-32 lg:mb-0">
+                onClick={() => setShow(true)} className="hover:scale-105 duration-300 lg:rotate-0 rotate-90 lg:mb-0">
                 <HiMenu className='text-black dark:text-a-2 h-10 w-10' />
             </button>
 

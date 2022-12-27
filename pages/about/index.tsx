@@ -346,7 +346,7 @@ const About = () => {
                             <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize pb-3 lg:pb-6'>Experiences</h1>
                             <p className='text-black dark:text-white text-sm lg:text-xl'>This is my related experience and also the certification that i have.</p>
                         </div>
-                        <div className='w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7'>
+                        <div className='max-w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7'>
                             {experience.map((item: any, idx: number) => (
                                 <div key={idx}>
                                     <h1 className='pb-1 dark:text-white text-black text-lg lg:text-2xl font-bold'>{item.title}</h1>
