@@ -351,7 +351,16 @@ const About = () => {
                                 <div key={idx}>
                                     <h1 className='text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
                                     <div className='flex space-x-1 overflow-x-auto'>
-                                       
+                                        {item.item.map((item: any, idx: number) => (
+                                            <Link href={item.url} key={idx} className={`w-full lg:min-w-[240px] min-w-[80px] lg:h-28 h-20 flex items-center ${item.image} bg-cover bg-center`}>
+                                                <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]' >
+                                                    <div className='px-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300'>
+                                                        <p className='font-bold text-xs lg:text-xl capitalize text-center text-white'>{item.name}</p>
+                                                        <p className='text-[7px] lg:text-xs capitalize text-center '>{item.year}</p>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
                                     </div>
                                 </div>
                             ))}

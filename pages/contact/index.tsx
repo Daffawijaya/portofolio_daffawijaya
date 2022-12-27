@@ -120,9 +120,9 @@ const Contact = () => {
                                             duration: 1,
                                         }} className='relative'>
                                         <h1 className='text-black dark:text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
-                                        <div className='flex flex-col space-y-1 lg:space-y-0 lg:flex-row lg:space-x-1.5 overflow-x-auto w-full'>
+                                        <div className='flex flex-row space-x-0.5 lg:space-x-1.5 overflow-x-auto w-full'>
                                             {item.item.map((item: any, idx: number) => (
-                                                <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-14 lg:h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
+                                                <Link href={item.url} key={idx} className={`w-full min-w-[100px] h-14 lg:h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
                                                     <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-contrast-[0.9] hover:backdrop-contrast-[1]' >
                                                         <div className='px-2 space-y-1 lg:space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300'>
                                                             <p className='uppercase text-center text-white'>{item.icon}</p>
