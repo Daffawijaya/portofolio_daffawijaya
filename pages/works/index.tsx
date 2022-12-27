@@ -35,8 +35,8 @@ const Works = () => {
                                 delay: 0,
                                 duration: 1,
                             }}
-                            className='relative text-a-2 text-5xl lg:text-7xl font-bold pb-2 uppercase'>
-                            Works
+                            className='relative text-a-2 text-5xl lg:text-7xl font-bold pb-2 capitalize'>
+                            my Works
                         </motion.h1>
                         <motion.span
                             initial={{ left: -200, opacity: 0 }}

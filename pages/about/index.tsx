@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Contact from '../../components/Contact';
 import { motion } from 'framer-motion';
 import { techstack, skills, experience } from '../../data/aboutData';
+import Image from 'next/image';
 
 const About = () => {
     return (
@@ -45,7 +46,13 @@ const About = () => {
                                 delay: 0,
                                 duration: 1,
                             }}
-                            className='relative text-a-2 text-5xl lg:text-7xl font-bold uppercase'>DAFA <span className='text-white'>YAN WIJAYA</span></motion.h1>
+                            className='relative text-4xl lg:text-6xl font-semibold flex sm:flex-row flex-col sm:items-end items-start'>
+                            <div className='relative lg:h-[65px] lg:w-[190px] h-[42px] w-[130px] min-w-[130px] sm:py-1'>
+                                <Image alt='anjay' src={`/dafamaha.png`} width={180} height={180} className="w-full h-full" />
+                            </div>
+                            <span className='text-white pr-4'>Yan</span>
+                            <span className='text-white'>Wijaya</span>
+                        </motion.h1>
                         <motion.p
                             initial={{ left: -200, opacity: 0 }}
                             animate={{ left: 0, opacity: 100 }}
@@ -54,7 +61,7 @@ const About = () => {
                                 duration: 1,
                             }}
                             className='text-white relative text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</motion.p>
-                        <div className='relative flex lg:flex-row flex-col lg:space-x-4 w-full pt-4'>
+                        <div className='relative flex lg:flex-row flex-col items-start lg:items-center lg:space-x-4 w-full pt-4'>
                             <motion.div
                                 initial={{ left: -200, opacity: 0 }}
                                 animate={{ left: 0, opacity: 100 }}
@@ -62,8 +69,8 @@ const About = () => {
                                     delay: 0.4,
                                     duration: 1,
                                 }}
-                                className='z-10 p-4 relative bg-b-2 saturate-50 hover:saturate-100 mb-4 hover:bg-a-2 hover:bg-opacity-30'>
-                                <div className='lg:w-[450px] lg:h-[300px] w-full h-[250px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
+                                className='z-10 p-4 relative bg-b-2 saturate-50 hover:saturate-100 mb-4 hover:bg-a-2'>
+                                <div className='lg:w-[450px] lg:h-[300px] w-[200px] h-[150px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
                             </motion.div>
                             <motion.p
                                 initial={{ left: -200, opacity: 0 }}
@@ -72,7 +79,7 @@ const About = () => {
                                     delay: 1,
                                     duration: 1,
                                 }}
-                                className='z-0 relative text-a-2 text-lg lg:text-2xl font-medium w-full lg:w-[40%]'>&#34;I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</motion.p>
+                                className='z-0 relative text-a-2 text-md lg:text-2xl font-medium w-full lg:w-[40%]'>&#34;I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</motion.p>
                         </div>
                     </div>
                     <motion.h1
@@ -90,7 +97,7 @@ const About = () => {
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='flex flex-col lg:w-[50%]'>
                             <p className='text-white md:text-xl text-sm'>Professional</p>
-                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold uppercase lg:pb-6 pb-3'>techstack</h1>
+                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize lg:pb-6 pb-3'>techstacks</h1>
                             <p className='text-white text-sm lg:text-xl pb-3'>This is a list of technologies that I use in my profession as a frontend developer. Because I am still in the learning stage, in the future this list will continue to be updated.</p>
                         </div>
                         <div className='flex flex-col w-full'>
@@ -117,7 +124,7 @@ const About = () => {
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='flex flex-col lg:w-[50%]'>
                             <p className='text-white text-lg lg:text-xl'>Another</p>
-                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold uppercase lg:pb-6 pb-3'>skills</h1>
+                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize lg:pb-6 pb-3'>skills</h1>
                             <p className='text-white lg:text-xl text-sm'>For a complement or just a hobby, I also use technology outside my professional field and of course it will still be updated in the future.</p>
                         </div>
                         <div className='flex flex-col w-full'>
@@ -142,7 +149,7 @@ const About = () => {
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='relative flex flex-col lg:w-[50%] pb-3'>
                             <p className='text-white text-sm lg:text-xl'>My</p>
-                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold uppercase pb-3 lg:pb-6'>Experiences</h1>
+                            <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize pb-3 lg:pb-6'>Experiences</h1>
                             <p className='text-white text-sm lg:text-xl'>This is my related experience and also the certification that i have.</p>
                         </div>
                         <div className='w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7'>
