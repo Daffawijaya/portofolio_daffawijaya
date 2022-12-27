@@ -12,7 +12,7 @@ const Background = () => {
                     <div></div>
                 </div>
             </div>
-            <div className="fixed z-10 ml-[15%] w-[85%] h-full bg-[url('/daf5.png')] bg-cover bg-center opacity-20">
+            <div className="fixed z-10 ml-[15%] w-[85%] h-full bg-[url('/daf6.png')] md:bg-[url('/daf5.png')] bg-cover bg-center opacity-20">
                 <div className='absolute h-full w-full' />
             </div>
         </>

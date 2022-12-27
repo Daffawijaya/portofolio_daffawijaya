@@ -262,8 +262,8 @@ const About = () => {
                                     delay: 0.4,
                                     duration: 1,
                                 }}
-                                className='z-10 p-4 relative bg-b-2 saturate-50 mb-4'>
-                                <div className='lg:w-[450px] lg:h-[300px] w-[200px] h-[150px] bg-[url(/dafa2.jpeg)] bg-cover bg-bottom' />
+                                className='z-10 md:p-4 p-2 relative bg-b-2 mb-4'>
+                                <div className='md:w-[450px] md:h-[300px] w-[200px] h-[150px] bg-[url(/daf.jpg)] bg-cover bg-bottom' />
                             </motion.div>
                             <motion.p
                                 initial={{ left: -200, opacity: 0 }}
