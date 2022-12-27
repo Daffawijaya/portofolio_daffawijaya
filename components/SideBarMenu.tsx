@@ -47,9 +47,11 @@ const SidebarMenu = () => {
 
     return (
         <>
-            <button onClick={() => setShow(true)} className="hover:scale-105 duration-300 lg:rotate-0 rotate-90 mb-32 lg:mb-0">
+            <motion.button 
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setShow(true)} className="hover:scale-105 duration-300 lg:rotate-0 rotate-90 mb-32 lg:mb-0">
                 <HiMenu className='text-a-2 h-10 w-10' />
-            </button>
+            </motion.button>
 
             <AnimatePresence>
                 {show &&

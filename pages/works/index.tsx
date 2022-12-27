@@ -1,31 +1,10 @@
 import Head from 'next/head'
-import Background from '../components/Background'
-import Sidebar from '../components/Sidebar'
+import Background from '../../components/Background'
+import Sidebar from '../../components/Sidebar'
 import Link from 'next/link'
-import Contact from '../components/Contact'
+import Contact from '../../components/Contact'
 import { motion } from 'framer-motion'
-
-const projects = [
-    {
-        name: "SIPP: Sistem Informasi Penataan dan Penaatan Kota Batu",
-        image: "bg-[url(/batu.png)]",
-        url: "https://sipp-dev.vercel.app",
-        year: "December 2022"
-    },
-
-    {
-        name: "UMM research network Re-engineering",
-        image: "bg-[url(/experience/umm.png)]",
-        url: "http://ummrn-daffacindy.vercel.app/",
-        year: "November 2022"
-    },
-    {
-        name: "SEAL: Simple Todo List Bounding Project",
-        image: "bg-[url(/experience/seal2.png)]",
-        url: "https://mini-project-todolist-seal-5.vercel.app",
-        year: "August 2022"
-    },
-]
+import { projects } from '../../data/worksData'
 
 const Works = () => {
     return (
@@ -67,7 +46,7 @@ const Works = () => {
                                 duration: 1,
                             }}
                             className='relative text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl'>
-                            Here is a list of projects Ive worked on
+                            Here is a list of projects I&#39;ve worked on
                         </motion.span>
                     </div>
                 </div>

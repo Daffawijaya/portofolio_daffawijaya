@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Sidebar from './components/Sidebar'
-import Contact from './components/Contact'
+import Sidebar from '../components/Sidebar'
+import Contact from '../components/Contact'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
@@ -24,11 +24,15 @@ export default function Home() {
         </div>
         <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
           <motion.button
+            whileHover={{
+              scale: 1.02,
+              transition: { duration: 0.3 },
+            }}
             initial={{ bottom: -100, opacity: 0 }}
             animate={{ bottom: 0, opacity: 100 }}
             transition={{
               delay: 0,
-              duration: 1.5,
+              duration: 1
             }}
             className='relative lg:h-[290px] lg:w-[400px] sm:h-[220px] sm:w-[300px] h-[180px] w-[240px]'>
             <Image alt='anjay' src={`/dafaaalogo2.png`} width={400} height={400} className="w-full h-full duration-300" />

@@ -1,40 +1,11 @@
 import Head from 'next/head'
-import Background from '../components/Background'
-import Sidebar from '../components/Sidebar'
-import { SiInstagram, SiLinkedin, SiGithub } from "react-icons/si";
+import Background from '../../components/Background'
+import Sidebar from '../../components/Sidebar'
 import { HiOutlineMail } from "react-icons/hi";
 import Link from 'next/link';
-import Contacts from '../components/Contact';
+import Contacts from '../../components/Contact';
 import { motion } from 'framer-motion';
-
-const contact = [
-    {
-        title: "Or you can find me at:",
-        item: [
-            {
-                name: "Daffa Wijaya",
-                image: "bg-[url(/icon/li.png)]",
-                icon: <SiLinkedin className='lg:h-10 lg:w-10 w-4 h-4' />,
-                color: "hover:text-[#EAD41C]",
-                url: "https://www.linkedin.com/in/daffa-wijaya-621a04255/"
-            },
-            {
-                name: "@daffawijayaaa",
-                image: "bg-[url(/icon/ig.jpg)]",
-                icon: <SiInstagram className='lg:h-10 lg:w-10 w-4 h-4' />,
-                color: "hover:text-[#EAD41C]",
-                url: "https://www.instagram.com/daffawijayaaa/"
-            },
-            {
-                name: "Daffawijaya",
-                image: "bg-[url(/icon/gh.png)]",
-                icon: <SiGithub className='lg:h-10 lg:w-10 w-4 h-4' />,
-                color: "hover:text-[#2F72BC]",
-                url: "https://github.com/Daffawijaya"
-            },
-        ]
-    },
-]
+import { contact } from '../../data/contactData';
 
 const Contact = () => {
     return (
@@ -57,7 +28,7 @@ const Contact = () => {
             {/* content */}
             <div className='h-screen'>
 
-                <div className='ml-[15%] relative z-10 h-screen italic overflow-auto scrollbar-hide'>
+                <div className='ml-[15%] relative z-10 h-screen italic overflow-auto scrollbar-hide lg:pr-6'>
                     <div className='flex xl:flex-row flex-col xl:items-center items-start xl:justify-start justify-center w-full h-full p-6 xl:space-x-14 space-x-0 space-y-14 relative z-20'>
                         <div className='flex flex-col w-[50%] space-y-1'>
                             <motion.p
@@ -95,7 +66,7 @@ const Contact = () => {
                                         delay: 1,
                                         duration: 1,
                                     }}
-                                    className='relative text-white lg:text-xl text-base'>If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</motion.p>
+                                    className='relative text-white lg:text-xl text-base'>&#34;If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</motion.p>
                                 <motion.div
                                     initial={{ top: -200, opacity: 0 }}
                                     animate={{ top: 0, opacity: 100 }}
