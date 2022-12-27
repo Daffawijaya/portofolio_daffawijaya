@@ -4,6 +4,7 @@ import Sidebar from '../../components/Sidebar'
 import Link from 'next/link'
 import Contact from '../../components/Contact'
 import { motion } from 'framer-motion'
+import ThemeSwitcher from '../../components/ThemeSwitcher'
 
 const projects = [
     {
@@ -45,7 +46,7 @@ const Works = () => {
                 <Sidebar />
             </main>
 
-            <main className='h-screen bg-black flex fixed w-screen z-10'>
+            <main className='h-screen bg-black dark:bg-white flex fixed w-screen z-10'>
                 <Background />
             </main>
 
@@ -72,7 +73,7 @@ const Works = () => {
                                     delay: 0.2,
                                     duration: 1,
                                 }}
-                                className='relative text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl'>
+                                className='relative text-black dark:text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl'>
                                 Here is a list of projects I&#39;ve worked on
                             </motion.span>
                         </div>
@@ -125,9 +126,7 @@ const Works = () => {
                 </div>
             </div>
 
-
-
-            <Contact />
+            <ThemeSwitcher />
         </>
     )
 }

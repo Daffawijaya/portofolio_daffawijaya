@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { SiRedux, SiFramer,SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
 import { HiPencil } from "react-icons/hi";
+import ThemeSwitcher from '../../components/ThemeSwitcher';
 
 const techstack = [
     {
@@ -75,7 +76,7 @@ const techstack = [
             {
                 name: "Next JS",
                 icon: <SiNextdotjs className='h-10 w-10' />,
-                color: "hover:text-white",
+                color: "dark:hover:text-white hover:text-black",
             },
         ]
     },
@@ -214,7 +215,7 @@ const About = () => {
                 <Sidebar />
             </main>
 
-            <main className='h-screen bg-black flex fixed w-screen z-10'>
+            <main className='h-screen flex fixed w-screen z-10'>
                 <Background />
             </main>
 
@@ -231,7 +232,7 @@ const About = () => {
                                 delay: 0.2,
                                 duration: 1,
                             }}
-                            className='text-white text-lg lg:text-2xl relative'>Hello!, I am</motion.p>
+                            className='text-black dark:text-white text-lg lg:text-2xl relative'>Hello!, I am</motion.p>
                         <motion.h1
                             initial={{ left: -200, opacity: 0 }}
                             animate={{ left: 0, opacity: 100 }}
@@ -243,8 +244,8 @@ const About = () => {
                             <div className='relative lg:h-[65px] lg:w-[200px] h-[42px] w-[130px] min-w-[130px] sm:py-1'>
                                 <Image alt='anjay' src={`/dafamaha.png`} width={180} height={180} className="w-full h-full" />
                             </div>
-                            <span className='text-white pr-4'>Yan</span>
-                            <span className='text-white'>Wijaya</span>
+                            <span className='text-black dark:text-white pr-4'>Yan</span>
+                            <span className='text-black dark:text-white'>Wijaya</span>
                         </motion.h1>
                         <motion.p
                             initial={{ left: -200, opacity: 0 }}
@@ -253,7 +254,7 @@ const About = () => {
                                 delay: 1,
                                 duration: 1,
                             }}
-                            className='text-white relative text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</motion.p>
+                            className='text-black dark:text-white relative text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</motion.p>
                         <div className='relative flex lg:flex-row flex-col items-start lg:space-x-4 w-full pt-4'>
                             <motion.div
                                 initial={{ left: -200, opacity: 0 }}
@@ -262,7 +263,7 @@ const About = () => {
                                     delay: 0.4,
                                     duration: 1,
                                 }}
-                                className='z-10 md:p-4 p-2 relative bg-b-2 mb-4'>
+                                className='z-10 md:p-4 p-2 relative bg-b-2 dark:bg-opacity-100 bg-opacity-10 mb-4'>
                                 <div className='md:w-[450px] md:h-[300px] w-[200px] h-[150px] bg-[url(/daf.jpg)] bg-cover bg-bottom' />
                             </motion.div>
                             <motion.p
@@ -272,7 +273,7 @@ const About = () => {
                                     delay: 1,
                                     duration: 1,
                                 }}
-                                className='z-0 relative text-a-2 text-md lg:text-2xl font-medium w-full lg:w-[40%]'>&#34;I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</motion.p>
+                                className='z-0 relative text-black dark:text-a-2 text-md lg:text-2xl font-medium w-full lg:w-[40%]'>&#34;I am very interested in the world of programming and graphic design. Loves new challenges, especially looking for problem solving in a project.</motion.p>
                         </div>
                     </div>
                     <motion.h1
@@ -289,9 +290,9 @@ const About = () => {
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='flex flex-col lg:w-[50%]'>
-                            <p className='text-white md:text-xl text-sm'>Professional</p>
+                            <p className='text-black dark:text-white md:text-xl text-sm'>Professional</p>
                             <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize lg:pb-6 pb-3'>techstacks</h1>
-                            <p className='text-white text-sm lg:text-xl pb-3'>This is a list of technologies that I use in my profession as a frontend developer. Because I am still in the learning stage, in the future this list will continue to be updated.</p>
+                            <p className='text-black dark:text-white text-sm lg:text-xl pb-3'>This is a list of technologies that I use in my profession as a frontend developer. Because I am still in the learning stage, in the future this list will continue to be updated.</p>
                         </div>
                         <div className='flex flex-col w-full'>
                             {techstack.map((item: any, idx: number) => (
@@ -312,13 +313,13 @@ const About = () => {
                     <h1 className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-40 -rotate-90 font-bold'>TECHSTACK</h1>
                 </div>
 
-                {/* other skill */}
+                {/*other skill */}
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='flex flex-col lg:w-[50%]'>
-                            <p className='text-white text-lg lg:text-xl'>Another</p>
+                            <p className='text-black dark:text-white text-lg lg:text-xl'>Another</p>
                             <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize lg:pb-6 pb-3'>skills</h1>
-                            <p className='text-white lg:text-xl text-sm'>For a complement or just a hobby, I also use technology outside my professional field and of course it will still be updated in the future.</p>
+                            <p className='text-black dark:text-white lg:text-xl text-sm'>For a complement or just a hobby, I also use technology outside my professional field and of course it will still be updated in the future.</p>
                         </div>
                         <div className='flex flex-col w-full'>
                             <div className='flex flex-col w-full py-5 lg:pr-[20%]'>
@@ -341,9 +342,9 @@ const About = () => {
                 <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='relative flex flex-col lg:w-[50%] pb-3'>
-                            <p className='text-white text-sm lg:text-xl'>My</p>
+                            <p className='text-black dark:text-white text-sm lg:text-xl'>My</p>
                             <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize pb-3 lg:pb-6'>Experiences</h1>
-                            <p className='text-white text-sm lg:text-xl'>This is my related experience and also the certification that i have.</p>
+                            <p className='text-black dark:text-white text-sm lg:text-xl'>This is my related experience and also the certification that i have.</p>
                         </div>
                         <div className='w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7'>
                             {experience.map((item: any, idx: number) => (
@@ -368,7 +369,7 @@ const About = () => {
                 </div>
 
             </div>
-            <Contact />
+            <ThemeSwitcher />
         </>
     )
 }

@@ -22,9 +22,8 @@ const icon = [
 const Sidebar = () => {
 
     return (
-        <main className='bg-black h-full w-full px-6 py-8 flex flex-col justify-between items-center'>
-            <button className='lg:rotate-0 rotate-90 lg:absolute lg:h-[80px] lg:w-[180px] w-24 h-10 lg:left-20 relative top-6 hover:translate-x-1 duration-300 '>
-                <Image alt='anjay' src={`/dafalogo.png`} width={180} height={180} className="w-full h-full duration-300" />
+        <main className='bg-white dark:bg-black h-full w-full px-6 py-8 flex flex-col justify-between items-center'>
+            <button className="dark:bg-[url('/dafalogo2.png')] bg-[url('/dafalogo2i.png')] bg-cover lg:rotate-0 rotate-90 lg:absolute lg:h-[71px] bg-center lg:w-[180px] w-[100px] h-[40px] lg:left-20 relative top-6 hover:translate-x-1 duration-300">
             </button>
             <div>
             </div>
@@ -35,7 +34,7 @@ const Sidebar = () => {
                 {icon.map((item: any, idx: number) => (
                     <Link href={item.url} key={idx}>
                         <div className='text-transparent flex flex-col items-center justify-center'>
-                            <p className='font-bold text-xl uppercase text-center text-[#2D2D2D] hover:text-[#828282] duration-300'>{item.icon}</p>
+                            <p className='font-bold text-xl uppercase text-center text-[#2D2D2D] hover:text-a-2 dark:hover:text-[#828282] duration-300'>{item.icon}</p>
                         </div>
                     </Link>
                 ))}

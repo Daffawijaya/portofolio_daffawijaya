@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar'
 import Contact from '../components/Contact'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import ThemeSwitcher from '../components/ThemeSwitcher'
 
 export default function Home() {
   return (
@@ -19,11 +20,11 @@ export default function Home() {
       </main>
 
       <main className='w-[85%] h-screen bg-black flex ml-[15%]'>
-        <div className="absolute z-0 w-[85%] h-full md:bg-[url('/bgl.png')] bg-[url('/bgv.png')] bg-cover bg-center">
-          <div className='absolute backdrop-brightness-[0.3] h-full w-full' />
+        <div className="absolute z-0 w-[85%] h-full dark:md:bg-[url('/bgl.png')] dark:bg-[url('/bgv.png')] md:bg-[url('/bgli.png')] bg-[url('/bgvi.png')] bg-cover bg-center">
+          <div className='absolute dark:backdrop-brightness-[0.3] h-full w-full' />
         </div>
         <div className="relative z-20 w-full h-full relative flex flex-col items-center justify-center">
-          <motion.button
+          <motion.div
             whileHover={{
               scale: 1.02,
               transition: { duration: 0.3 },
@@ -34,12 +35,11 @@ export default function Home() {
               delay: 0,
               duration: 1
             }}
-            className='relative lg:h-[290px] lg:w-[400px] sm:h-[220px] sm:w-[300px] h-[180px] w-[240px]'>
-            <Image alt='anjay' src={`/dafaaalogo2.png`} width={400} height={400} className="w-full h-full duration-300" />
-          </motion.button>
+            className="bg-[url('/dafaaalogo2i2.png')] dark:bg-[url('/dafaaalogo2.png')] relative lg:h-[290px] lg:w-[400px] sm:h-[220px] sm:w-[300px] bg-cover h-[180px] w-[240px]">
+          </motion.div>
         </div>
       </main>
-      <Contact />
+      <ThemeSwitcher />
     </>
   )
 }

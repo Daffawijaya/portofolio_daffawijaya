@@ -7,6 +7,7 @@ import Contacts from '../../components/Contact';
 import { motion } from 'framer-motion';
 
 import { SiInstagram, SiLinkedin, SiGithub } from "react-icons/si";
+import ThemeSwitcher from '../../components/ThemeSwitcher';
 
 const contact = [
     {
@@ -51,7 +52,7 @@ const Contact = () => {
                 <Sidebar />
             </main>
 
-            <main className='h-screen bg-black flex fixed w-screen z-10'>
+            <main className='h-screen bg-black dark:bg-white flex fixed w-screen z-10'>
                 <Background />
             </main>
 
@@ -76,7 +77,7 @@ const Contact = () => {
                                     delay: 0.2,
                                     duration: 1,
                                 }}
-                                className='relative text-white text-base lg:text-xl'>Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java</motion.p>
+                                className='relative text-black dark:text-white text-base lg:text-xl'>Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java</motion.p>
                             <motion.a
                                 initial={{ left: -200, opacity: 0 }}
                                 animate={{ left: 0, opacity: 100 }}
@@ -96,7 +97,7 @@ const Contact = () => {
                                         delay: 1,
                                         duration: 1,
                                     }}
-                                    className='relative text-white lg:text-xl text-base'>&#34;If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</motion.p>
+                                    className='relative text-black dark:text-white lg:text-xl text-base'>&#34;If you interest to <span className='text-a-2 capitalize font-medium'>work together</span> with me on a related project you can contact me at:</motion.p>
                                 <motion.div
                                     initial={{ top: -200, opacity: 0 }}
                                     animate={{ top: 0, opacity: 100 }}
@@ -118,7 +119,7 @@ const Contact = () => {
                                             delay: 1.2,
                                             duration: 1,
                                         }} className='relative'>
-                                        <h1 className='text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
+                                        <h1 className='text-black dark:text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
                                         <div className='flex flex-col space-y-1 lg:space-y-0 lg:flex-row lg:space-x-1.5 overflow-x-auto w-full'>
                                             {item.item.map((item: any, idx: number) => (
                                                 <Link href={item.url} key={idx} className={`w-full min-w-[240px] h-14 lg:h-28 flex items-center ${item.image} bg-cover bg-center w-full`}>
@@ -147,7 +148,7 @@ const Contact = () => {
                 </div>
 
             </div>
-            <Contacts />
+            <ThemeSwitcher />
         </>
     )
 }
