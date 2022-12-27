@@ -47,7 +47,7 @@ const About = () => {
                                 duration: 1,
                             }}
                             className='relative text-4xl lg:text-6xl font-semibold flex sm:flex-row flex-col sm:items-end items-start'>
-                            <div className='relative lg:h-[65px] lg:w-[190px] h-[42px] w-[130px] min-w-[130px] sm:py-1'>
+                            <div className='relative lg:h-[65px] lg:w-[200px] h-[42px] w-[130px] min-w-[130px] sm:py-1'>
                                 <Image alt='anjay' src={`/dafamaha.png`} width={180} height={180} className="w-full h-full" />
                             </div>
                             <span className='text-white pr-4'>Yan</span>
