@@ -339,7 +339,7 @@ const About = () => {
                 </div>
 
                 {/* experience */}
-                <div className='ml-[15%] relative z-10 h-screen italic snap-start'>
+                <div className='ml-[15%] w-[85%] relative z-10 h-screen italic snap-start'>
                     <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
                         <div className='relative flex flex-col lg:w-[50%] pb-3'>
                             <p className='text-black dark:text-white text-sm lg:text-xl'>My</p>
@@ -347,7 +347,7 @@ const About = () => {
                             <p className='text-black dark:text-white text-sm lg:text-xl'>This is my related experience and also the certification that i have.</p>
                         </div>
                         <div className='w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7'>
-                            {/* {experience.map((item: any, idx: number) => (
+                            {experience.map((item: any, idx: number) => (
                                 <div key={idx}>
                                     <h1 className='text-white text-lg lg:text-2xl font-bold pb-2'>{item.title}</h1>
                                     <div className='flex space-x-1 overflow-x-auto w-full'>
@@ -363,7 +363,7 @@ const About = () => {
                                         ))}
                                     </div>
                                 </div>
-                            ))} */}
+                            ))}
                         </div>
                     </div>
                 </div>
