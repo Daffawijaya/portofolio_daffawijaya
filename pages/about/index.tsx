@@ -254,7 +254,7 @@ const About = () => {
                                 duration: 1,
                             }}
                             className='text-white relative text-lg lg:text-2xl'>Frontend Developer and Graphic Designer</motion.p>
-                        <div className='relative flex lg:flex-row flex-col items-start lg:items-center lg:space-x-4 w-full pt-4'>
+                        <div className='relative flex lg:flex-row flex-col items-start lg:space-x-4 w-full pt-4'>
                             <motion.div
                                 initial={{ left: -200, opacity: 0 }}
                                 animate={{ left: 0, opacity: 100 }}
