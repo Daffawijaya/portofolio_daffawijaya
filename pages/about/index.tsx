@@ -342,8 +342,8 @@ const About = () => {
 
                 {/* experience */}
                 <div className='ml-[15%] w-[85%] relative z-10 h-screen italic snap-start'>
-                    <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14'>
-                        <div className='relative flex flex-col lg:w-[50%] pb-3'>
+                    <div className='flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14 '>
+                        <div className='relative flex flex-col lg:w-[50%] pb-3 lg:max-w-[30%]'>
                             <p className='text-black dark:text-white text-sm lg:text-xl'>My</p>
                             <h1 className='text-a-2 text-4xl lg:text-6xl font-bold capitalize pb-3 lg:pb-6'>Experiences</h1>
                             <p className='text-black dark:text-white text-sm lg:text-xl'>This is my related experience and also the certification that i have.</p>
