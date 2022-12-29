@@ -126,7 +126,7 @@ const Contact = () => {
                                                     <div className='h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-contrast-[0.9] hover:backdrop-contrast-[1]' >
                                                         <div className='px-2 space-y-1 lg:space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300'>
                                                             <p className='uppercase text-center text-white'>{item.icon}</p>
-                                                            <p className='text-xs text-center'>{item.name}</p>
+                                                            <p className='text-[7px] md:text-xs text-center'>{item.name}</p>
                                                         </div>
                                                     </div>
                                                 </Link>
