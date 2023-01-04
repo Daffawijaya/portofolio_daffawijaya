@@ -59,7 +59,7 @@ const Contact = () => {
             {/* content */}
             <div className='h-screen'>
 
-                <div className='ml-[15%] relative z-10 h-screen italic overflow-auto scrollbar-hide lg:pr-6'>
+                <div className='ml-[15%] relative z-10 h-screen italic scrollbar-hide lg:pr-6'>
                     <div className='flex xl:flex-row flex-col xl:items-center items-start xl:justify-start justify-center w-full h-full p-6 xl:space-x-14 space-x-0 space-y-14 relative z-20'>
                         <div className='flex flex-col w-[50%] space-y-1'>
                             <motion.p
