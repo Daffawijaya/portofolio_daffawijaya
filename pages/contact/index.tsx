@@ -144,7 +144,7 @@ const Contact = () => {
                             delay: 1.5,
                             duration: 1.5,
                         }}
-                        className='absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-24 -rotate-90 font-bold'>CONTACT</motion.h1>
+                        className='fixed lg:flex hidden text-b-2 text-5xl right-0 bottom-24 -rotate-90 font-bold'>CONTACT</motion.h1>
                 </div>
 
             </div>
