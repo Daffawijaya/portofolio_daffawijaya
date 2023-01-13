@@ -2,9 +2,7 @@ import Head from 'next/head'
 import Background from '../../components/Background'
 import Sidebar from '../../components/Sidebar'
 import Link from 'next/link';
-import Contact from '../../components/Contact';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { SiRedux, SiFramer, SiPython, SiCsharp, SiArduino, SiAdobephotoshop, SiAdobepremierepro, SiBlender, SiFigma, SiMicrosoftoffice, SiTypescript, SiJavascript, SiReact, SiHtml5, SiCss3, SiTailwindcss, SiChakraui, SiBootstrap, SiNextdotjs } from "react-icons/si";
 import { HiPencil } from "react-icons/hi";
 import ThemeSwitcher from '../../components/ThemeSwitcher';
@@ -15,12 +13,12 @@ const techstack = [
         item: [
             {
                 name: "Javascript",
-                icon: <SiJavascript className='h-10 w-10' />,
+                icon: <SiJavascript className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#EAD41C]",
             },
             {
                 name: "Typescript",
-                icon: <SiTypescript className='h-10 w-10' />,
+                icon: <SiTypescript className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#2F72BC]",
             },
         ]
@@ -30,37 +28,37 @@ const techstack = [
         item: [
             {
                 name: "HTML",
-                icon: <SiHtml5 className='h-10 w-10' />,
+                icon: <SiHtml5 className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#D84924]",
             },
             {
                 name: "CSS",
-                icon: <SiCss3 className='h-10 w-10' />,
+                icon: <SiCss3 className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#2449D8]",
             },
             {
                 name: "Tailwind",
-                icon: <SiTailwindcss className='h-10 w-10' />,
+                icon: <SiTailwindcss className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#39A7A6]",
             },
             {
                 name: "Chakra UI",
-                icon: <SiChakraui className='h-10 w-10' />,
+                icon: <SiChakraui className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#6BC0C5]",
             },
             {
                 name: "Bootstrap",
-                icon: <SiBootstrap className='h-10 w-10' />,
+                icon: <SiBootstrap className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#523A76]",
             },
             {
                 name: "Framer",
-                icon: <SiFramer className='h-10 w-10' />,
+                icon: <SiFramer className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#DC01C2]",
             },
             {
                 name: "Redux",
-                icon: <SiRedux className='h-10 w-10' />,
+                icon: <SiRedux className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#7046B3]",
             },
         ]
@@ -70,12 +68,12 @@ const techstack = [
         item: [
             {
                 name: "React JS",
-                icon: <SiReact className='h-10 w-10' />,
+                icon: <SiReact className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "hover:text-[#00CDF2]",
             },
             {
                 name: "Next JS",
-                icon: <SiNextdotjs className='h-10 w-10' />,
+                icon: <SiNextdotjs className='lg:h-10 lg:w-10 h-8 w-8' />,
                 color: "dark:hover:text-white hover:text-black",
             },
         ]
@@ -85,47 +83,47 @@ const techstack = [
 const skills = [
     {
         name: "Python",
-        icon: <SiPython className='h-10 w-10' />,
+        icon: <SiPython className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#F2B92F]",
     },
     {
         name: "C",
-        icon: <SiCsharp className='h-10 w-10' />,
+        icon: <SiCsharp className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#045494]",
     },
     {
         name: "Arduino",
-        icon: <SiArduino className='h-10 w-10' />,
+        icon: <SiArduino className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#009297]",
     },
     {
         name: "Coreldraw",
-        icon: <HiPencil className='h-10 w-10' />,
+        icon: <HiPencil className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#5AA141]",
     },
     {
         name: "Photoshop",
-        icon: <SiAdobephotoshop className='h-10 w-10' />,
+        icon: <SiAdobephotoshop className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#001C33]",
     },
     {
         name: "Premiere",
-        icon: <SiAdobepremierepro className='h-10 w-10' />,
+        icon: <SiAdobepremierepro className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#280031]",
     },
     {
         name: "Blender",
-        icon: <SiBlender className='h-10 w-10' />,
+        icon: <SiBlender className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#DE7000]",
     },
     {
         name: "Figma",
-        icon: <SiFigma className='h-10 w-10' />,
+        icon: <SiFigma className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#09C47C]",
     },
     {
         name: "Microsoft",
-        icon: <SiMicrosoftoffice className='h-10 w-10' />,
+        icon: <SiMicrosoftoffice className='lg:h-10 lg:w-10 h-8 w-8' />,
         color: "hover:text-[#DF3A01]",
     },
 ]
@@ -300,13 +298,13 @@ const About = () => {
                         </div>
                         <div className='flex flex-col w-full'>
                             {techstack.map((item: any, idx: number) => (
-                                <div className='flex flex-col w-full lg:py-5 py-1 lg:py-2 lg:pr-[20%]' key={idx}>
+                                <div className='flex flex-col w-full lg:py-5 lg:pr-[20%]' key={idx}>
                                     <p className='text-black dark:text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6'>{item.title}</p>
                                     <div className='grid lg:grid-cols-5 grid-cols-3 lg:gap-4'>
                                         {item.item.map((item: any, idx: number) => (
-                                            <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
+                                            <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-1 lg:space-y-2 text-[#2D2D2D] ${item.color}`}>
                                                 <div>{item.icon}</div>
-                                                <div className='text-[#828282] text-xs lg:text-base'>{item.name}</div>
+                                                <div className='text-[#828282] text-[8px] lg:text-base'>{item.name}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -332,7 +330,7 @@ const About = () => {
                                     {skills.map((item: any, idx: number) => (
                                         <div key={idx} className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${item.color}`}>
                                             <div>{item.icon}</div>
-                                            <div className='text-[#828282] text-xs lg:text-base'>{item.name}</div>
+                                            <div className='text-[#828282] text-[8px] lg:text-base'>{item.name}</div>
                                         </div>
                                     ))}
                                 </div>
