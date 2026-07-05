@@ -1,32 +1,22 @@
 const experienceData = [
   {
-    title: "Internship",
+    title: "Works",
     items: [
       {
-        name: "MBKM × Social Economic Accelerator Lab",
+        name: "AWS × Social Economic Accelerator Lab",
         image: "/experience/seal2.png",
         url: "https://seal.or.id/",
         year: "August 2022 - December 2022",
       },
-    ],
-  },
-  {
-    title: "Organization",
-    items: [
       {
-        name: "Ikasti",
-        image: "/experience/ikasto.png",
-        url: "https://www.instagram.com/ikastiofficial/",
-        year: "August 2020 - Present",
-      },
-      {
-        name: "OSIS",
-        image: "/experience/osis.jpg",
-        url: "https://www.instagram.com/ospk_smagatgr/",
-        year: "July 2017 - July 2018",
+        name: "Dinas Koperasi dan UKM Kutai Kartanegara",
+        image: "/experience/diskopukm.png",
+        url: "https://seal.or.id/",
+        year: "June 2025 - Present",
       },
     ],
   },
+
   {
     title: "Education",
     items: [
@@ -34,13 +24,13 @@ const experienceData = [
         name: "Muhammadiyah Malang University",
         image: "/experience/umm.png",
         url: "https://www.umm.ac.id/",
-        year: "August 2019 - Present",
+        year: "August 2019 - January 2025",
       },
       {
         name: "SMA Negeri 3 Unggulan Tenggarong",
         image: "/experience/smaga.png",
         url: "http://www.sman3tenggarong.sch.id/",
-        year: "June 2016 - June 2019",
+        year: "July 2016 - June 2019",
       },
     ],
   },
@@ -64,6 +54,23 @@ const experienceData = [
         image: "/experience/IC3.png",
         url: "https://drive.google.com/file/d/1FiavmAuL1vkFKUZi4xMWKIjpFSNKOimw/view",
         year: "November 2019",
+      },
+    ],
+  },
+  {
+    title: "Organization",
+    items: [
+      {
+        name: "Ikasti",
+        image: "/experience/ikasto.png",
+        url: "https://www.instagram.com/ikastiofficial/",
+        year: "August 2020 - July 2022",
+      },
+      {
+        name: "OSIS",
+        image: "/experience/osis.jpg",
+        url: "https://www.instagram.com/ospk_smagatgr/",
+        year: "July 2017 - June 2018",
       },
     ],
   },

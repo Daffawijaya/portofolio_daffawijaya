@@ -3,9 +3,11 @@ import Background from "../../components/Background";
 import Sidebar from "../../components/Sidebar";
 import { motion } from "framer-motion";
 import ThemeSwitcher from "../../components/ThemeSwitcher";
-import worksData from "../../data/worksData";
+import frontendData from "../../data/frontendData";
+import fullstackData from "../../data/fullstackData";
 import WorkList from "../../components/WorkList";
 import { useState } from "react";
+import ButtonWorks from "../../components/ButtonWorks";
 
 const Works = () => {
   const [activeTab, setActiveTab] = useState("frontend");
@@ -40,7 +42,7 @@ const Works = () => {
                 }}
                 className="relative text-a-2 text-5xl lg:text-7xl font-bold pb-2 capitalize"
               >
-                my Works
+                my Workss
               </motion.h1>
               <motion.div
                 initial={{ left: -200, opacity: 0 }}
@@ -49,35 +51,34 @@ const Works = () => {
                   delay: 0.2,
                   duration: 1,
                 }}
-                className="relative flex gap-3 mt-4"
+                className="relative flex flex-col gap-2 mt-4"
               >
-                <button
-                  onClick={() => setActiveTab("frontend")}
-                  className={`px-4 py-2 rounded-full border transition ${
-                    activeTab === "frontend"
-                      ? "bg-a-2 text-white"
-                      : "text-black dark:text-white border-gray-500"
-                  }`}
-                >
-                  Frontend Developer
-                </button>
+                <ButtonWorks
+                  label="Frontend Developer"
+                  value="frontend"
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                />
 
-                <button
-                  onClick={() => setActiveTab("uiux")}
-                  className={`px-4 py-2 rounded-full border transition ${
-                    activeTab === "uiux"
-                      ? "bg-a-2 text-white"
-                      : "text-black dark:text-white border-gray-500"
-                  }`}
-                >
-                  UI/UX Designer
-                </button>
+                <ButtonWorks
+                  label="Fullstack Developer"
+                  value="fullstack"
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                />
+
+                <ButtonWorks
+                  label="UI/UX Designer"
+                  value="uiux"
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                />
               </motion.div>
             </div>
           </div>
-
           {/* content */}
-          {activeTab === "frontend" && <WorkList worksData={worksData} />}
+          {activeTab === "frontend" && <WorkList worksData={frontendData} />}
+          {activeTab === "fullstack" && <WorkList worksData={fullstackData} />}
 
           {activeTab === "uiux" && (
             <div className="ml-[17%] text-black dark:text-white">
