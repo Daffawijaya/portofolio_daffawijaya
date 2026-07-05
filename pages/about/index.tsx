@@ -79,7 +79,7 @@ const About = () => {
                 }}
                 className="z-10 md:p-4 p-2 relative bg-b-2 dark:bg-opacity-100 bg-opacity-10 mb-4"
               >
-                <div className="md:w-[450px] md:h-[300px] w-[200px] h-[150px] bg-[url(/daf.jpg)] bg-cover bg-bottom" />
+                <div className="md:w-[300px] md:h-[300px] w-[150px] h-[150px] bg-[url(/dafanoanting.png)] bg-cover bg-center" />
               </motion.div>
               <motion.div
                 initial={{ left: -200, opacity: 0 }}
@@ -95,7 +95,7 @@ const About = () => {
                   problem solving in a project.
                 </p>
                 <a
-                  href="https://drive.google.com/file/d/1z0BqI-kULZxWCt1q-efrtDJnE8O-Fxpr/view?usp=share_link"
+                  href="https://drive.google.com/file/d/1JJzxZVgSfaoVXRh2cc9ShLaGczQHXJzv/view?usp=sharing"
                   className="z-0 relative text-a-2 dark:text-white text-md lg:text-2xl hover:underline"
                 >
                   Download my CV
