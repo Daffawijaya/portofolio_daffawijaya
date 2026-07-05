@@ -1,17 +1,17 @@
 const fullstackData = [
   {
-    name: "Kumala Diskop UKM Kutai Kartanegara",
+    name: "Kumala: Kutai Kartanegara UMKM Enterpreneur-hub Collaborator",
     image: "/experience/kumala.png",
-    url: "https://sipp-dev.vercel.app",
+    url: "https://kumala.kukarkab.go.id/",
     year: "Present",
-    type: "frontend",
+    type: "fullstack",
   },
   {
-    name: "SEAL Bounding Project: Todo List app for student",
-    image: "experience/seal2.png",
-    url: "https://mini-project-todolist-seal-5.vercel.app",
-    year: "August 2022",
-    type: "frontend",
+    name: "TerapiKu: Sistem Penjadwalan Pasien Rehabilitasi Medis RSUD AM Parikesit",
+    image: "experience/terapiku.png",
+    url: "https://www.figma.com/proto/AIDl4kL0bSoXVtWyRAn4hl/TA?node-id=2994-10970&starting-point-node-id=2593%3A7694",
+    year: "2025",
+    type: "fullstack",
   },
 ];
 

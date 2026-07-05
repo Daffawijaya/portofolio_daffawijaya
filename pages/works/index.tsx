@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import ThemeSwitcher from "../../components/ThemeSwitcher";
 import frontendData from "../../data/frontendData";
 import fullstackData from "../../data/fullstackData";
+import uiuxData from "../../data/uiuxData";
 import WorkList from "../../components/WorkList";
 import { useState } from "react";
 import ButtonWorks from "../../components/ButtonWorks";
@@ -42,7 +43,7 @@ const Works = () => {
                 }}
                 className="relative text-a-2 text-5xl lg:text-7xl font-bold pb-2 capitalize"
               >
-                my Workss
+                my Works
               </motion.h1>
               <motion.div
                 initial={{ left: -200, opacity: 0 }}
@@ -79,12 +80,7 @@ const Works = () => {
           {/* content */}
           {activeTab === "frontend" && <WorkList worksData={frontendData} />}
           {activeTab === "fullstack" && <WorkList worksData={fullstackData} />}
-
-          {activeTab === "uiux" && (
-            <div className="ml-[17%] text-black dark:text-white">
-              UI/UX projects coming soon...
-            </div>
-          )}
+          {activeTab === "uiux" && <WorkList worksData={uiuxData} />}
         </div>
       </div>
 
