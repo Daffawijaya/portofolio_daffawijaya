@@ -1,13 +1,14 @@
 import Head from "next/head";
 import Background from "../../components/Background";
 import Sidebar from "../../components/Sidebar";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import ThemeSwitcher from "../../components/ThemeSwitcher";
 import worksData from "../../data/worksData";
 import WorkList from "../../components/WorkList";
+import { useState } from "react";
 
 const Works = () => {
+  const [activeTab, setActiveTab] = useState("frontend");
   return (
     <>
       <Head>
@@ -41,22 +42,48 @@ const Works = () => {
               >
                 my Works
               </motion.h1>
-              <motion.span
+              <motion.div
                 initial={{ left: -200, opacity: 0 }}
-                animate={{ left: 0, opacity: 100 }}
+                animate={{ left: 0, opacity: 1 }}
                 transition={{
                   delay: 0.2,
                   duration: 1,
                 }}
-                className="relative text-black dark:text-white lg:w-40 w-full pr-2 lg:pr-0 text-lg lg:text-2xl"
+                className="relative flex gap-3 mt-4"
               >
-                Here is a list of projects I&#39;ve worked on
-              </motion.span>
+                <button
+                  onClick={() => setActiveTab("frontend")}
+                  className={`px-4 py-2 rounded-full border transition ${
+                    activeTab === "frontend"
+                      ? "bg-a-2 text-white"
+                      : "text-black dark:text-white border-gray-500"
+                  }`}
+                >
+                  Frontend Developer
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("uiux")}
+                  className={`px-4 py-2 rounded-full border transition ${
+                    activeTab === "uiux"
+                      ? "bg-a-2 text-white"
+                      : "text-black dark:text-white border-gray-500"
+                  }`}
+                >
+                  UI/UX Designer
+                </button>
+              </motion.div>
             </div>
           </div>
 
           {/* content */}
-          <WorkList worksData={worksData} />
+          {activeTab === "frontend" && <WorkList worksData={worksData} />}
+
+          {activeTab === "uiux" && (
+            <div className="ml-[17%] text-black dark:text-white">
+              UI/UX projects coming soon...
+            </div>
+          )}
         </div>
       </div>
 
