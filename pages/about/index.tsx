@@ -94,8 +94,8 @@ const About = () => {
                 }}
               >
                 <p className="z-0 relative text-black dark:text-a-2 text-md lg:text-2xl pb-4 font-medium w-full lg:w-[70%]">
-                  "Passionate about programming, UI/UX, and graphic design, with
-                  a focus on solving problems and building through real
+                  &quot;Passionate about programming, UI/UX, and graphic design,
+                  with a focus on solving problems and building through real
                   projects.
                 </p>
                 <a
@@ -201,7 +201,7 @@ const About = () => {
               title="Experiences"
               description="This section highlights my relevant experience and certifications."
             />
-            <div className="flex flex-col w-full">
+            <div className="max-w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7">
               {experienceData.map((category) => (
                 <div key={category.title}>
                   <h1 className="pb-1 dark:text-white text-black text-lg lg:text-2xl font-bold">
