@@ -7,8 +7,12 @@ import ThemeSwitcher from "../../components/ThemeSwitcher";
 import techstackData from "../../data/techstackData";
 import skillsData from "../../data/skillsData";
 import experienceData from "../../data/experienceData";
+import { useState } from "react";
+import TechCard from "../../components/TechCard";
+import SectionHeader from "../../components/SectionHeader";
 
 const About = () => {
+  const [hoveredTech, setHoveredTech] = useState<string | null>(null);
   return (
     <>
       <Head>
@@ -90,9 +94,9 @@ const About = () => {
                 }}
               >
                 <p className="z-0 relative text-black dark:text-a-2 text-md lg:text-2xl pb-4 font-medium w-full lg:w-[70%]">
-                  &#34;I am very interested in the world of programming and
-                  graphic design. Loves new challenges, especially looking for
-                  problem solving in a project.
+                  "Passionate about programming, UI/UX, and graphic design, with
+                  a focus on solving problems and building through real
+                  projects.
                 </p>
                 <a
                   href="https://drive.google.com/file/d/1JJzxZVgSfaoVXRh2cc9ShLaGczQHXJzv/view?usp=sharing"
@@ -119,19 +123,11 @@ const About = () => {
         {/* techstack */}
         <div className="ml-[15%] relative z-10 h-screen italic snap-start">
           <div className="flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14">
-            <div className="flex flex-col lg:w-[50%]">
-              <p className="text-black dark:text-white md:text-xl text-sm">
-                Professional
-              </p>
-              <h1 className="text-a-2 text-4xl lg:text-6xl font-bold capitalize lg:pb-6 pb-3">
-                techstacks
-              </h1>
-              <p className="text-black dark:text-white text-sm lg:text-xl pb-3">
-                This is a list of technologies that I use in my profession as a
-                frontend developer. Because I am still in the learning stage, in
-                the future this list will continue to be updated.
-              </p>
-            </div>
+            <SectionHeader
+              subtitle="Professional"
+              title="Techstack"
+              description="Technologies I use in my work as a frontend developer. This list is still growing as I continue learning and improving."
+            />
             <div className="flex flex-col w-full">
               {techstackData.map((category) => (
                 <div
@@ -143,27 +139,22 @@ const About = () => {
                   </p>
 
                   <div className="grid lg:grid-cols-5 grid-cols-4 lg:gap-4">
-                    {category.items.map((tech) => {
-                      const Icon = tech.icon;
-
-                      return (
-                        <div
-                          key={tech.name}
-                          className={`w-20 h-20 flex flex-col items-center justify-center space-y-1 lg:space-y-2 text-[#2D2D2D] ${tech.color}`}
-                        >
-                          <Icon className="lg:h-10 lg:w-10 h-8 w-8" />
-
-                          <div className="text-[#828282] text-[8px] lg:text-base">
-                            {tech.name}
-                          </div>
-                        </div>
-                      );
-                    })}
+                    {category.items.map((tech) => (
+                      <TechCard
+                        key={tech.name}
+                        name={tech.name}
+                        icon={tech.icon}
+                        color={tech.color}
+                        hoveredTech={hoveredTech}
+                        setHoveredTech={setHoveredTech}
+                      />
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
           <h1 className="absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-40 -rotate-90 font-bold">
             TECHSTACK
           </h1>
@@ -172,41 +163,27 @@ const About = () => {
         {/*other skill */}
         <div className="ml-[15%] relative z-10 h-screen italic snap-start">
           <div className="flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14">
-            <div className="flex flex-col lg:w-[50%]">
-              <p className="text-black dark:text-white text-lg lg:text-xl">
-                Another
-              </p>
-              <h1 className="text-a-2 text-4xl lg:text-6xl font-bold capitalize lg:pb-6 pb-3">
-                skills
-              </h1>
-              <p className="text-black dark:text-white lg:text-xl text-sm">
-                For a complement or just a hobby, I also use technology outside
-                my professional field and of course it will still be updated in
-                the future.
-              </p>
-            </div>
+            <SectionHeader
+              subtitle="Another"
+              title="Skills"
+              description="These are my additional skills outside of frontend development, covering backend, design, and creative tools."
+            />
             <div className="flex flex-col w-full">
               <div className="flex flex-col w-full py-5 lg:pr-[20%]">
                 <p className="text-black dark:text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6">
-                  Here is the List
+                  Tools & Technologies
                 </p>
                 <div className="grid lg:grid-cols-5 grid-cols-4 lg:gap-4">
-                  {skillsData.map((skill) => {
-                    const Icon = skill.icon;
-
-                    return (
-                      <div
-                        key={skill.name}
-                        className={`w-20 h-20 flex flex-col items-center justify-center space-y-2 text-[#2D2D2D] ${skill.color}`}
-                      >
-                        <Icon className="lg:h-10 lg:w-10 h-8 w-8" />
-
-                        <div className="text-[#828282] text-[8px] lg:text-base">
-                          {skill.name}
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {skillsData.map((skill) => (
+                    <TechCard
+                      key={skill.name}
+                      name={skill.name}
+                      icon={skill.icon}
+                      color={skill.color}
+                      hoveredTech={hoveredTech}
+                      setHoveredTech={setHoveredTech}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -217,21 +194,14 @@ const About = () => {
         </div>
 
         {/* experience */}
-        <div className="ml-[15%] w-[85%] relative z-10 h-screen italic snap-start">
-          <div className="flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14 ">
-            <div className="relative flex flex-col lg:w-[50%] pb-3 lg:max-w-[30%]">
-              <p className="text-black dark:text-white text-sm lg:text-xl">
-                My
-              </p>
-              <h1 className="text-a-2 text-4xl lg:text-6xl font-bold capitalize pb-3 lg:pb-6">
-                Experiences
-              </h1>
-              <p className="text-black dark:text-white text-sm lg:text-xl">
-                This is my related experience and also the certification that i
-                have.
-              </p>
-            </div>
-            <div className="max-w-full overflow-y-auto flex flex-col space-y-2 lg:space-y-7">
+        <div className="ml-[15%] relative z-10 h-screen italic snap-start">
+          <div className="flex lg:flex-row flex-col lg:items-center justify-center h-full w-full p-6 lg:space-x-14">
+            <SectionHeader
+              subtitle="My"
+              title="Experiences"
+              description="This section highlights my relevant experience and certifications."
+            />
+            <div className="flex flex-col w-full">
               {experienceData.map((category) => (
                 <div key={category.title}>
                   <h1 className="pb-1 dark:text-white text-black text-lg lg:text-2xl font-bold">

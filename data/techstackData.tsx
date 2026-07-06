@@ -12,6 +12,8 @@ import {
   SiNextdotjs,
 } from "react-icons/si";
 
+import { FaVuejs } from "react-icons/fa";
+
 const techstackData = [
   {
     title: "Programming Language",
@@ -19,12 +21,12 @@ const techstackData = [
       {
         name: "Javascript",
         icon: SiJavascript,
-        color: "hover:text-[#EAD41C]",
+        color: "#EAD41C",
       },
       {
         name: "Typescript",
         icon: SiTypescript,
-        color: "hover:text-[#2F72BC]",
+        color: "#2F72BC",
       },
     ],
   },
@@ -34,37 +36,37 @@ const techstackData = [
       {
         name: "HTML",
         icon: SiHtml5,
-        color: "hover:text-[#D84924]",
+        color: "#8000FF",
       },
       {
         name: "CSS",
         icon: SiCss3,
-        color: "hover:text-[#2449D8]",
+        color: "#2449D8",
       },
       {
         name: "Tailwind",
         icon: SiTailwindcss,
-        color: "hover:text-[#39A7A6]",
+        color: "#39A7A6",
       },
       {
         name: "Chakra UI",
         icon: SiChakraui,
-        color: "hover:text-[#6BC0C5]",
+        color: "#6BC0C5",
       },
       {
         name: "Bootstrap",
         icon: SiBootstrap,
-        color: "hover:text-[#523A76]",
+        color: "#523A76",
       },
       {
-        name: "Framer Motion",
+        name: "FramerMotion",
         icon: SiFramer,
-        color: "hover:text-[#DC01C2]",
+        color: "#DC01C2",
       },
       {
         name: "Redux",
         icon: SiRedux,
-        color: "hover:text-[#7046B3]",
+        color: "#7046B3",
       },
     ],
   },
@@ -74,12 +76,17 @@ const techstackData = [
       {
         name: "React JS",
         icon: SiReact,
-        color: "hover:text-[#00CDF2]",
+        color: "#00CDF2",
       },
       {
         name: "Next JS",
         icon: SiNextdotjs,
-        color: "dark:hover:text-white hover:text-black",
+        color: "#7046B3",
+      },
+      {
+        name: "Vue JS",
+        icon: FaVuejs,
+        color: "#41b883",
       },
     ],
   },
