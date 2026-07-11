@@ -28,6 +28,11 @@ export default function App({ Component, pageProps }: AppProps) {
           content="Daffa Yan Wijaya, Daffa, Yan Wijaya, Web Developer Indonesia, Next.js Developer, React Developer, IT Consultant, Digitalisasi UMKM, EtamHub"
         />
 
+        <meta
+          name="google-site-verification"
+          content="maQ8VR_wwFHBIAw1Aza7U7luL9Xt9ySq8hN15zBHSL0"
+        />
+
         <meta name="author" content="Daffa Yan Wijaya" />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
