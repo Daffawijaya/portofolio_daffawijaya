@@ -10,9 +10,13 @@ import {
   SiChakraui,
   SiBootstrap,
   SiNextdotjs,
+  SiPhp,
+  SiPostgresql,
+  SiSupabase,
 } from "react-icons/si";
 
 import { FaVuejs } from "react-icons/fa";
+import { IoLogoLaravel } from "react-icons/io5";
 
 const techstackData = [
   {
@@ -28,56 +32,73 @@ const techstackData = [
         icon: SiTypescript,
         color: "#2F72BC",
       },
+      {
+        name: "PHP",
+        icon: SiPhp,
+        color: "#777bb3",
+      },
     ],
   },
   {
-    title: "Frontend Development",
+
+    title: "Web Development",
     items: [
+      {
+        name: "React JS",
+        icon: SiReact,
+        color: "#61DAFB",
+      },
       {
         name: "HTML",
         icon: SiHtml5,
-        color: "#8000FF",
+        color: "#E34F26",
       },
       {
         name: "CSS",
         icon: SiCss3,
-        color: "#2449D8",
+        color: "#1572B6",
       },
       {
         name: "Tailwind",
         icon: SiTailwindcss,
-        color: "#39A7A6",
+        color: "#06B6D4",
       },
       {
         name: "Chakra UI",
         icon: SiChakraui,
-        color: "#6BC0C5",
+        color: "#319795",
       },
       {
         name: "Bootstrap",
         icon: SiBootstrap,
-        color: "#523A76",
+        color: "#7952B3",
       },
       {
-        name: "FramerMotion",
+        name: "Framer Motion",
         icon: SiFramer,
-        color: "#DC01C2",
+        color: "#0055FF",
       },
       {
         name: "Redux",
         icon: SiRedux,
-        color: "#7046B3",
+        color: "#764ABC",
+      },
+      {
+        name: "PostgreSQL",
+        icon: SiPostgresql,
+        color: "#4169E1",
+      },
+      {
+        name: "Supabase",
+        icon: SiSupabase,
+        color: "#3ECF8E",
       },
     ],
   },
   {
     title: "Framework",
     items: [
-      {
-        name: "React JS",
-        icon: SiReact,
-        color: "#00CDF2",
-      },
+
       {
         name: "Next JS",
         icon: SiNextdotjs,
@@ -87,6 +108,11 @@ const techstackData = [
         name: "Vue JS",
         icon: FaVuejs,
         color: "#41b883",
+      },
+      {
+        name: "Laravel",
+        icon: IoLogoLaravel,
+        color: "#f63003",
       },
     ],
   },

@@ -3,17 +3,18 @@ const experienceData = [
     title: "Works",
     items: [
       {
+        name: "Dinas Koperasi dan UKM Kutai Kartanegara",
+        image: "/experience/diskopukm.png",
+        url: "https://etamhub.vercel.app",
+        year: "June 2025 - Present",
+      },
+      {
         name: "AWS × Social Economic Accelerator Lab",
         image: "/experience/seal2.png",
         url: "https://seal.or.id/",
         year: "August 2022 - December 2022",
       },
-      {
-        name: "Dinas Koperasi dan UKM Kutai Kartanegara",
-        image: "/experience/diskopukm.png",
-        url: "https://seal.or.id/",
-        year: "June 2025 - Present",
-      },
+
     ],
   },
 

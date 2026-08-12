@@ -71,7 +71,7 @@ const About = () => {
               }}
               className="text-black dark:text-white relative text-lg lg:text-2xl"
             >
-              Frontend Developer and UI/UX Designer
+              Web Developer | IT & Digitalization Specialist
             </motion.p>
             <div className="relative flex lg:flex-row flex-col items-start lg:space-x-4 w-full pt-4">
               <motion.div
@@ -94,9 +94,7 @@ const About = () => {
                 }}
               >
                 <p className="z-0 relative text-black dark:text-a-2 text-md lg:text-2xl pb-4 font-medium w-full lg:w-[70%]">
-                  &quot;Passionate about programming, UI/UX, and graphic design,
-                  with a focus on solving problems and building through real
-                  projects.
+                  &quot;Passionate about web development, leveraging AI to build responsive, user-friendly websites and solve real-world problems through practical projects.
                 </p>
                 <a
                   href="https://drive.google.com/file/d/1JJzxZVgSfaoVXRh2cc9ShLaGczQHXJzv/view?usp=sharing"
@@ -126,7 +124,7 @@ const About = () => {
             <SectionHeader
               subtitle="Professional"
               title="Techstack"
-              description="Technologies I use in my work as a frontend developer. This list is still growing as I continue learning and improving."
+              description="Technologies I use in my work as a web developer. This list continues to grow as I learn, build, and work with new technologies."
             />
             <div className="flex flex-col w-full">
               {techstackData.map((category) => (

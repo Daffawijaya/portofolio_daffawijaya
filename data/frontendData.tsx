@@ -1,6 +1,6 @@
 const frontendData = [
   {
-    name: "EtamHub: digital directory platform for UMKM in Kutai Kartanegara",
+    name: "etamhub: digital directory platform for UMKM in Kutai Kartanegara",
     image: "EtamHub2.png",
     url: "https://etamhub.vercel.app/",
     year: "January 2026 - Present",

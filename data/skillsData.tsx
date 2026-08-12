@@ -17,11 +17,6 @@ import { HiPencil } from "react-icons/hi";
 
 const skillsData = [
   {
-    name: "Laravel",
-    icon: IoLogoLaravel,
-    color: "#f63003",
-  },
-  {
     name: "Python",
     icon: SiPython,
     color: "#F2B92F",
@@ -30,11 +25,6 @@ const skillsData = [
     name: "C",
     icon: SiCsharp,
     color: "#045494",
-  },
-  {
-    name: "PHP",
-    icon: SiPhp,
-    color: "#777bb3",
   },
   {
     name: "Arduino",
