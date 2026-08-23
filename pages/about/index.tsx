@@ -47,7 +47,9 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
       </main>
 
       {/* content */}
-      <div className="snap-y snap-mandatory overflow-scroll h-screen">
+      {/* overflow-x hidden: label vertikal yang rotasi bisa meluber ke kanan
+          dan membuat halaman bisa geser menyamping */}
+      <div className="snap-y snap-mandatory overflow-y-scroll overflow-x-hidden h-screen">
         {/* about me */}
         <div className="ml-[15%] relative z-10 h-screen italic snap-start">
           <div className="flex justify-center h-full flex-col p-6">

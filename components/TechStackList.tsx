@@ -52,37 +52,32 @@ function SlidingRow({
     width > 0 ? Math.floor((width - (cols - 1) * GAP) / cols) : 128;
 
   return (
-    <>
-      {/* padding kiri di desktop -> ada ruang kosong sebelum kartu pertama */}
-      <div className="lg:pl-[8%]">
-        <div ref={ref} className="overflow-hidden">
+    <div ref={ref} className="overflow-hidden">
+      <div
+        className="flex w-max hover:[animation-play-state:paused]"
+        style={{
+          gap: GAP,
+          animation: `marquee-r ${items.length * 3}s linear infinite`,
+        }}
+      >
+        {[...items, ...items].map((tech, i) => (
           <div
-            className="flex w-max hover:[animation-play-state:paused]"
-            style={{
-              gap: GAP,
-              animation: `marquee-r ${items.length * 3}s linear infinite`,
-            }}
+            className="shrink-0"
+            style={{ width: slot }}
+            key={`${tech.name}-${i}`}
           >
-            {[...items, ...items].map((tech, i) => (
-              <div
-                className="shrink-0"
-                style={{ width: slot }}
-                key={`${tech.name}-${i}`}
-              >
-                <TechCard
-                  className="w-full"
-                  name={tech.name}
-                  icon={tech.icon}
-                  color={tech.color}
-                  hoveredTech={hoveredTech}
-                  setHoveredTech={setHoveredTech}
-                />
-              </div>
-            ))}
+            <TechCard
+              className="w-full"
+              name={tech.name}
+              icon={tech.icon}
+              color={tech.color}
+              hoveredTech={hoveredTech}
+              setHoveredTech={setHoveredTech}
+            />
           </div>
-        </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -96,10 +91,12 @@ export default function TechStackList({
   setHoveredTech,
 }: TechStackListProps) {
   return (
-    <div className="flex flex-col w-full">
+    // min-w-0: tanpa ini, lebar track marquee (w-max) jadi min-content
+    // flex item dan mendorong layout keluar dari kolomnya
+    <div className="flex flex-col w-full min-w-0">
       {categories.map((category) => (
         <div
-          className="flex flex-col w-full lg:py-5 lg:pr-[20%]"
+          className="flex flex-col w-full min-w-0 lg:py-5 lg:pr-[20%]"
           key={category.title}
         >
           <p className="text-black dark:text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6">
