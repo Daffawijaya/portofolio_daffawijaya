@@ -68,7 +68,7 @@ const TABLES: TableDef[] = [
       {
         key: "category",
         label: "Category",
-        options: ["Programming Language", "Fullstack Development", "Framework", "Mobile Development"],
+        options: ["Programming Language", "Web Development", "Framework", "Mobile Development"],
       },
       { key: "name", label: "Name" },
       { key: "icon", label: "Icon", options: Object.keys(ICONS).sort() },
