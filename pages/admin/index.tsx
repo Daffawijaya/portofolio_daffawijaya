@@ -262,15 +262,42 @@ export default function Admin() {
 
   const settingsDirty = JSON.stringify(settingsValues) !== settingsOriginal;
 
+  // baca file apa adanya sebagai data URL
+  function readAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // kompres gambar di browser (max 1600px, webp/jpeg) supaya muat lewat
+  // limit body 4.5MB serverless function di deployment (Vercel)
+  async function compressImage(file: File): Promise<string> {
+    const dataUrl = await readAsDataUrl(file);
+    const img = document.createElement("img");
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = dataUrl;
+    });
+    const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.width * scale);
+    canvas.height = Math.round(img.height * scale);
+    canvas.getContext("2d")!.drawImage(img, 0, 0, canvas.width, canvas.height);
+    let out = canvas.toDataURL("image/webp", 0.82); // browser lama -> fallback jpeg
+    if (!out.startsWith("data:image/webp")) out = canvas.toDataURL("image/jpeg", 0.82);
+    return out;
+  }
+
   async function uploadTo(key: string, file: File) {
     setMessage("Uploading...");
     try {
-      const data = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result));
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+      const data = /image\//.test(file.type)
+        ? await compressImage(file)
+        : await readAsDataUrl(file);
       const res = await fetch("/api/upload", {
         method: "POST",
         headers: {
@@ -279,8 +306,9 @@ export default function Admin() {
         },
         body: JSON.stringify({ name: file.name || "file", data }),
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "Upload gagal");
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok)
+        throw new Error(json.error ?? `Upload gagal (HTTP ${res.status})`);
       setSettingsValues((prev) => ({ ...prev, [key]: json.url }));
       setMessage("Upload berhasil. Klik Save untuk menyimpan.");
     } catch (e) {
@@ -428,14 +456,10 @@ export default function Admin() {
     }));
   }
 
-  async function uploadImage(table: string, id: number | string, file: File) {    setMessage("Uploading...");
+  async function uploadImage(table: string, id: number | string, file: File) {
+    setMessage("Uploading...");
     try {
-      const data = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result));
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+      const data = await compressImage(file);
       const res = await fetch("/api/upload", {
         method: "POST",
         headers: {
@@ -444,8 +468,9 @@ export default function Admin() {
         },
         body: JSON.stringify({ name: file.name, data }),
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "Upload gagal");
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok)
+        throw new Error(json.error ?? `Upload gagal (HTTP ${res.status})`);
       editRow(table, id, "image", json.url);
       setMessage("Upload berhasil. Klik Save untuk menyimpan.");
     } catch (e) {
