@@ -543,9 +543,9 @@ export default function Admin() {
                                   </span>
                                   <input
                                     type="range"
-                                    min={100}
+                                    min={67}
                                     max={300}
-                                    step={5}
+                                    step={1}
                                     value={zoom}
                                     onChange={(e) =>
                                       editRow(
