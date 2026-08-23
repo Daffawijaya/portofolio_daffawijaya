@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../../lib/supabase";
 import { ICONS } from "../../lib/icons";
+import { autoFitScale, clampPan } from "../../lib/imageFit";
 import PageHead from "../../components/PageHead";
 
 interface FieldDef {
@@ -320,17 +321,17 @@ export default function Admin() {
     py: number;
   } | null>(null);
 
-  const clampPan = (v: number, zoom: number) => {
-    // keep the oversized layer covering the frame: max pan depends on zoom
-    const limit = Math.max(0, (75 * (zoom / 100) - 50) / 1.5);
-    return Math.round(Math.max(-limit, Math.min(limit, v)));
-  };
-
   function parsePos(row: Row): [number, number] {
     const [x = 0, y = 0] = String(row.image_position || "")
       .split(" ")
       .map((v) => parseFloat(v) || 0);
     return [x, y];
+  }
+
+  // skala efektif = zoom manual x kompensasi otomatis rotasi (lihat lib/imageFit)
+  function effectiveScale(row: Row): number {
+    const zoom = (Number(row.image_scale) || 100) / 100;
+    return zoom * autoFitScale(Number(row.image_rotate) || 0);
   }
 
   function previewPointerDown(e: React.PointerEvent, table: string, row: Row) {
@@ -351,12 +352,11 @@ export default function Admin() {
     const rect = e.currentTarget.getBoundingClientRect();
     const dx = ((e.clientX - d.startX) / rect.width) * 100;
     const dy = ((e.clientY - d.startY) / rect.height) * 100;
-    const zoom = Number(row.image_scale) || 100;
     editRow(
       table,
       row.id,
       "image_position",
-      `${clampPan(d.px + dx, zoom)}% ${clampPan(d.py + dy, zoom)}%`
+      `${clampPan(d.px + dx, effectiveScale(row))}% ${clampPan(d.py + dy, effectiveScale(row))}%`
     );
   }
 
@@ -455,6 +455,7 @@ export default function Admin() {
               const [px, py] = parsePos(row);
               const rot = Number(row.image_rotate) || 0;
               const zoom = Number(row.image_scale) || 100;
+              const effective = (zoom / 100) * autoFitScale(rot);
               return (
                 <div key={field.key} className="w-full">
                   <span className="text-xs font-semibold opacity-70">
@@ -481,7 +482,7 @@ export default function Admin() {
                         className="absolute -inset-1/4 bg-cover bg-center pointer-events-none"
                         style={{
                           backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
-                          transform: `translate(${px}%, ${py}%) rotate(${rot}deg) scale(${zoom / 100})`,
+                          transform: `translate(${px}%, ${py}%) rotate(${rot}deg) scale(${effective})`,
                         }}
                       />
                     </div>

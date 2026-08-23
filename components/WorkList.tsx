@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { WorkItem } from "../lib/content";
+import { autoFitScale, clampPan } from "../lib/imageFit";
 
 interface WorkListProps {
   worksData: WorkItem[];
@@ -18,9 +19,8 @@ export default function WorkList({ worksData }: WorkListProps) {
             .split(" ")
             .map((v) => parseFloat(v) || 0);
           const zoom = (item.image_scale || 100) / 100;
-          const panLimit = Math.max(0, (75 * zoom - 50) / 1.5);
-          const clampPan = (v: number) =>
-            Math.max(-panLimit, Math.min(panLimit, v));
+          // skala efektif = zoom manual x kompensasi otomatis rotasi
+          const effective = zoom * autoFitScale(item.image_rotate || 0);
 
           return (
             <motion.div
@@ -39,7 +39,7 @@ export default function WorkList({ worksData }: WorkListProps) {
                       className="absolute -inset-1/4 bg-cover bg-center"
                       style={{
                         backgroundImage: `url(${item.image})`,
-                        transform: `translate(${clampPan(panX)}%, ${clampPan(panY)}%) rotate(${item.image_rotate || 0}deg) scale(${zoom})`,
+                        transform: `translate(${clampPan(panX, effective)}%, ${clampPan(panY, effective)}%) rotate(${item.image_rotate || 0}deg) scale(${effective})`,
                       }}
                     />
                     <div className="absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]">
