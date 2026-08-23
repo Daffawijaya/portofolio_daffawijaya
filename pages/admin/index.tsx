@@ -249,13 +249,18 @@ export default function Admin() {
     return !original || JSON.stringify(row) !== original;
   }
 
+  // depend pada status login saja, bukan objek session -- kalau bergantung
+  // objek session, token refresh saat balik ke tab memicu loadRows() ulang
+  // dan menghapus draft "Add" yang belum tersimpan
+  const loggedIn = !!session;
+
   useEffect(() => {
-    if (session) loadRows(activeTable);
-  }, [session, activeTable]);
+    if (loggedIn) loadRows(activeTable);
+  }, [loggedIn, activeTable]);
 
   // muat nilai settings dari DB saat tab Settings dibuka
   useEffect(() => {
-    if (!supabase || activeTable !== "settings") return;
+    if (!supabase || !loggedIn || activeTable !== "settings") return;
     supabase
       .from("settings")
       .select("key, value")
@@ -266,7 +271,7 @@ export default function Admin() {
         setSettingsValues(values);
         setSettingsOriginal(JSON.stringify(values));
       });
-  }, [session, activeTable]);
+  }, [loggedIn, activeTable]);
 
   async function saveSettings() {
     setMessage("Saving...");
