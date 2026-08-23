@@ -134,7 +134,10 @@ export default function Admin() {
 
   async function loadRows(table: string) {
     if (!supabase) return;
-    const { data } = await supabase.from(table).select("*").order("id");
+    const { data } = await supabase
+      .from(table)
+      .select("*")
+      .order("id", { ascending: false }); // item terbaru di atas
     setRows((prev) => ({
       ...prev,
       [table]: (data ?? []).map((r) => ({ ...r, ...parseYearParts(r.year) })),
