@@ -23,7 +23,11 @@ export default function Works({ works }: WorksProps) {
 
   return (
     <>
-      <PageHead title="Daffa Wijaya | Works" />
+      <PageHead
+        title="Works - Daffa Yan Wijaya"
+        description="Portfolio proyek Daffa Yan Wijaya: aplikasi web fullstack, frontend, mobile, dan UI/UX — termasuk EtamHub, platform digital UMKM Kutai Kartanegara."
+        path="/works"
+      />
 
       <main className="h-screen flex fixed w-[15%] h-full z-50">
         <Sidebar />

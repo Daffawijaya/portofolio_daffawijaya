@@ -37,7 +37,11 @@ const About = ({ techstack, skills, experiences, settings }: AboutProps) => {
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
   return (
     <>
-      <PageHead title="Daffa Wijaya | About" />
+      <PageHead
+        title="About - Daffa Yan Wijaya"
+        description="Kenali Daffa Yan Wijaya (Daffa Wijaya), fullstack & mobile developer dan IT digitalization specialist. Lihat techstack, skills, pengalaman, pendidikan, dan sertifikasi."
+        path="/about"
+      />
 
       <main className="h-screen flex fixed w-[15%] h-full z-50">
         <Sidebar />

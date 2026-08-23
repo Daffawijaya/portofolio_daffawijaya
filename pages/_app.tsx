@@ -88,8 +88,15 @@ export default function App({ Component, pageProps }: AppProps) {
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Daffa Yan Wijaya",
+              alternateName: [
+                "Daffa",
+                "Daffa Wijaya",
+                "Yan Wijaya",
+                "Daffayanwijaya",
+                "daffawijayaaa",
+              ],
               url: "https://daffayanwijaya.vercel.app",
-              image: "https://daffayanwijaya.vercel.app/profile.jpg",
+              image: "https://daffayanwijaya.vercel.app/dafanoanting.png",
               jobTitle: "Fullstack & Mobile Developer",
               description:
                 "Fullstack & Mobile Developer, IT Consultant, dan Digitalisasi UMKM.",
@@ -101,6 +108,29 @@ export default function App({ Component, pageProps }: AppProps) {
                 "Mobile Development",
                 "Digitalisasi UMKM",
               ],
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Malang",
+                addressRegion: "East Java",
+                addressCountry: "ID",
+              },
+              sameAs: [
+                "https://www.linkedin.com/in/daffa-wijaya-621a04255/",
+                "https://www.instagram.com/daffawijayaaa/",
+                "https://github.com/Daffawijaya",
+              ],
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Daffa Yan Wijaya Portfolio",
+              alternateName: ["Daffa Wijaya", "daffayanwijaya"],
+              url: "https://daffayanwijaya.vercel.app",
             }),
           }}
         />

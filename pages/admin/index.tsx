@@ -757,7 +757,7 @@ export default function Admin() {
 
   return (
     <main className="h-screen overflow-y-auto scrollbar-hide p-6 bg-white dark:bg-black text-black dark:text-white">
-      <PageHead title="Admin" />
+      <PageHead title="Admin" noindex />
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="font-bold text-2xl text-a-2 italic">Content Admin</h1>

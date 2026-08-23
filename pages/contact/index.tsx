@@ -16,7 +16,11 @@ interface ContactProps {
 export default function Contact({ contacts, settings }: ContactProps) {
   return (
     <>
-      <PageHead title="Daffa Wijaya | Contact" />
+      <PageHead
+        title="Contact - Daffa Yan Wijaya"
+        description="Hubungi Daffa Yan Wijaya (daffayanwijaya) untuk kolaborasi proyek web & mobile. Email, LinkedIn, Instagram, GitHub, dan alamat di Malang, Indonesia."
+        path="/contact"
+      />
 
       <main className="h-screen flex fixed w-[15%] h-full z-50">
         <Sidebar />

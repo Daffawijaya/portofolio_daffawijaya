@@ -7,7 +7,15 @@ import { getSettings, REVALIDATE } from "../lib/content";
 export default function Home({ position }: { position: string }) {
   return (
     <>
-      <PageHead title="Daffa Wijaya" />
+      <PageHead
+        title="Daffa Yan Wijaya - Fullstack & Mobile Developer"
+        description="Portfolio resmi Daffa Yan Wijaya (Daffa Wijaya, daffayanwijaya), fullstack & mobile developer di Malang, Indonesia. Membangun aplikasi web & mobile yang responsif dan user-friendly."
+        path="/"
+      />
+
+      <h1 className="sr-only">
+        Daffa Yan Wijaya - Fullstack &amp; Mobile Developer
+      </h1>
 
       <main className="h-screen flex fixed w-[15%] h-full z-50">
         <Sidebar />
