@@ -133,14 +133,15 @@ export async function getExperiences(): Promise<ExperienceGroup[]> {
   return experienceData;
 }
 
-// urutan kategori techstack di halaman publik: Web Dev paling atas,
-// Mobile paling bawah. Dicocokkan lewat kata kunci supaya tetap berlaku
-// walau nama kategori di database sedikit berbeda (mis. "Web Development").
+// urutan kategori techstack di halaman publik (persis):
+// 1. Framework 2. Programming Language 3. Web Dev/Fullstack 4. Mobile.
+// Dicocokkan lewat kata kunci supaya tetap berlaku walau nama kategori
+// di database sedikit berbeda (mis. "Web Development").
 function categoryRank(title: string): number {
   const t = title.toLowerCase();
-  if (/fullstack|web\s*dev|frontend|backend/.test(t)) return 0;
+  if (/framework/.test(t)) return 0;
   if (/programming|language/.test(t)) return 1;
-  if (/framework/.test(t)) return 2;
+  if (/fullstack|web\s*dev|frontend|backend/.test(t)) return 2;
   if (/mobile/.test(t)) return 3;
   return 4; // kategori lain -> paling bawah
 }
