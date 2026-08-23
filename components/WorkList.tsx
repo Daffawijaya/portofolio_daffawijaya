@@ -12,6 +12,15 @@ export default function WorkList({ worksData }: WorkListProps) {
       <div className="flex flex-col lg:ml-[16%] space-y-6 italic">
         {worksData.map((item, idx) => {
           const isEven = idx % 2 === 0;
+          // image_position holds pan offsets ("x% y%", translate % of the layer);
+          // clamped so the oversized layer never exposes gaps
+          const [panX = 0, panY = 0] = String(item.image_position || "")
+            .split(" ")
+            .map((v) => parseFloat(v) || 0);
+          const zoom = (item.image_scale || 100) / 100;
+          const panLimit = Math.max(0, (75 * zoom - 50) / 1.5);
+          const clampPan = (v: number) =>
+            Math.max(-panLimit, Math.min(panLimit, v));
 
           return (
             <motion.div
@@ -27,11 +36,10 @@ export default function WorkList({ worksData }: WorkListProps) {
                       sudutnya tetap tertutup saat dirotasi */}
                   <div className="lg:h-64 h-40 relative flex items-center overflow-hidden">
                     <div
-                      className="absolute -inset-1/4 bg-cover"
+                      className="absolute -inset-1/4 bg-cover bg-center"
                       style={{
                         backgroundImage: `url(${item.image})`,
-                        backgroundPosition: item.image_position || "center",
-                        transform: `rotate(${item.image_rotate || 0}deg) scale(${(item.image_scale || 100) / 100})`,
+                        transform: `translate(${clampPan(panX)}%, ${clampPan(panY)}%) rotate(${item.image_rotate || 0}deg) scale(${zoom})`,
                       }}
                     />
                     <div className="absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]">

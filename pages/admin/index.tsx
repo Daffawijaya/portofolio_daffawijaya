@@ -237,12 +237,16 @@ export default function Admin() {
     py: number;
   } | null>(null);
 
-  const clampPct = (v: number) => Math.round(Math.max(0, Math.min(100, v)));
+  const clampPan = (v: number, zoom: number) => {
+    // keep the oversized layer covering the frame: max pan depends on zoom
+    const limit = Math.max(0, (75 * (zoom / 100) - 50) / 1.5);
+    return Math.round(Math.max(-limit, Math.min(limit, v)));
+  };
 
   function parsePos(row: Row): [number, number] {
-    const [x = 50, y = 50] = String(row.image_position || "50% 50%")
+    const [x = 0, y = 0] = String(row.image_position || "")
       .split(" ")
-      .map((v) => parseInt(v) || 50);
+      .map((v) => parseFloat(v) || 0);
     return [x, y];
   }
 
@@ -264,13 +268,12 @@ export default function Admin() {
     const rect = e.currentTarget.getBoundingClientRect();
     const dx = ((e.clientX - d.startX) / rect.width) * 100;
     const dy = ((e.clientY - d.startY) / rect.height) * 100;
-    // increasing background-position shifts the image visually left,
-    // so subtract to make the image follow the cursor
+    const zoom = Number(row.image_scale) || 100;
     editRow(
       table,
       row.id,
       "image_position",
-      `${clampPct(d.px - dx)}% ${clampPct(d.py - dy)}%`
+      `${clampPan(d.px + dx, zoom)}% ${clampPan(d.py + dy, zoom)}%`
     );
   }
 
@@ -434,6 +437,7 @@ export default function Admin() {
                       imageUrl && bust
                         ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}v=${bust}`
                         : imageUrl;
+                    const [px, py] = parsePos(row);
                     const rot = Number(row.image_rotate) || 0;
                     const zoom = Number(row.image_scale) || 100;
                     return (
@@ -460,16 +464,14 @@ export default function Admin() {
                             onPointerCancel={() => (dragRef.current = null)}
                           >
                             {/* -inset-1/4: layer lebih besar supaya sudut tetap
-                                tertutup saat dirotasi */}
+                                tertutup saat dirotasi/digeser */}
                             <div
-                              className="absolute -inset-1/4 bg-cover pointer-events-none"
+                              className="absolute -inset-1/4 bg-cover bg-center pointer-events-none"
                               style={{
                                 backgroundImage: previewUrl
                                   ? `url(${previewUrl})`
                                   : undefined,
-                                backgroundPosition:
-                                  String(row.image_position || "") || "center",
-                                transform: `rotate(${rot}deg) scale(${zoom / 100})`,
+                                transform: `translate(${px}%, ${py}%) rotate(${rot}deg) scale(${zoom / 100})`,
                               }}
                             />
                           </div>
