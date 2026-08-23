@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Session } from "@supabase/supabase-js";
+import { HiChevronDown } from "react-icons/hi";
 import { supabase } from "../../lib/supabase";
 import { ICONS } from "../../lib/icons";
 import PannableImage from "../../components/PannableImage";
@@ -96,6 +98,43 @@ type Rows = Record<string, Row[]>;
 
 const inputClass =
   "w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white text-black";
+
+// seksi grup yang bisa diminimize (Works/Education/dll)
+function CollapsibleSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2 w-full text-left mb-1"
+      >
+        <HiChevronDown
+          className={`transition-transform duration-300 ${open ? "" : "-rotate-90"}`}
+        />
+        <span className="font-bold text-lg italic">{title}</span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden flex flex-col"
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 // year is stored as text like "August 2022 - Present"; the admin edits it via
 // two date inputs + a "Present" checkbox (kept in row as __yf/__yt/__yp)
@@ -678,9 +717,16 @@ export default function Admin() {
           + Add
         </button>
 
-        {/* ===== list; editor melorot (animasi) di bawah item yang diedit ===== */}
-        <div className="flex flex-col">
-          {(rows[table.name] ?? []).map((row) => {
+        {/* ===== list; editor melorot (animasi) di bawah item yang diedit =====
+            tabel dengan kolom group_name/category otomatis dikelompokkan dan
+            bisa di-minimize per grup */}
+        {(() => {
+          const allRows = rows[table.name] ?? [];
+          const groupField = table.fields.find(
+            (f) => !f.multi && (f.key === "group_name" || f.key === "category")
+          );
+
+          const renderRowItem = (row: Row) => {
             const category = Array.isArray(row.category)
               ? (row.category as string[]).join(", ")
               : String(row.group_name ?? row.category ?? "");
@@ -698,7 +744,7 @@ export default function Admin() {
                     <p className="font-semibold truncate">
                       {String(row.name ?? "-")}
                     </p>
-                    {subtitle && (
+                    {!groupField && subtitle && (
                       <p className="text-xs opacity-60 truncate italic">
                         {subtitle}
                       </p>
@@ -739,11 +785,44 @@ export default function Admin() {
                 </AnimatePresence>
               </div>
             );
-          })}
-          {(rows[table.name] ?? []).length === 0 && (
-            <p className="opacity-60 italic text-sm">Belum ada data.</p>
-          )}
-        </div>
+          };
+
+          // tanpa kolom grup -> list biasa
+          if (!groupField) {
+            return (
+              <div className="flex flex-col">
+                {allRows.map(renderRowItem)}
+                {allRows.length === 0 && (
+                  <p className="opacity-60 italic text-sm">Belum ada data.</p>
+                )}
+              </div>
+            );
+          }
+
+          // kelompokkan sesuai urutan data, lalu tiap grup bisa diminimize
+          const groups: { title: string; rows: Row[] }[] = [];
+          for (const r of allRows) {
+            const title = String(r[groupField.key] ?? "-") || "-";
+            let g = groups.find((x) => x.title === title);
+            if (!g) {
+              g = { title, rows: [] };
+              groups.push(g);
+            }
+            g.rows.push(r);
+          }
+          return (
+            <div className="flex flex-col space-y-4">
+              {groups.map(({ title, rows: groupRows }) => (
+                <CollapsibleSection key={title} title={title}>
+                  {groupRows.map(renderRowItem)}
+                </CollapsibleSection>
+              ))}
+              {allRows.length === 0 && (
+                <p className="opacity-60 italic text-sm">Belum ada data.</p>
+              )}
+            </div>
+          );
+        })()}
 
         <p className="mt-8 text-xs opacity-60 italic">
           Perubahan tampil di situs publik maksimal {60} detik setelah disimpan.
