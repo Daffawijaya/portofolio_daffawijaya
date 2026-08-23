@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import TechCard from "./TechCard";
 import type { TechCategory } from "../lib/content";
 
@@ -5,6 +6,75 @@ interface TechStackListProps {
   categories: TechCategory[];
   hoveredTech: string | null;
   setHoveredTech: (name: string | null) => void;
+}
+
+const GAP = 16; // gap-4, sama dengan grid
+
+// ukur lebar kontainer + jumlah kolom efektif (4 mobile, 5 desktop)
+function useContainerColumns() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [state, setState] = useState({ width: 0, cols: 5 });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => {
+      setState({
+        width: el.getBoundingClientRect().width,
+        cols: mq.matches ? 5 : 4,
+      });
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    mq.addEventListener("change", update);
+    return () => {
+      ro.disconnect();
+      mq.removeEventListener("change", update);
+    };
+  }, []);
+  return { ref, ...state };
+}
+
+// baris auto-geser: lebar slot dihitung persis seperti kolom grid,
+// jadi ujung kanan-kirinya sejajar dengan baris Another Skills
+function SlidingRow({
+  items,
+  hoveredTech,
+  setHoveredTech,
+}: {
+  items: TechCategory["items"];
+  hoveredTech: string | null;
+  setHoveredTech: (name: string | null) => void;
+}) {
+  const { ref, width, cols } = useContainerColumns();
+  const slot =
+    width > 0 ? Math.floor((width - (cols - 1) * GAP) / cols) : 128;
+
+  return (
+    <div ref={ref} className="overflow-hidden">
+      <div
+        className="flex w-max hover:[animation-play-state:paused]"
+        style={{
+          gap: GAP,
+          animation: `marquee-r ${items.length * 3}s linear infinite`,
+        }}
+      >
+        {[...items, ...items].map((tech, i) => (
+          <div className="shrink-0" style={{ width: slot }} key={`${tech.name}-${i}`}>
+            <TechCard
+              className="w-full"
+              name={tech.name}
+              icon={tech.icon}
+              color={tech.color}
+              hoveredTech={hoveredTech}
+              setHoveredTech={setHoveredTech}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // seksi techstack yang konsisten:
@@ -28,31 +98,11 @@ export default function TechStackList({
           </p>
 
           {category.items.length > 5 ? (
-            <div className="overflow-hidden">
-              <div
-                className="flex w-max gap-4 hover:[animation-play-state:paused]"
-                style={{
-                  animation: `marquee-r ${category.items.length * 3}s linear infinite`,
-                }}
-              >
-                {[...category.items, ...category.items].map((tech, i) => (
-                  <div
-                    // slot seragam agar baris rapi dan loop mulus
-                    className="shrink-0 w-24 lg:w-32"
-                    key={`${tech.name}-${i}`}
-                  >
-                    <TechCard
-                      className="w-full"
-                      name={tech.name}
-                      icon={tech.icon}
-                      color={tech.color}
-                      hoveredTech={hoveredTech}
-                      setHoveredTech={setHoveredTech}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+            <SlidingRow
+              items={category.items}
+              hoveredTech={hoveredTech}
+              setHoveredTech={setHoveredTech}
+            />
           ) : (
             <div className="grid grid-cols-4 lg:grid-cols-5 lg:gap-4">
               {category.items.map((tech) => (
