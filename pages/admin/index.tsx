@@ -178,9 +178,11 @@ export default function Admin() {
 
   async function addRow(table: TableDef) {
     setMessage("");
-    // start every column empty; sort_order goes last so it appears at the end
+    // start every column empty; multi-select fields are arrays
     const values = Object.fromEntries([
-      ...table.fields.map((f) => [f.key, ""]),
+      ...table.fields
+        .filter((f) => !f.hidden)
+        .map((f) => [f.key, f.multi ? [] : ""]),
       ["sort_order", 0],
     ]);
     const { error } = await supabase!.from(table.name).insert(values);
