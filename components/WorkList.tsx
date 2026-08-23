@@ -23,13 +23,17 @@ export default function WorkList({ worksData }: WorkListProps) {
             >
               <div className={`${isEven ? "ml-[20%]" : "mr-[20%]"} relative`}>
                 <Link href={item.url}>
-                  <div
-                    className="lg:h-64 h-40 flex items-center bg-cover bg-center overflow-hidden"
-                    style={{
-                      backgroundImage: `url(${item.image})`,
-                      backgroundPosition: item.image_position || "center",
-                    }}
-                  >
+                  {/* -inset-1/4: layer gambar lebih besar dari kartu supaya
+                      sudutnya tetap tertutup saat dirotasi */}
+                  <div className="lg:h-64 h-40 relative flex items-center overflow-hidden">
+                    <div
+                      className="absolute -inset-1/4 bg-cover"
+                      style={{
+                        backgroundImage: `url(${item.image})`,
+                        backgroundPosition: item.image_position || "center",
+                        transform: `rotate(${item.image_rotate || 0}deg) scale(${(item.image_scale || 100) / 100})`,
+                      }}
+                    />
                     <div className="absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]">
                       <div className="lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300">
                         <p

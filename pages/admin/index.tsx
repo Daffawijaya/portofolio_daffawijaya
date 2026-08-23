@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../../lib/supabase";
 import { ICONS } from "../../lib/icons";
@@ -34,6 +34,8 @@ const TABLES: TableDef[] = [
       { key: "url", label: "URL" },
       { key: "year", label: "Year" },
       { key: "image_position", label: "Image Position", hidden: true },
+      { key: "image_rotate", label: "Image Rotate", hidden: true },
+      { key: "image_scale", label: "Image Scale", hidden: true },
     ],
   },
   {
@@ -166,7 +168,10 @@ export default function Admin() {
     const values: Record<string, unknown> = {};
     for (const field of tableDef.fields) values[field.key] = row[field.key];
     if ("year" in values) values.year = yearValue(row);
-    values.sort_order = row.sort_order ?? 0;
+    // int columns come back as strings from inputs
+    for (const key of ["sort_order", "image_rotate", "image_scale"]) {
+      if (key in values) values[key] = Number(values[key]) || (key === "image_scale" ? 100 : 0);
+    }
     const { error } = await supabase!
       .from(tableDef.name)
       .update(values)
@@ -223,25 +228,53 @@ export default function Admin() {
     }));
   }
 
-  // set image_position ("x% y%") from the preview sliders
-  function setImagePosition(
-    table: string,
-    id: number | string,
-    axis: "x" | "y",
-    value: number
-  ) {
-    setRows((prev) => ({
-      ...prev,
-      [table]: prev[table].map((r) => {
-        if (r.id !== id) return r;
-        const [x = 50, y = 50] = String(r.image_position || "50% 50%")
-          .split(" ")
-          .map((v) => parseInt(v) || 50);
-        const pos = axis === "x" ? `${value}% ${y}%` : `${x}% ${value}%`;
-        return { ...r, image_position: pos };
-      }),
-    }));
+  // drag-to-pan: convert pointer movement into background-position percentages
+  const dragRef = useRef<{
+    key: string;
+    startX: number;
+    startY: number;
+    px: number;
+    py: number;
+  } | null>(null);
+
+  const clampPct = (v: number) => Math.round(Math.max(0, Math.min(100, v)));
+
+  function parsePos(row: Row): [number, number] {
+    const [x = 50, y = 50] = String(row.image_position || "50% 50%")
+      .split(" ")
+      .map((v) => parseInt(v) || 50);
+    return [x, y];
   }
+
+  function previewPointerDown(e: React.PointerEvent, table: string, row: Row) {
+    const [px, py] = parsePos(row);
+    dragRef.current = {
+      key: `${table}:${row.id}`,
+      startX: e.clientX,
+      startY: e.clientY,
+      px,
+      py,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+
+  function previewPointerMove(e: React.PointerEvent, table: string, row: Row) {
+    const d = dragRef.current;
+    if (!d || d.key !== `${table}:${row.id}`) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const dx = ((e.clientX - d.startX) / rect.width) * 100;
+    const dy = ((e.clientY - d.startY) / rect.height) * 100;
+    // increasing background-position shifts the image visually left,
+    // so subtract to make the image follow the cursor
+    editRow(
+      table,
+      row.id,
+      "image_position",
+      `${clampPct(d.px - dx)}% ${clampPct(d.py - dy)}%`
+    );
+  }
+
+  // set image_position ("x% y%") from the preview sliders
 
   // rotate the stored webp 90° clockwise, overwriting the same file
   async function rotateImage(table: string, id: number | string, url: string) {
@@ -390,39 +423,56 @@ export default function Admin() {
                   // hidden fields are managed by other controls
                   if (field.hidden) return null;
 
-                  // image: preview + upload + focal point sliders
+                  // image: preview (drag to pan) + upload + rotate/zoom sliders
                   if (field.key === "image") {
-                    const hasPosition = table.fields.some(
+                    const hasTransform = table.fields.some(
                       (f) => f.key === "image_position"
                     );
-                    const [px = 50, py = 50] = String(
-                      row.image_position || "50% 50%"
-                    )
-                      .split(" ")
-                      .map((v) => parseInt(v) || 50);
                     const bust = imageBust[String(row.id)];
                     const imageUrl = String(row.image ?? "");
                     const previewUrl =
                       imageUrl && bust
                         ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}v=${bust}`
                         : imageUrl;
+                    const rot = Number(row.image_rotate) || 0;
+                    const zoom = Number(row.image_scale) || 100;
                     return (
                       <div key={field.key} className="w-full">
                         <span className="text-xs font-semibold opacity-70">
-                          Image
+                          Image {hasTransform && "(drag gambar untuk menggeser)"}
                         </span>
                         <div className="flex flex-col sm:flex-row gap-3 mt-1">
                           {/* preview pakai rasio yang sama dengan kartu di halaman works */}
                           <div
-                            className="sm:w-72 w-full aspect-[16/7] border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 bg-cover"
-                            style={{
-                              backgroundImage: previewUrl
-                                ? `url(${previewUrl})`
-                                : undefined,
-                              backgroundPosition:
-                                String(row.image_position || "") || "center",
-                            }}
-                          />
+                            className={
+                              "relative sm:w-72 w-full aspect-[16/7] border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 overflow-hidden select-none touch-none " +
+                              (hasTransform ? "cursor-grab active:cursor-grabbing" : "")
+                            }
+                            onPointerDown={(e) =>
+                              hasTransform &&
+                              previewPointerDown(e, table.name, row)
+                            }
+                            onPointerMove={(e) =>
+                              hasTransform &&
+                              previewPointerMove(e, table.name, row)
+                            }
+                            onPointerUp={() => (dragRef.current = null)}
+                            onPointerCancel={() => (dragRef.current = null)}
+                          >
+                            {/* -inset-1/4: layer lebih besar supaya sudut tetap
+                                tertutup saat dirotasi */}
+                            <div
+                              className="absolute -inset-1/4 bg-cover pointer-events-none"
+                              style={{
+                                backgroundImage: previewUrl
+                                  ? `url(${previewUrl})`
+                                  : undefined,
+                                backgroundPosition:
+                                  String(row.image_position || "") || "center",
+                                transform: `rotate(${rot}deg) scale(${zoom / 100})`,
+                              }}
+                            />
+                          </div>
                           <div className="flex flex-col gap-2 grow text-sm">
                             <div className="flex gap-2">
                               <input
@@ -459,51 +509,59 @@ export default function Admin() {
                               }
                               placeholder="/path/atau/URL"
                             />
-                            {hasPosition && (
+                            {hasTransform && (
                               <>
                                 <label className="flex items-center gap-2">
-                                  <span className="text-xs opacity-70 w-10">
-                                    Pos X
+                                  <span className="text-xs opacity-70 w-12">
+                                    Rotasi
                                   </span>
                                   <input
                                     type="range"
-                                    min={0}
-                                    max={100}
-                                    value={px}
+                                    min={-180}
+                                    max={180}
+                                    step={1}
+                                    value={rot}
                                     onChange={(e) =>
-                                      setImagePosition(
+                                      editRow(
                                         table.name,
                                         row.id,
-                                        "x",
-                                        Number(e.target.value)
+                                        "image_rotate",
+                                        e.target.value
                                       )
                                     }
                                     className="grow"
                                   />
+                                  <span className="text-xs w-10 text-right">
+                                    {rot}°
+                                  </span>
                                 </label>
                                 <label className="flex items-center gap-2">
-                                  <span className="text-xs opacity-70 w-10">
-                                    Pos Y
+                                  <span className="text-xs opacity-70 w-12">
+                                    Zoom
                                   </span>
                                   <input
                                     type="range"
-                                    min={0}
-                                    max={100}
-                                    value={py}
+                                    min={100}
+                                    max={300}
+                                    step={5}
+                                    value={zoom}
                                     onChange={(e) =>
-                                      setImagePosition(
+                                      editRow(
                                         table.name,
                                         row.id,
-                                        "y",
-                                        Number(e.target.value)
+                                        "image_scale",
+                                        e.target.value
                                       )
                                     }
                                     className="grow"
                                   />
+                                  <span className="text-xs w-10 text-right">
+                                    {zoom}%
+                                  </span>
                                 </label>
                                 <p className="text-[11px] opacity-60">
-                                  Preview mengikuti rasio kartu works; posisi
-                                  tersimpan setelah klik Save.
+                                  Drag gambar untuk geser; perubahan tersimpan
+                                  setelah klik Save.
                                 </p>
                               </>
                             )}

@@ -12,6 +12,8 @@ create table if not exists works (
   url text not null default '',
   year text not null default '',
   image_position text not null default '', -- CSS background-position, mis. "50% 70%"; kosong = center
+  image_rotate int not null default 0,     -- derajat, bebas -180..180
+  image_scale int not null default 100,    -- persen zoom, 100 = normal
   sort_order int not null default 0
 );
 

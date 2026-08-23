@@ -14,6 +14,8 @@ export interface WorkItem {
   url: string;
   year: string;
   image_position?: string; // CSS background-position; kosong = center
+  image_rotate?: number; // derajat rotasi bebas
+  image_scale?: number; // zoom dalam persen, 100 = normal
 }
 
 export interface ExperienceItem {
@@ -74,7 +76,7 @@ export async function getWorks(): Promise<WorkItem[]> {
   if (supabase) {
     const { data } = await supabase
       .from("works")
-      .select("category, name, image, url, year, image_position")
+      .select("category, name, image, url, year, image_position, image_rotate, image_scale")
       .order("sort_order");
     if (data && data.length > 0) return data;
   }
