@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import sharp from "sharp";
 import { supabaseAdmin } from "../../lib/supabaseAdmin";
 
 export const config = {
@@ -19,6 +18,44 @@ async function deleteByPublicUrl(
   if (i === -1) return;
   const path = decodeURIComponent(url.slice(i + marker.length).split("?")[0]);
   if (path) await client.storage.from(BUCKET).remove([path]);
+}
+
+// gambar sudah dikompres + dikonversi WebP/JPEG di browser (admin),
+// jadi API ini cukup menyimpan file apa adanya -> tidak butuh sharp
+const MIME_EXT: Record<string, string> = {
+  "image/webp": ".webp",
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "application/pdf": ".pdf",
+};
+
+function safeBase(name: string) {
+  return String(name)
+    .replace(/\.[^.]+$/, "")
+    .replace(/[^a-z0-9]+/gi, "-")
+    .toLowerCase();
+}
+
+async function saveFile(
+  client: NonNullable<typeof supabaseAdmin>,
+  buffer: Buffer,
+  contentType: string,
+  name: string,
+  folder: string
+) {
+  const ext = MIME_EXT[contentType] ?? "";
+  const path = `${folder}/${Date.now()}-${safeBase(name)}${ext}`;
+  let { error } = await client.storage
+    .from(BUCKET)
+    .upload(path, buffer, { contentType });
+  // bucket missing -> create public bucket once, then retry
+  if (error && /not found/i.test(error.message)) {
+    await client.storage.createBucket(BUCKET, { public: true });
+    ({ error } = await client.storage.from(BUCKET).upload(path, buffer, {
+      contentType,
+    }));
+  }
+  return { error, path };
 }
 
 export default async function handler(
@@ -46,56 +83,21 @@ export default async function handler(
   if (!data) return res.status(400).json({ error: "No image data" });
 
   try {
+    // deteksi tipe dari data URL ("data:image/webp;base64,...")
+    const mime = String(data).match(/^data:([^;,]+)/)?.[1] ?? "";
     const buffer = Buffer.from(String(data).split(",").pop() ?? "", "base64");
 
-    // PDF (mis. CV) disimpan apa adanya, tanpa konversi gambar
-    if (/\.pdf$/i.test(String(name ?? ""))) {
-      const base = String(name)
-        .replace(/\.[^.]+$/, "")
-        .replace(/[^a-z0-9]+/gi, "-")
-        .toLowerCase();
-      const path = `files/${Date.now()}-${base}.pdf`;
-      let { error } = await supabaseAdmin.storage
-        .from(BUCKET)
-        .upload(path, buffer, { contentType: "application/pdf" });
-      if (error && /not found/i.test(error.message)) {
-        await supabaseAdmin.storage.createBucket(BUCKET, { public: true });
-        ({ error } = await supabaseAdmin.storage
-          .from(BUCKET)
-          .upload(path, buffer, { contentType: "application/pdf" }));
-      }
-      if (error) return res.status(500).json({ error: error.message });
-      if (oldUrl) await deleteByPublicUrl(supabaseAdmin, oldUrl);
-      const { data: pub } = supabaseAdmin.storage
-        .from(BUCKET)
-        .getPublicUrl(path);
-      return res.status(200).json({ url: pub.publicUrl });
-    }
+    const isPdf = /\.pdf$/i.test(String(name ?? "")) || mime === "application/pdf";
+    const contentType = isPdf ? "application/pdf" : mime || "image/webp";
+    const folder = isPdf ? "files" : "works";
 
-    // auto-convert to WebP before it enters storage
-    const webp = await sharp(buffer)
-      .rotate()
-      .resize({ width: 1600, withoutEnlargement: true })
-      .webp({ quality: 82 })
-      .toBuffer();
-
-    const base = String(name ?? "image")
-      .replace(/\.[^.]+$/, "")
-      .replace(/[^a-z0-9]+/gi, "-")
-      .toLowerCase();
-    const path = `works/${Date.now()}-${base}.webp`;
-
-    let { error } = await supabaseAdmin.storage
-      .from(BUCKET)
-      .upload(path, webp, { contentType: "image/webp" });
-
-    // bucket missing -> create public bucket once, then retry
-    if (error && /not found/i.test(error.message)) {
-      await supabaseAdmin.storage.createBucket(BUCKET, { public: true });
-      ({ error } = await supabaseAdmin.storage
-        .from(BUCKET)
-        .upload(path, webp, { contentType: "image/webp" }));
-    }
+    const { error, path } = await saveFile(
+      supabaseAdmin,
+      buffer,
+      contentType,
+      String(name ?? "file"),
+      folder
+    );
     if (error) return res.status(500).json({ error: error.message });
 
     if (oldUrl) await deleteByPublicUrl(supabaseAdmin, oldUrl);
