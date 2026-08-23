@@ -124,16 +124,23 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
                     {category.title}
                   </p>
 
-                  {/* satu baris; kalau list lebih lebar dari layar, geser
-                      otomatis (marquee) — hover untuk berhenti sementara */}
+                  {/* satu baris; kalau isinya lebih dari 5, geser otomatis
+                      (marquee) — hover untuk berhenti sementara */}
                   <div className="overflow-hidden w-full">
                     <div
                       className="flex w-max hover:[animation-play-state:paused]"
-                      style={{
-                        animation: `marquee ${Math.max(10, category.items.length * 3)}s linear infinite`,
-                      }}
+                      style={
+                        category.items.length > 5
+                          ? {
+                              animation: `marquee ${category.items.length * 3}s linear infinite`,
+                            }
+                          : undefined
+                      }
                     >
-                      {[...category.items, ...category.items].map((tech, i) => (
+                      {(category.items.length > 5
+                        ? [...category.items, ...category.items]
+                        : category.items
+                      ).map((tech, i) => (
                         <TechCard
                           key={`${tech.name}-${i}`}
                           name={tech.name}
