@@ -52,28 +52,37 @@ function SlidingRow({
     width > 0 ? Math.floor((width - (cols - 1) * GAP) / cols) : 128;
 
   return (
-    <div ref={ref} className="overflow-hidden">
-      <div
-        className="flex w-max hover:[animation-play-state:paused]"
-        style={{
-          gap: GAP,
-          animation: `marquee-r ${items.length * 3}s linear infinite`,
-        }}
-      >
-        {[...items, ...items].map((tech, i) => (
-          <div className="shrink-0" style={{ width: slot }} key={`${tech.name}-${i}`}>
-            <TechCard
-              className="w-full"
-              name={tech.name}
-              icon={tech.icon}
-              color={tech.color}
-              hoveredTech={hoveredTech}
-              setHoveredTech={setHoveredTech}
-            />
+    <>
+      {/* padding kiri di desktop -> ada ruang kosong sebelum kartu pertama */}
+      <div className="lg:pl-[8%]">
+        <div ref={ref} className="overflow-hidden">
+          <div
+            className="flex w-max hover:[animation-play-state:paused]"
+            style={{
+              gap: GAP,
+              animation: `marquee-r ${items.length * 3}s linear infinite`,
+            }}
+          >
+            {[...items, ...items].map((tech, i) => (
+              <div
+                className="shrink-0"
+                style={{ width: slot }}
+                key={`${tech.name}-${i}`}
+              >
+                <TechCard
+                  className="w-full"
+                  name={tech.name}
+                  icon={tech.icon}
+                  color={tech.color}
+                  hoveredTech={hoveredTech}
+                  setHoveredTech={setHoveredTech}
+                />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
