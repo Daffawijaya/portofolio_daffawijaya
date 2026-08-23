@@ -55,6 +55,9 @@ const TABLES: TableDef[] = [
       { key: "image", label: "Image" },
       { key: "url", label: "URL" },
       { key: "year", label: "Year" },
+      { key: "image_position", label: "Image Position", hidden: true },
+      { key: "image_rotate", label: "Image Rotate", hidden: true },
+      { key: "image_scale", label: "Image Scale", hidden: true },
     ],
   },
   {

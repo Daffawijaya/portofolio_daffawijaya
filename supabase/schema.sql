@@ -24,6 +24,9 @@ create table if not exists experiences (
   image text not null default '',
   url text not null default '',
   year text not null default '',
+  image_position text not null default '', -- "x% y%", kosong = center
+  image_rotate int not null default 0,     -- derajat
+  image_scale int not null default 100,    -- persen zoom, 67 = fit
   sort_order int not null default 0
 );
 

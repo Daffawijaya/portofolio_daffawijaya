@@ -23,6 +23,9 @@ export interface ExperienceItem {
   image: string;
   url: string;
   year: string;
+  image_position?: string; // CSS pan offset "x% y%"
+  image_rotate?: number; // derajat
+  image_scale?: number; // persen zoom
 }
 
 export interface ExperienceGroup {
@@ -87,7 +90,7 @@ export async function getExperiences(): Promise<ExperienceGroup[]> {
   if (supabase) {
     const { data } = await supabase
       .from("experiences")
-      .select("group_name, name, image, url, year")
+      .select("group_name, name, image, url, year, image_position, image_rotate, image_scale")
       .order("sort_order");
     if (data && data.length > 0) return group(data, "group_name");
   }
