@@ -206,6 +206,12 @@ export default function Admin() {
   }
 
   async function deleteRow(table: string, id: number | string) {
+    // draft belum pernah masuk DB -> cukup buang dari state
+    if (String(id).startsWith("draft-")) {
+      discardDraft(table, id);
+      setEditingId(null);
+      return;
+    }
     setMessage("");
     const { error } = await supabase!.from(table).delete().eq("id", id);
     if (!error) {
@@ -214,26 +220,70 @@ export default function Admin() {
     } else setMessage(`Error: ${error.message}`);
   }
 
-  async function addRow(table: TableDef) {
+  function discardDraft(table: string, id: number | string) {
+    setRows((prev) => ({
+      ...prev,
+      [table]: (prev[table] ?? []).filter((r) => String(r.id) !== String(id)),
+    }));
+  }
+
+  // kembali ke list; kalau yang diedit masih draft (belum pernah disave), buang
+  function backToList(table: string) {
+    const row = (rows[table] ?? []).find((r) => String(r.id) === editingId);
+    if (row && String(row.id).startsWith("draft-")) discardDraft(table, row.id);
+    setEditingId(null);
+  }
+
+  // tab diganti saat masih draft -> buang juga
+  function switchTab(name: string) {
+    if (editingId && String(editingId).startsWith("draft-"))
+      discardDraft(activeTable, editingId);
+    setActiveTable(name);
+    setEditingId(null);
+  }
+
+  // + Add hanya membuat draft lokal; masuk DB saat Save pertama kali
+  function startAdd(table: TableDef) {
+    const id = `draft-${Date.now()}`;
+    const draft = {
+      id,
+      ...Object.fromEntries(
+        table.fields.filter((f) => !f.hidden).map((f) => [f.key, f.multi ? [] : ""])
+      ),
+      sort_order: 0,
+      ...parseYearParts(""),
+    } as Row;
+    setRows((prev) => ({ ...prev, [table.name]: [draft, ...(prev[table.name] ?? [])] }));
     setMessage("");
-    // start every column empty; multi-select fields are arrays
-    const values = Object.fromEntries([
-      ...table.fields
-        .filter((f) => !f.hidden)
-        .map((f) => [f.key, f.multi ? [] : ""]),
-      ["sort_order", 0],
-    ]);
-    const { data, error } = await supabase!
-      .from(table.name)
-      .insert(values)
-      .select()
-      .single();
-    if (!data || error) {
-      setMessage(`Error: ${error?.message ?? "Insert gagal"}`);
+    setEditingId(id);
+  }
+
+  async function saveRow(tableDef: TableDef, row: Row) {
+    // draft -> INSERT pertama kali
+    if (String(row.id).startsWith("draft-")) {
+      setMessage("");
+      const values: Record<string, unknown> = {};
+      for (const field of tableDef.fields)
+        if (!field.hidden || field.key === "image_position")
+          values[field.key] = row[field.key];
+      if ("year" in values) values.year = yearValue(row);
+      const { data, error } = await supabase!
+        .from(tableDef.name)
+        .insert(values)
+        .select()
+        .single();
+      if (!data || error) {
+        setMessage(`Error: ${error?.message ?? "Insert gagal"}`);
+        return;
+      }
+      discardDraft(tableDef.name, row.id);
+      await loadRows(tableDef.name);
+      setEditingId(String(data.id));
+      setImageBust((prev) => ({ ...prev, [String(data.id)]: prev[String(row.id)] ?? 0 }));
+      setMessage("Saved.");
       return;
     }
-    await loadRows(table.name);
-    setEditingId(String(data.id)); // langsung buka editor untuk item baru
+    await updateRow(tableDef, row);
   }
 
   function editRow(table: string, id: number | string, key: string, value: string) {
@@ -430,10 +480,7 @@ export default function Admin() {
           {TABLES.map((t) => (
             <button
               key={t.name}
-              onClick={() => {
-                setActiveTable(t.name);
-                setEditingId(null);
-              }}
+              onClick={() => switchTab(t.name)}
               className={`px-4 py-1.5 text-sm italic duration-300 ${
                 activeTable === t.name
                   ? "bg-a-2 text-white font-bold"
@@ -448,7 +495,7 @@ export default function Admin() {
         {message && <p className="mb-4 text-sm text-a-2">{message}</p>}
 
         <button
-          onClick={() => addRow(table)}
+          onClick={() => startAdd(table)}
           className="mb-4 bg-a-2 text-white px-4 py-1.5 text-sm font-bold hover:opacity-90 duration-300"
         >
           + Add
@@ -510,7 +557,7 @@ export default function Admin() {
               <div className="border border-gray-200 dark:border-gray-800 p-4">
                 <div className="flex items-center justify-between mb-4">
                   <button
-                    onClick={() => setEditingId(null)}
+                    onClick={() => backToList(table.name)}
                     className="text-sm opacity-70 hover:opacity-100 duration-300 italic"
                   >
                     ← Kembali ke list
@@ -790,7 +837,7 @@ export default function Admin() {
 
               <div className="flex gap-2 mt-3">
                 <button
-                  onClick={() => updateRow(table, row)}
+                  onClick={() => saveRow(table, row)}
                   disabled={!dirty}
                   className={`bg-a-2 text-white px-3 py-1.5 text-sm duration-300 ${
                     dirty ? "hover:opacity-90" : "opacity-40 cursor-not-allowed"
