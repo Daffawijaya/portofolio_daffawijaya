@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import sharp from "sharp";
 import { supabaseAdmin } from "../../lib/supabaseAdmin";
 
 export const config = {
@@ -20,8 +21,6 @@ async function deleteByPublicUrl(
   if (path) await client.storage.from(BUCKET).remove([path]);
 }
 
-// gambar sudah dikompres + dikonversi WebP/JPEG di browser (admin),
-// jadi API ini cukup menyimpan file apa adanya -> tidak butuh sharp
 const MIME_EXT: Record<string, string> = {
   "image/webp": ".webp",
   "image/jpeg": ".jpg",
@@ -85,11 +84,23 @@ export default async function handler(
   try {
     // deteksi tipe dari data URL ("data:image/webp;base64,...")
     const mime = String(data).match(/^data:([^;,]+)/)?.[1] ?? "";
-    const buffer = Buffer.from(String(data).split(",").pop() ?? "", "base64");
+    const raw = Buffer.from(String(data).split(",").pop() ?? "", "base64");
 
     const isPdf = /\.pdf$/i.test(String(name ?? "")) || mime === "application/pdf";
-    const contentType = isPdf ? "application/pdf" : mime || "image/webp";
     const folder = isPdf ? "files" : "works";
+
+    // konversi semua gambar ke WebP di server (pola dari etamhub):
+    // rotate() mengikuti orientasi kamera, resize max 1920px
+    let buffer = raw;
+    let contentType = mime || "image/webp";
+    if (!isPdf) {
+      buffer = await sharp(raw)
+        .rotate()
+        .resize({ width: 1920, withoutEnlargement: true })
+        .webp({ quality: 80, effort: 6 })
+        .toBuffer();
+      contentType = "image/webp";
+    }
 
     const { error, path } = await saveFile(
       supabaseAdmin,
