@@ -124,6 +124,12 @@ export default function Admin() {
   const [message, setMessage] = useState("");
   const [activeTable, setActiveTable] = useState(TABLES[0].name);
   const [rows, setRows] = useState<Rows>({});
+  // snapshot per row (json string) untuk mendeteksi apakah ada perubahan
+  const [originals, setOriginals] = useState<
+    Record<string, Record<string, string>>
+  >({});
+  // id row yang sedang dibuka di editor detail; null = tampilan list
+  const [editingId, setEditingId] = useState<string | null>(null);
   // cache-buster per row so rotated images refresh in the preview
   const [imageBust, setImageBust] = useState<Record<string, number>>({});
 
@@ -142,10 +148,17 @@ export default function Admin() {
       .from(table)
       .select("*")
       .order("id", { ascending: false }); // item terbaru di atas
-    setRows((prev) => ({
+    const list = (data ?? []).map((r) => ({ ...r, ...parseYearParts(r.year) }));
+    setRows((prev) => ({ ...prev, [table]: list }));
+    setOriginals((prev) => ({
       ...prev,
-      [table]: (data ?? []).map((r) => ({ ...r, ...parseYearParts(r.year) })),
+      [table]: Object.fromEntries(list.map((r) => [String(r.id), JSON.stringify(r)])),
     }));
+  }
+
+  function isDirty(table: string, row: Row): boolean {
+    const original = originals[table]?.[String(row.id)];
+    return !original || JSON.stringify(row) !== original;
   }
 
   useEffect(() => {
@@ -176,14 +189,21 @@ export default function Admin() {
       .from(tableDef.name)
       .update(values)
       .eq("id", row.id);
-    setMessage(error ? `Error: ${error.message}` : "Saved.");
+    if (error) {
+      setMessage(`Error: ${error.message}`);
+      return;
+    }
+    await loadRows(tableDef.name); // refresh snapshot -> Save kembali disable
+    setMessage("Saved.");
   }
 
   async function deleteRow(table: string, id: number | string) {
     setMessage("");
     const { error } = await supabase!.from(table).delete().eq("id", id);
-    if (!error) loadRows(table);
-    else setMessage(`Error: ${error.message}`);
+    if (!error) {
+      if (String(id) === editingId) setEditingId(null);
+      loadRows(table);
+    } else setMessage(`Error: ${error.message}`);
   }
 
   async function addRow(table: TableDef) {
@@ -195,9 +215,17 @@ export default function Admin() {
         .map((f) => [f.key, f.multi ? [] : ""]),
       ["sort_order", 0],
     ]);
-    const { error } = await supabase!.from(table.name).insert(values);
-    if (!error) loadRows(table.name);
-    else setMessage(`Error: ${error.message}`);
+    const { data, error } = await supabase!
+      .from(table.name)
+      .insert(values)
+      .select()
+      .single();
+    if (!data || error) {
+      setMessage(`Error: ${error?.message ?? "Insert gagal"}`);
+      return;
+    }
+    await loadRows(table.name);
+    setEditingId(String(data.id)); // langsung buka editor untuk item baru
   }
 
   function editRow(table: string, id: number | string, key: string, value: string) {
@@ -394,7 +422,10 @@ export default function Admin() {
           {TABLES.map((t) => (
             <button
               key={t.name}
-              onClick={() => setActiveTable(t.name)}
+              onClick={() => {
+                setActiveTable(t.name);
+                setEditingId(null);
+              }}
               className={`px-4 py-1.5 text-sm italic duration-300 ${
                 activeTable === t.name
                   ? "bg-a-2 text-white font-bold"
@@ -415,13 +446,71 @@ export default function Admin() {
           + Add
         </button>
 
-        <div className="flex flex-col gap-6">
-          {(rows[table.name] ?? []).map((row) => (
-            <div
-              key={row.id}
-              className="border border-gray-200 dark:border-gray-800 p-4"
-            >
-              <div className="flex flex-wrap gap-x-4 gap-y-3 items-end">
+        {/* ===== tampilan list ===== */}
+        {!editingId && (
+          <div className="flex flex-col">
+            {(rows[table.name] ?? []).map((row) => {
+              const category = Array.isArray(row.category)
+                ? (row.category as string[]).join(", ")
+                : String(row.group_name ?? row.category ?? "");
+              const subtitle =
+                [category, String(row.year ?? "")].filter(Boolean).join(" • ") ||
+                String(row.color ?? "");
+              return (
+                <div
+                  key={row.id}
+                  className="flex justify-between items-center gap-3 border border-gray-200 dark:border-gray-800 px-4 py-3 -mt-px"
+                >
+                  <div className="min-w-0">
+                    <p className="font-semibold truncate">{String(row.name ?? "-")}</p>
+                    {subtitle && (
+                      <p className="text-xs opacity-60 truncate italic">{subtitle}</p>
+                    )}
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <button
+                      onClick={() => setEditingId(String(row.id))}
+                      className="bg-a-2 text-white px-3 py-1.5 text-sm hover:opacity-90 duration-300"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteRow(table.name, row.id)}
+                      className="border border-red-400 text-red-500 px-3 py-1.5 text-sm hover:bg-red-50 dark:hover:bg-red-950 duration-300"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+            {(rows[table.name] ?? []).length === 0 && (
+              <p className="opacity-60 italic text-sm">Belum ada data.</p>
+            )}
+          </div>
+        )}
+
+        {/* ===== editor detail ===== */}
+        {editingId &&
+          (() => {
+            const row = (rows[table.name] ?? []).find(
+              (r) => String(r.id) === editingId
+            );
+            if (!row) return null;
+            const dirty = isDirty(table.name, row);
+            return (
+              <div className="border border-gray-200 dark:border-gray-800 p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <button
+                    onClick={() => setEditingId(null)}
+                    className="text-sm opacity-70 hover:opacity-100 duration-300 italic"
+                  >
+                    ← Kembali ke list
+                  </button>
+                  <span className="text-xs opacity-50">id: {String(row.id)}</span>
+                </div>
+
+                <div className="flex flex-wrap gap-x-4 gap-y-3 items-end">
                 {table.fields.map((field) => {
                   // hidden fields are managed by other controls
                   if (field.hidden) return null;
@@ -694,7 +783,10 @@ export default function Admin() {
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={() => updateRow(table, row)}
-                  className="bg-a-2 text-white px-3 py-1.5 text-sm hover:opacity-90 duration-300"
+                  disabled={!dirty}
+                  className={`bg-a-2 text-white px-3 py-1.5 text-sm duration-300 ${
+                    dirty ? "hover:opacity-90" : "opacity-40 cursor-not-allowed"
+                  }`}
                 >
                   Save
                 </button>
@@ -706,8 +798,8 @@ export default function Admin() {
                 </button>
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })()}
 
         <p className="mt-8 text-xs opacity-60 italic">
           Perubahan tampil di situs publik maksimal {60} detik setelah disimpan.
