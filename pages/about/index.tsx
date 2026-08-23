@@ -124,19 +124,42 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
                     {category.title}
                   </p>
 
-                  {/* layout sama persis dengan bagian Another Skills */}
-                  <div className="grid lg:grid-cols-5 grid-cols-4 lg:gap-4">
-                    {category.items.map((tech) => (
-                      <TechCard
-                        key={tech.name}
-                        name={tech.name}
-                        icon={tech.icon}
-                        color={tech.color}
-                        hoveredTech={hoveredTech}
-                        setHoveredTech={setHoveredTech}
-                      />
-                    ))}
-                  </div>
+                  {/* <= 5 item: grid sama seperti Another Skills.
+                      > 5 item: satu baris auto-geser dalam lebar yang sama */}
+                  {category.items.length > 5 ? (
+                    <div className="overflow-hidden">
+                      <div
+                        className="flex w-max gap-4 hover:[animation-play-state:paused]"
+                        style={{
+                          animation: `marquee ${category.items.length * 3}s linear infinite`,
+                        }}
+                      >
+                        {[...category.items, ...category.items].map((tech, i) => (
+                          <TechCard
+                            key={`${tech.name}-${i}`}
+                            name={tech.name}
+                            icon={tech.icon}
+                            color={tech.color}
+                            hoveredTech={hoveredTech}
+                            setHoveredTech={setHoveredTech}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid lg:grid-cols-5 grid-cols-4 lg:gap-4">
+                      {category.items.map((tech) => (
+                        <TechCard
+                          key={tech.name}
+                          name={tech.name}
+                          icon={tech.icon}
+                          color={tech.color}
+                          hoveredTech={hoveredTech}
+                          setHoveredTech={setHoveredTech}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
