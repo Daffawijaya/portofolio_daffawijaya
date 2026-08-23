@@ -135,9 +135,9 @@ export async function getExperiences(): Promise<ExperienceGroup[]> {
 
 // urutan kategori techstack yang tetap di halaman publik
 const TECHSTACK_ORDER = [
-  "Framework",
-  "Programming Language",
   "Fullstack Development",
+  "Programming Language",
+  "Framework",
   "Mobile Development",
 ];
 
