@@ -125,14 +125,11 @@ export default function Admin() {
   const [message, setMessage] = useState("");
   const [activeTable, setActiveTable] = useState(TABLES[0].name);
   const [rows, setRows] = useState<Rows>({});
-  // snapshot per row (json string) untuk mendeteksi apakah ada perubahan
   const [originals, setOriginals] = useState<
     Record<string, Record<string, string>>
   >({});
   // id row yang sedang dibuka di editor detail; null = tampilan list
   const [editingId, setEditingId] = useState<string | null>(null);
-  // cache-buster per row so rotated images refresh in the preview
-  const [imageBust, setImageBust] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (!supabase) return;
@@ -280,7 +277,6 @@ export default function Admin() {
       discardDraft(tableDef.name, row.id);
       await loadRows(tableDef.name);
       setEditingId(String(data.id));
-      setImageBust((prev) => ({ ...prev, [String(data.id)]: prev[String(row.id)] ?? 0 }));
       setMessage("Saved.");
       return;
     }
@@ -364,29 +360,6 @@ export default function Admin() {
     );
   }
 
-  // set image_position ("x% y%") from the preview sliders
-
-  // rotate the stored webp 90° clockwise, overwriting the same file
-  async function rotateImage(table: string, id: number | string, url: string) {
-    setMessage("Memutar gambar...");
-    try {
-      const res = await fetch("/api/rotate-image", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session!.access_token}`,
-        },
-        body: JSON.stringify({ url }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "Rotate gagal");
-      setImageBust((prev) => ({ ...prev, [String(id)]: Date.now() }));
-      setMessage("Gambar diputar 90°. Posisi slider bisa disesuaikan lagi.");
-    } catch (e) {
-      setMessage(`Error: ${(e as Error).message}`);
-    }
-  }
-
   async function uploadImage(table: string, id: number | string, file: File) {    setMessage("Uploading...");
     try {
       const data = await new Promise<string>((resolve, reject) => {
@@ -468,8 +441,6 @@ export default function Admin() {
     const dirty = isDirty(table.name, row);
     return (
       <>
-        <span className="block text-xs opacity-50 mb-3">id: {String(row.id)}</span>
-
         <div className="flex flex-wrap gap-x-4 gap-y-3 items-end">
           {table.fields.map((field) => {
             // hidden fields are managed by other controls
@@ -480,12 +451,7 @@ export default function Admin() {
               const hasTransform = table.fields.some(
                 (f) => f.key === "image_position"
               );
-              const bust = imageBust[String(row.id)];
               const imageUrl = String(row.image ?? "");
-              const previewUrl =
-                imageUrl && bust
-                  ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}v=${bust}`
-                  : imageUrl;
               const [px, py] = parsePos(row);
               const rot = Number(row.image_rotate) || 0;
               const zoom = Number(row.image_scale) || 100;
@@ -514,36 +480,21 @@ export default function Admin() {
                       <div
                         className="absolute -inset-1/4 bg-cover bg-center pointer-events-none"
                         style={{
-                          backgroundImage: previewUrl
-                            ? `url(${previewUrl})`
-                            : undefined,
+                          backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
                           transform: `translate(${px}%, ${py}%) rotate(${rot}deg) scale(${zoom / 100})`,
                         }}
                       />
                     </div>
                     <div className="flex flex-col gap-2 grow text-sm">
-                      <div className="flex gap-2">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) uploadImage(table.name, row.id, file);
-                            e.target.value = "";
-                          }}
-                        />
-                        {!!row.image && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              rotateImage(table.name, row.id, String(row.image))
-                            }
-                            className="border border-gray-300 dark:border-gray-700 px-3 py-1 whitespace-nowrap hover:bg-gray-100 dark:hover:bg-gray-900 duration-300"
-                          >
-                            ⟳ Putar 90°
-                          </button>
-                        )}
-                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) uploadImage(table.name, row.id, file);
+                          e.target.value = "";
+                        }}
+                      />
                       <input
                         className={inputClass}
                         value={String(row.image ?? "")}
