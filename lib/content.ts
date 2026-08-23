@@ -133,20 +133,22 @@ export async function getExperiences(): Promise<ExperienceGroup[]> {
   return experienceData;
 }
 
-// urutan kategori techstack yang tetap di halaman publik
-const TECHSTACK_ORDER = [
-  "Fullstack Development",
-  "Programming Language",
-  "Framework",
-  "Mobile Development",
-];
+// urutan kategori techstack di halaman publik: Web Dev paling atas,
+// Mobile paling bawah. Dicocokkan lewat kata kunci supaya tetap berlaku
+// walau nama kategori di database sedikit berbeda (mis. "Web Development").
+function categoryRank(title: string): number {
+  const t = title.toLowerCase();
+  if (/fullstack|web\s*dev|frontend|backend/.test(t)) return 0;
+  if (/programming|language/.test(t)) return 1;
+  if (/framework/.test(t)) return 2;
+  if (/mobile/.test(t)) return 3;
+  return 4; // kategori lain -> paling bawah
+}
 
 function orderByTechstackOrder(groups: TechCategory[]): TechCategory[] {
-  return [...groups].sort((a, b) => {
-    const ia = TECHSTACK_ORDER.indexOf(a.title);
-    const ib = TECHSTACK_ORDER.indexOf(b.title);
-    return (ia === -1 ? TECHSTACK_ORDER.length : ia) - (ib === -1 ? TECHSTACK_ORDER.length : ib);
-  });
+  return [...groups].sort(
+    (a, b) => categoryRank(a.title) - categoryRank(b.title)
+  );
 }
 
 export async function getTechstack(): Promise<TechCategory[]> {
