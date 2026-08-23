@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { WorkItem } from "../lib/content";
-import { autoFitScale, clampPan } from "../lib/imageFit";
+import PannableImage from "./PannableImage";
 
 interface WorkListProps {
   worksData: WorkItem[];
@@ -13,14 +13,6 @@ export default function WorkList({ worksData }: WorkListProps) {
       <div className="flex flex-col lg:ml-[16%] space-y-6 italic">
         {worksData.map((item, idx) => {
           const isEven = idx % 2 === 0;
-          // image_position holds pan offsets ("x% y%", translate % of the layer);
-          // clamped so the oversized layer never exposes gaps
-          const [panX = 0, panY = 0] = String(item.image_position || "")
-            .split(" ")
-            .map((v) => parseFloat(v) || 0);
-          const zoom = (item.image_scale || 100) / 100;
-          // skala efektif = zoom manual x kompensasi otomatis rotasi
-          const effective = zoom * autoFitScale(item.image_rotate || 0);
 
           return (
             <motion.div
@@ -32,15 +24,12 @@ export default function WorkList({ worksData }: WorkListProps) {
             >
               <div className={`${isEven ? "ml-[20%]" : "mr-[20%]"} relative`}>
                 <Link href={item.url}>
-                  {/* -inset-1/4: layer gambar lebih besar dari kartu supaya
-                      sudutnya tetap tertutup saat dirotasi */}
                   <div className="lg:h-64 h-40 relative flex items-center overflow-hidden">
-                    <div
-                      className="absolute -inset-1/4 bg-cover bg-center"
-                      style={{
-                        backgroundImage: `url(${item.image})`,
-                        transform: `translate(${clampPan(panX, effective)}%, ${clampPan(panY, effective)}%) rotate(${item.image_rotate || 0}deg) scale(${effective})`,
-                      }}
+                    <PannableImage
+                      src={item.image}
+                      position={item.image_position || "0% 0%"}
+                      rotate={item.image_rotate || 0}
+                      scale={(item.image_scale || 100) / 100}
                     />
                     <div className="absolute h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-saturate-0 hover:backdrop-saturate-100 backdrop-contrast-[0.8] hover:backdrop-contrast-[1]">
                       <div className="lg:px-[20%] px-[5%] absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-3 hover:pt-0 duration-300">

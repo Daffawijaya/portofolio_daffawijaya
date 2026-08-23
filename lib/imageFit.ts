@@ -1,12 +1,12 @@
+import { useEffect, useRef, useState } from "react";
+
 // Skala minimum supaya layer yang dirotasi tetap menutup frame-nya,
 // sehingga tidak ada sudut kosong saat gambar diputar.
-// ponytail: mengasumsikan frame ~16:9; frame jauh lebih lebar mungkin
-// butuh zoom sedikit lebih besar -> naikkan param aspect jika perlu.
-export function autoFitScale(rotateDeg: number, aspect = 9 / 16): number {
+export function autoFitScale(rotateDeg: number, aspectHW: number): number {
   const t = (Math.abs(rotateDeg) * Math.PI) / 180;
   const c = Math.abs(Math.cos(t));
   const s = Math.abs(Math.sin(t));
-  const r = aspect; // tinggi / lebar frame
+  const r = aspectHW; // tinggi / lebar frame (diukur langsung dari elemen)
   // layer berukuran 1.5x frame; cari skala agar rotasinya tetap menutupi
   return Math.max(
     1,
@@ -22,5 +22,24 @@ export function panLimitPct(effectiveScale: number): number {
 
 export function clampPan(v: number, effectiveScale: number): number {
   const limit = panLimitPct(effectiveScale);
-  return Math.round(Math.max(-limit, Math.min(limit, v)));
+  return Math.max(-limit, Math.min(limit, v));
+}
+
+// ukur rasio (lebar/tinggi) elemen secara realtime
+export function useMeasuredAspect<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [aspectWH, setAspect] = useState(16 / 9);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => {
+      const r = el.getBoundingClientRect();
+      if (r.width && r.height) setAspect(r.width / r.height);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return { ref, aspectWH };
 }

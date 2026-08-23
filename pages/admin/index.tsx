@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../../lib/supabase";
 import { ICONS } from "../../lib/icons";
-import { autoFitScale, clampPan } from "../../lib/imageFit";
+import PannableImage from "../../components/PannableImage";
 import PageHead from "../../components/PageHead";
 
 interface FieldDef {
@@ -312,54 +312,6 @@ export default function Admin() {
     }));
   }
 
-  // drag-to-pan: convert pointer movement into background-position percentages
-  const dragRef = useRef<{
-    key: string;
-    startX: number;
-    startY: number;
-    px: number;
-    py: number;
-  } | null>(null);
-
-  function parsePos(row: Row): [number, number] {
-    const [x = 0, y = 0] = String(row.image_position || "")
-      .split(" ")
-      .map((v) => parseFloat(v) || 0);
-    return [x, y];
-  }
-
-  // skala efektif = zoom manual x kompensasi otomatis rotasi (lihat lib/imageFit)
-  function effectiveScale(row: Row): number {
-    const zoom = (Number(row.image_scale) || 100) / 100;
-    return zoom * autoFitScale(Number(row.image_rotate) || 0);
-  }
-
-  function previewPointerDown(e: React.PointerEvent, table: string, row: Row) {
-    const [px, py] = parsePos(row);
-    dragRef.current = {
-      key: `${table}:${row.id}`,
-      startX: e.clientX,
-      startY: e.clientY,
-      px,
-      py,
-    };
-    e.currentTarget.setPointerCapture(e.pointerId);
-  }
-
-  function previewPointerMove(e: React.PointerEvent, table: string, row: Row) {
-    const d = dragRef.current;
-    if (!d || d.key !== `${table}:${row.id}`) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const dx = ((e.clientX - d.startX) / rect.width) * 100;
-    const dy = ((e.clientY - d.startY) / rect.height) * 100;
-    editRow(
-      table,
-      row.id,
-      "image_position",
-      `${clampPan(d.px + dx, effectiveScale(row))}% ${clampPan(d.py + dy, effectiveScale(row))}%`
-    );
-  }
-
   async function uploadImage(table: string, id: number | string, file: File) {    setMessage("Uploading...");
     try {
       const data = await new Promise<string>((resolve, reject) => {
@@ -451,11 +403,8 @@ export default function Admin() {
               const hasTransform = table.fields.some(
                 (f) => f.key === "image_position"
               );
-              const imageUrl = String(row.image ?? "");
-              const [px, py] = parsePos(row);
               const rot = Number(row.image_rotate) || 0;
               const zoom = Number(row.image_scale) || 100;
-              const effective = (zoom / 100) * autoFitScale(rot);
               return (
                 <div key={field.key} className="w-full">
                   <span className="text-xs font-semibold opacity-70">
@@ -463,27 +412,19 @@ export default function Admin() {
                   </span>
                   <div className="flex flex-col sm:flex-row gap-3 mt-1">
                     {/* preview pakai rasio yang sama dengan kartu di halaman works */}
-                    <div
-                      className={
-                        "relative sm:w-72 w-full aspect-[16/7] border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 overflow-hidden select-none touch-none " +
-                        (hasTransform ? "cursor-grab active:cursor-grabbing" : "")
-                      }
-                      onPointerDown={(e) =>
-                        hasTransform && previewPointerDown(e, table.name, row)
-                      }
-                      onPointerMove={(e) =>
-                        hasTransform && previewPointerMove(e, table.name, row)
-                      }
-                      onPointerUp={() => (dragRef.current = null)}
-                      onPointerCancel={() => (dragRef.current = null)}
-                    >
-                      {/* -inset-1/4: layer lebih besar supaya sudut tetap tertutup */}
-                      <div
-                        className="absolute -inset-1/4 bg-cover bg-center pointer-events-none"
-                        style={{
-                          backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
-                          transform: `translate(${px}%, ${py}%) rotate(${rot}deg) scale(${effective})`,
-                        }}
+                    <div className="sm:w-72 w-full aspect-[16/7] border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900">
+                      <PannableImage
+                        src={String(row.image ?? "")}
+                        position={String(row.image_position || "0% 0%")}
+                        rotate={rot}
+                        scale={zoom / 100}
+                        interactive={hasTransform}
+                        onPositionChange={
+                          hasTransform
+                            ? (pos) =>
+                                editRow(table.name, row.id, "image_position", pos)
+                            : undefined
+                        }
                       />
                     </div>
                     <div className="flex flex-col gap-2 grow text-sm">
