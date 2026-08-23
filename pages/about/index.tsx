@@ -124,33 +124,18 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
                     {category.title}
                   </p>
 
-                  {/* satu baris; kalau isinya lebih dari 5, geser otomatis
-                      (marquee) — hover untuk berhenti sementara */}
-                  <div className="overflow-hidden w-full">
-                    <div
-                      className="flex w-max hover:[animation-play-state:paused]"
-                      style={
-                        category.items.length > 5
-                          ? {
-                              animation: `marquee ${category.items.length * 3}s linear infinite`,
-                            }
-                          : undefined
-                      }
-                    >
-                      {(category.items.length > 5
-                        ? [...category.items, ...category.items]
-                        : category.items
-                      ).map((tech, i) => (
-                        <TechCard
-                          key={`${tech.name}-${i}`}
-                          name={tech.name}
-                          icon={tech.icon}
-                          color={tech.color}
-                          hoveredTech={hoveredTech}
-                          setHoveredTech={setHoveredTech}
-                        />
-                      ))}
-                    </div>
+                  {/* layout sama persis dengan bagian Another Skills */}
+                  <div className="grid lg:grid-cols-5 grid-cols-4 lg:gap-4">
+                    {category.items.map((tech) => (
+                      <TechCard
+                        key={tech.name}
+                        name={tech.name}
+                        icon={tech.icon}
+                        color={tech.color}
+                        hoveredTech={hoveredTech}
+                        setHoveredTech={setHoveredTech}
+                      />
+                    ))}
                   </div>
                 </div>
               ))}
