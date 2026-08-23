@@ -4,7 +4,7 @@ import {
   SiTailwindcss, SiChakraui, SiBootstrap, SiFramer, SiRedux,
   SiPostgresql, SiSupabase, SiNextdotjs, SiPython, SiCsharp,
   SiArduino, SiFigma, SiCanva, SiAdobephotoshop, SiAdobepremierepro,
-  SiSketchup, SiBlender, SiLinkedin, SiInstagram, SiGithub,
+  SiSketchup, SiBlender, SiLinkedin, SiInstagram, SiGithub, SiExpo,
 } from "react-icons/si";
 import { FaVuejs } from "react-icons/fa";
 import { IoLogoLaravel } from "react-icons/io5";
@@ -17,7 +17,7 @@ export const ICONS: Record<string, IconType> = {
   SiTailwindcss, SiChakraui, SiBootstrap, SiFramer, SiRedux,
   SiPostgresql, SiSupabase, SiNextdotjs, SiPython, SiCsharp,
   SiArduino, SiFigma, SiCanva, SiAdobephotoshop, SiAdobepremierepro,
-  SiSketchup, SiBlender, SiLinkedin, SiInstagram, SiGithub,
+  SiSketchup, SiBlender, SiLinkedin, SiInstagram, SiGithub, SiExpo,
   FaVuejs, IoLogoLaravel, RiFileExcel2Fill, RiFileWord2Fill, HiPencil,
 };
 
