@@ -5,7 +5,6 @@ import Background from "../../components/Background";
 import Sidebar from "../../components/Sidebar";
 import ThemeSwitcher from "../../components/ThemeSwitcher";
 import PageHead from "../../components/PageHead";
-import TechCard from "../../components/TechCard";
 import SectionHeader from "../../components/SectionHeader";
 import PannableImage from "../../components/PannableImage";
 import TechStackList from "../../components/TechStackList";
@@ -74,7 +73,7 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
               {...fadeIn(1, 200)}
               className="text-black dark:text-white relative text-lg lg:text-2xl"
             >
-              Web Developer | IT & Digitalization Specialist
+              Fullstack &amp; Mobile Developer | IT &amp; Digitalization Specialist
             </motion.p>
             <div className="relative flex lg:flex-row flex-col items-start lg:space-x-4 w-full pt-4">
               <motion.div
@@ -85,7 +84,7 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
               </motion.div>
               <motion.div {...fadeIn(1, 200)}>
                 <p className="z-0 relative text-black dark:text-a-2 text-md lg:text-2xl pb-4 font-medium w-full lg:w-[70%]">
-                  &quot;Passionate about web development, leveraging AI to build responsive, user-friendly websites and solve real-world problems through practical projects.
+                  &quot;Passionate about fullstack web and mobile development, leveraging AI to build responsive, user-friendly applications and solve real-world problems through practical projects.
                 </p>
                 <a
                   href="https://drive.google.com/file/d/1JJzxZVgSfaoVXRh2cc9ShLaGczQHXJzv/view?usp=sharing"
@@ -115,7 +114,7 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
             <SectionHeader
               subtitle="Professional"
               title="Techstack"
-              description="Technologies I use in my work as a web developer. This list continues to grow as I learn, build, and work with new technologies."
+              description="Technologies I use in my work as a fullstack & mobile developer. This list continues to grow as I learn, build, and work with new technologies."
             />
             <TechStackList
               categories={techstack}
@@ -135,25 +134,14 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
             <SectionHeader
               subtitle="Another"
               title="Skills"
-              description="These are my additional skills outside of frontend development, covering backend, design, and creative tools."
+              description="These are my additional skills outside of coding, covering design, multimedia, and creative tools."
             />
-            <div className="flex flex-col w-full py-5 lg:pr-[20%]">
-              <p className="text-black dark:text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6">
-                Tools &amp; Technologies
-              </p>
-              <div className="grid lg:grid-cols-5 grid-cols-4 lg:gap-4">
-                {skills.map((skill) => (
-                  <TechCard
-                    key={skill.name}
-                    name={skill.name}
-                    icon={skill.icon}
-                    color={skill.color}
-                    hoveredTech={hoveredTech}
-                    setHoveredTech={setHoveredTech}
-                  />
-                ))}
-              </div>
-            </div>
+            <TechStackList
+              categories={[{ title: "Tools & Technologies", items: skills }]}
+              hoveredTech={hoveredTech}
+              setHoveredTech={setHoveredTech}
+              alwaysGrid
+            />
           </div>
           <h1 className="absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-20 -rotate-90 font-bold">
             OTHER

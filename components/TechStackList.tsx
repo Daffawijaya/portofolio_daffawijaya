@@ -6,6 +6,7 @@ interface TechStackListProps {
   categories: TechCategory[];
   hoveredTech: string | null;
   setHoveredTech: (name: string | null) => void;
+  alwaysGrid?: boolean; // paksa grid walau item > 5 (dipakai Another Skills)
 }
 
 const GAP = 16; // gap-4, sama dengan grid
@@ -57,7 +58,7 @@ function SlidingRow({
         className="flex w-max hover:[animation-play-state:paused]"
         style={{
           gap: GAP,
-          animation: `marquee-r ${items.length * 3}s linear infinite`,
+          animation: `marquee ${items.length * 3}s linear infinite`,
         }}
       >
         {[...items, ...items].map((tech, i) => (
@@ -83,12 +84,13 @@ function SlidingRow({
 
 // seksi techstack yang konsisten:
 // - <= 5 item  -> grid (persis seperti Another Skills)
-// - > 5 item   -> satu baris auto-geser ke kanan, slot kartu seragam,
+// - > 5 item   -> satu baris auto-geser ke kiri, slot kartu seragam,
 //                 lebar area tetap sama dengan grid (tidak menggeser layout)
 export default function TechStackList({
   categories,
   hoveredTech,
   setHoveredTech,
+  alwaysGrid,
 }: TechStackListProps) {
   return (
     // min-w-0: tanpa ini, lebar track marquee (w-max) jadi min-content
@@ -103,7 +105,7 @@ export default function TechStackList({
             {category.title}
           </p>
 
-          {category.items.length > 5 ? (
+          {category.items.length > 5 && !alwaysGrid ? (
             <SlidingRow
               items={category.items}
               hoveredTech={hoveredTech}

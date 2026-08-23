@@ -15,17 +15,18 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider attribute="class">
       <Head>
         <title>
-          Daffa Yan Wijaya - Web Developer, IT Consultant & Digitalisasi UMKM
+          Daffa Yan Wijaya - Fullstack & Mobile Developer, IT Consultant &
+          Digitalisasi UMKM
         </title>
 
         <meta
           name="description"
-          content="Website resmi Daffa Yan Wijaya. Web Developer, IT Consultant, Digitalisasi UMKM, Next.js Developer, dan pengembang aplikasi EtamHub."
+          content="Website resmi Daffa Yan Wijaya. Fullstack & Mobile Developer, IT Consultant, Digitalisasi UMKM, Next.js Developer, dan pengembang aplikasi EtamHub."
         />
 
         <meta
           name="keywords"
-          content="Daffa Yan Wijaya, Daffa, Yan Wijaya, Web Developer Indonesia, Next.js Developer, React Developer, IT Consultant, Digitalisasi UMKM, EtamHub"
+          content="Daffa Yan Wijaya, Daffa, Yan Wijaya, Fullstack Developer Indonesia, Mobile Developer, Next.js Developer, React Developer, React Native Developer, IT Consultant, Digitalisasi UMKM, EtamHub"
         />
 
         <meta
@@ -42,12 +43,12 @@ export default function App({ Component, pageProps }: AppProps) {
         {/* Open Graph */}
         <meta
           property="og:title"
-          content="Daffa Yan Wijaya - Web Developer & IT Consultant"
+          content="Daffa Yan Wijaya - Fullstack & Mobile Developer, IT Consultant"
         />
 
         <meta
           property="og:description"
-          content="Website resmi Daffa Yan Wijaya. Portfolio, proyek, pengalaman, dan layanan pengembangan web."
+          content="Website resmi Daffa Yan Wijaya. Portfolio, proyek, pengalaman, dan layanan pengembangan web & mobile."
         />
 
         <meta property="og:url" content="https://daffayanwijaya.vercel.app" />
@@ -65,7 +66,10 @@ export default function App({ Component, pageProps }: AppProps) {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
 
-        <meta name="twitter:title" content="Daffa Yan Wijaya - Web Developer" />
+        <meta
+          name="twitter:title"
+          content="Daffa Yan Wijaya - Fullstack & Mobile Developer"
+        />
 
         <meta
           name="twitter:description"
@@ -86,14 +90,15 @@ export default function App({ Component, pageProps }: AppProps) {
               name: "Daffa Yan Wijaya",
               url: "https://daffayanwijaya.vercel.app",
               image: "https://daffayanwijaya.vercel.app/profile.jpg",
-              jobTitle: "Web Developer",
+              jobTitle: "Fullstack & Mobile Developer",
               description:
-                "Web Developer, IT Consultant, dan Digitalisasi UMKM.",
+                "Fullstack & Mobile Developer, IT Consultant, dan Digitalisasi UMKM.",
               knowsAbout: [
                 "Next.js",
                 "React",
                 "TypeScript",
-                "Web Development",
+                "Fullstack Development",
+                "Mobile Development",
                 "Digitalisasi UMKM",
               ],
             }),

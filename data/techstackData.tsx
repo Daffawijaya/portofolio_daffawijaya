@@ -8,7 +8,7 @@ const techstackData = [
     ],
   },
   {
-    title: "Web Development",
+    title: "Fullstack Development",
     items: [
       { name: "React JS", icon: "SiReact", color: "#61DAFB" },
       { name: "HTML", icon: "SiHtml5", color: "#E34F26" },
@@ -28,6 +28,11 @@ const techstackData = [
       { name: "Next JS", icon: "SiNextdotjs", color: "#7046B3" },
       { name: "Vue JS", icon: "FaVuejs", color: "#41b883" },
       { name: "Laravel", icon: "IoLogoLaravel", color: "#f63003" },
+    ],
+  },
+  {
+    title: "Mobile Development",
+    items: [
       { name: "Expo (React Native)", icon: "SiExpo", color: "#000020" },
     ],
   },
