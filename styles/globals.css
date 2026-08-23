@@ -13,6 +13,25 @@
   font-family: "Hazard", sans-serif;
 }
 
+/* input tanggal dipakai di admin dengan bg putih -> paksa skema terang
+   supaya icon kalender bawaan browser selalu hitam & terlihat */
+input[type="date"] {
+  color-scheme: light;
+}
+
+/* transisi halus saat ganti dark/light mode: class theme-anim dipasang
+   sementara di <html> oleh ThemeSwitcher saat toggle, lalu dilepas */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-anim *,
+  html.theme-anim *::before,
+  html.theme-anim *::after {
+    transition: background-color 0.5s ease, color 0.5s ease,
+      border-color 0.5s ease, fill 0.5s ease, stroke 0.5s ease,
+      backdrop-filter 0.5s ease, -webkit-backdrop-filter 0.5s ease,
+      box-shadow 0.5s ease !important;
+  }
+}
+
 /* marquee: geser ke kiri terus, dipakai baris techstack */
 @keyframes marquee {
   from {

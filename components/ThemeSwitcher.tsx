@@ -8,10 +8,21 @@ export default function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  function toggleTheme() {
+    // pasang class transisi sementara supaya seluruh halaman fade halus,
+    // bukan ganti warna secara statis
+    document.documentElement.classList.add("theme-anim");
+    setTheme(theme === "light" ? "dark" : "light");
+    window.setTimeout(
+      () => document.documentElement.classList.remove("theme-anim"),
+      600
+    );
+  }
+
   return (
     <button
       className="hover:scale-105 duration-300 flex fixed z-50 right-6 bottom-6"
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      onClick={toggleTheme}
     >
       <div className="flex space-x-2 flex-row items-center bg-black dark:bg-a-2 p-3 rounded-full">
         {/* first paint always shows sun (same as SSR), swap after mount to avoid hydration mismatch */}
