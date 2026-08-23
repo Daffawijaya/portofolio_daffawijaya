@@ -54,6 +54,32 @@ export interface ContactLink {
 
 const REVALIDATE = 60; // seconds until edited content shows on the public site
 
+// fallback saat Supabase belum diisi / tabel kosong
+export const SETTINGS_DEFAULTS: Record<string, string> = {
+  position: "Web Developer",
+  about_image: "/dafanoanting.png",
+  about_text:
+    '"Passionate about fullstack web and mobile development, leveraging AI to build responsive, user-friendly applications and solve real-world problems through practical projects.',
+  cv_url:
+    "https://drive.google.com/file/d/1JJzxZVgSfaoVXRh2cc9ShLaGczQHXJzv/view?usp=sharing",
+  contact_country: "Indonesia",
+  contact_address:
+    "Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java",
+  map_url: "https://goo.gl/maps/NBknBQpL43MXpbrb9",
+};
+
+export async function getSettings(): Promise<Record<string, string>> {
+  if (supabase) {
+    const { data } = await supabase.from("settings").select("key, value");
+    if (data && data.length > 0)
+      return {
+        ...SETTINGS_DEFAULTS,
+        ...Object.fromEntries(data.map((r) => [r.key, r.value])),
+      };
+  }
+  return SETTINGS_DEFAULTS;
+}
+
 function group<T extends Record<string, unknown>>(
   rows: T[],
   groupKey: string,

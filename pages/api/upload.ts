@@ -31,6 +31,29 @@ export default async function handler(
   try {
     const buffer = Buffer.from(String(data).split(",").pop() ?? "", "base64");
 
+    // PDF (mis. CV) disimpan apa adanya, tanpa konversi gambar
+    if (/\.pdf$/i.test(String(name ?? ""))) {
+      const base = String(name)
+        .replace(/\.[^.]+$/, "")
+        .replace(/[^a-z0-9]+/gi, "-")
+        .toLowerCase();
+      const path = `files/${Date.now()}-${base}.pdf`;
+      let { error } = await supabaseAdmin.storage
+        .from(BUCKET)
+        .upload(path, buffer, { contentType: "application/pdf" });
+      if (error && /not found/i.test(error.message)) {
+        await supabaseAdmin.storage.createBucket(BUCKET, { public: true });
+        ({ error } = await supabaseAdmin.storage
+          .from(BUCKET)
+          .upload(path, buffer, { contentType: "application/pdf" }));
+      }
+      if (error) return res.status(500).json({ error: error.message });
+      const { data: pub } = supabaseAdmin.storage
+        .from(BUCKET)
+        .getPublicUrl(path);
+      return res.status(200).json({ url: pub.publicUrl });
+    }
+
     // auto-convert to WebP before it enters storage
     const webp = await sharp(buffer)
       .rotate()

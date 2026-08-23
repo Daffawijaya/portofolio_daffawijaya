@@ -2,8 +2,9 @@ import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import ThemeSwitcher from "../components/ThemeSwitcher";
 import PageHead from "../components/PageHead";
+import { getSettings, REVALIDATE } from "../lib/content";
 
-export default function Home() {
+export default function Home({ position }: { position: string }) {
   return (
     <>
       <PageHead title="Daffa Wijaya" />
@@ -23,12 +24,24 @@ export default function Home() {
             initial={{ bottom: -100, opacity: 0 }}
             animate={{ bottom: 0, opacity: 1 }}
             transition={{ delay: 0, duration: 1 }}
-            className="bg-[url('/dafaaalogo2i2.png')] dark:bg-[url('/dafaaalogo2.png')] relative lg:h-[290px] lg:w-[400px] sm:h-[220px] sm:w-[300px] bg-cover h-[180px] w-[240px] mr-[15%]"
-          />
+            className="relative flex flex-col items-center mr-[15%]"
+          >
+            <div className="bg-[url('/daaa.png')] lg:h-[240px] lg:w-[400px] sm:h-[180px] sm:w-[300px] bg-contain bg-center bg-no-repeat h-[145px] w-[240px]" />
+            <p className="font-hazard text-black dark:text-white text-[2.5rem] lg:text-[3.75rem] -mt-1">
+              {position}
+            </p>
+          </motion.div>
         </div>
       </main>
 
       <ThemeSwitcher />
     </>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: { position: (await getSettings()).position },
+    revalidate: REVALIDATE,
+  };
 }

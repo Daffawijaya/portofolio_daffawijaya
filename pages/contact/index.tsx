@@ -5,14 +5,15 @@ import Background from "../../components/Background";
 import Sidebar from "../../components/Sidebar";
 import ThemeSwitcher from "../../components/ThemeSwitcher";
 import PageHead from "../../components/PageHead";
-import { getContactLinks, REVALIDATE, type ContactLink } from "../../lib/content";
+import { getContactLinks, getSettings, REVALIDATE, type ContactLink } from "../../lib/content";
 import { getIcon } from "../../lib/icons";
 
 interface ContactProps {
   contacts: ContactLink[];
+  settings: Record<string, string>;
 }
 
-export default function Contact({ contacts }: ContactProps) {
+export default function Contact({ contacts, settings }: ContactProps) {
   return (
     <>
       <PageHead title="Daffa Wijaya | Contact" />
@@ -36,7 +37,7 @@ export default function Contact({ contacts }: ContactProps) {
                 transition={{ delay: 0, duration: 1 }}
                 className="relative text-a-2 text-xl lg:text-3xl font-bold"
               >
-                Indonesia
+                {settings.contact_country}
               </motion.p>
               <motion.p
                 initial={{ left: -200, opacity: 0 }}
@@ -44,14 +45,16 @@ export default function Contact({ contacts }: ContactProps) {
                 transition={{ delay: 0.2, duration: 1 }}
                 className="relative text-black dark:text-white text-base lg:text-xl"
               >
-                Dusun Rambaan 31, Landungsari, Dau, Malang Regency, East Java
+                {settings.contact_address}
               </motion.p>
               <motion.a
                 initial={{ left: -200, opacity: 0 }}
                 animate={{ left: 0, opacity: 1 }}
                 transition={{ delay: 0.6, duration: 1 }}
                 className="relative text-[#828282] hover:underline font-medium text-base lg:text-xl"
-                href="https://goo.gl/maps/NBknBQpL43MXpbrb9"
+                href={settings.map_url}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 View Map
               </motion.a>
@@ -143,7 +146,7 @@ export default function Contact({ contacts }: ContactProps) {
 
 export async function getStaticProps() {
   return {
-    props: { contacts: await getContactLinks() },
+    props: { contacts: await getContactLinks(), settings: await getSettings() },
     revalidate: REVALIDATE,
   };
 }

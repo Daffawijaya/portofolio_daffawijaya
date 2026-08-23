@@ -10,6 +10,7 @@ import PannableImage from "../../components/PannableImage";
 import TechStackList from "../../components/TechStackList";
 import {
   getExperiences,
+  getSettings,
   getSkills,
   getTechstack,
   REVALIDATE,
@@ -29,9 +30,10 @@ interface AboutProps {
   techstack: TechCategory[];
   skills: TechItem[];
   experiences: ExperienceGroup[];
+  settings: Record<string, string>;
 }
 
-const About = ({ techstack, skills, experiences }: AboutProps) => {
+const About = ({ techstack, skills, experiences, settings }: AboutProps) => {
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
   return (
     <>
@@ -73,22 +75,27 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
               {...fadeIn(1, 200)}
               className="text-black dark:text-white relative text-lg lg:text-2xl"
             >
-              Fullstack &amp; Mobile Developer | IT &amp; Digitalization Specialist
+              {settings.position}
             </motion.p>
             <div className="relative flex lg:flex-row flex-col items-start lg:space-x-4 w-full pt-4">
               <motion.div
                 {...fadeIn(0.4, 200)}
                 className="z-10 md:p-4 p-2 relative bg-b-2 dark:bg-opacity-100 bg-opacity-10 mb-4"
               >
-                <div className="md:w-[300px] md:h-[300px] w-[150px] h-[150px] bg-[url(/dafanoanting.png)] bg-cover bg-center" />
+                <div
+                  className="md:w-[300px] md:h-[300px] w-[150px] h-[150px] bg-cover bg-center"
+                  style={{ backgroundImage: `url(${settings.about_image})` }}
+                />
               </motion.div>
               <motion.div {...fadeIn(1, 200)}>
                 <p className="z-0 relative text-black dark:text-a-2 text-md lg:text-2xl pb-4 font-medium w-full lg:w-[70%]">
-                  &quot;Passionate about fullstack web and mobile development, leveraging AI to build responsive, user-friendly applications and solve real-world problems through practical projects.
+                  {settings.about_text}
                 </p>
                 <a
-                  href="https://drive.google.com/file/d/1JJzxZVgSfaoVXRh2cc9ShLaGczQHXJzv/view?usp=sharing"
+                  href={settings.cv_url}
                   className="z-0 relative text-a-2 dark:text-white text-md lg:text-2xl hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Download my CV
                 </a>
@@ -209,6 +216,7 @@ export async function getStaticProps() {
       techstack: await getTechstack(),
       skills: await getSkills(),
       experiences: await getExperiences(),
+      settings: await getSettings(),
     },
     revalidate: REVALIDATE,
   };

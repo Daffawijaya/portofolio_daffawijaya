@@ -7,6 +7,7 @@ import { supabase } from "../../lib/supabase";
 import { ICONS } from "../../lib/icons";
 import PannableImage from "../../components/PannableImage";
 import PageHead from "../../components/PageHead";
+import { SETTINGS_DEFAULTS } from "../../lib/content";
 
 interface FieldDef {
   key: string;
@@ -99,6 +100,18 @@ const TABLES: TableDef[] = [
 type Row = Record<string, unknown> & { id: number | string };
 type Rows = Record<string, Row[]>;
 
+// key-value settings yang diedit lewat tab Settings (satu nilai dipakai
+// bersama oleh beberapa halaman: position tampil di home & about)
+const SETTING_FIELDS: { key: string; label: string; textarea?: boolean; upload?: string }[] = [
+  { key: "position", label: "Position (tampil di Home & About)" },
+  { key: "about_image", label: "About: Foto Profil", upload: "image/*" },
+  { key: "about_text", label: "About Text (paragraf passionate)", textarea: true },
+  { key: "cv_url", label: "CV URL", upload: "application/pdf,.pdf" },
+  { key: "contact_country", label: "Contact: Judul Negara" },
+  { key: "contact_address", label: "Contact: Alamat" },
+  { key: "map_url", label: "Contact: Link Google Maps" },
+];
+
 const inputClass =
   "w-full border border-gray-300 rounded px-2 py-1 text-sm bg-white text-black";
 
@@ -173,6 +186,11 @@ export default function Admin() {
   >({});
   // id row yang sedang dibuka di editor detail; null = tampilan list
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [settingsValues, setSettingsValues] =
+    useState<Record<string, string>>(SETTINGS_DEFAULTS);
+  const [settingsOriginal, setSettingsOriginal] = useState<string>(
+    JSON.stringify(SETTINGS_DEFAULTS)
+  );
 
   useEffect(() => {
     if (!supabase) return;
@@ -213,6 +231,62 @@ export default function Admin() {
   useEffect(() => {
     if (session) loadRows(activeTable);
   }, [session, activeTable]);
+
+  // muat nilai settings dari DB saat tab Settings dibuka
+  useEffect(() => {
+    if (!supabase || activeTable !== "settings") return;
+    supabase
+      .from("settings")
+      .select("key, value")
+      .then(({ data }) => {
+        const values = data && data.length > 0
+          ? { ...SETTINGS_DEFAULTS, ...Object.fromEntries(data.map((r) => [r.key, r.value])) }
+          : SETTINGS_DEFAULTS;
+        setSettingsValues(values);
+        setSettingsOriginal(JSON.stringify(values));
+      });
+  }, [session, activeTable]);
+
+  async function saveSettings() {
+    setMessage("Saving...");
+    const { error } = await supabase!
+      .from("settings")
+      .upsert(SETTING_FIELDS.map((f) => ({ key: f.key, value: settingsValues[f.key] ?? "" })));
+    if (error) {
+      setMessage(`Error: ${error.message}`);
+      return;
+    }
+    setSettingsOriginal(JSON.stringify(settingsValues));
+    setMessage("Saved.");
+  }
+
+  const settingsDirty = JSON.stringify(settingsValues) !== settingsOriginal;
+
+  async function uploadTo(key: string, file: File) {
+    setMessage("Uploading...");
+    try {
+      const data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session!.access_token}`,
+        },
+        body: JSON.stringify({ name: file.name || "file", data }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Upload gagal");
+      setSettingsValues((prev) => ({ ...prev, [key]: json.url }));
+      setMessage("Upload berhasil. Klik Save untuk menyimpan.");
+    } catch (e) {
+      setMessage(`Error: ${(e as Error).message}`);
+    }
+  }
 
   async function signIn(e: React.FormEvent) {
     e.preventDefault();
@@ -709,9 +783,76 @@ export default function Admin() {
               {t.label}
             </button>
           ))}
+          <button
+            onClick={() => switchTab("settings")}
+            className={`px-4 py-1.5 text-sm italic duration-300 ${
+              activeTable === "settings"
+                ? "bg-a-2 text-white font-bold"
+                : "border border-gray-300 dark:border-gray-700 opacity-60 hover:opacity-100"
+            }`}
+          >
+            Settings
+          </button>
         </div>
 
         {message && <p className="mb-4 text-sm text-a-2">{message}</p>}
+
+        {activeTable === "settings" ? (
+          <div className="flex flex-col gap-4 max-w-2xl">
+            {SETTING_FIELDS.map((field) => (
+              <label key={field.key} className="flex flex-col gap-1">
+                <span className="text-xs font-semibold opacity-70">
+                  {field.label}
+                </span>
+                {field.textarea ? (
+                  <textarea
+                    className={inputClass}
+                    rows={3}
+                    value={settingsValues[field.key] ?? ""}
+                    onChange={(e) =>
+                      setSettingsValues((prev) => ({
+                        ...prev,
+                        [field.key]: e.target.value,
+                      }))
+                    }
+                  />
+                ) : (
+                  <input
+                    className={inputClass}
+                    value={settingsValues[field.key] ?? ""}
+                    onChange={(e) =>
+                      setSettingsValues((prev) => ({
+                        ...prev,
+                        [field.key]: e.target.value,
+                      }))
+                    }
+                  />
+                )}
+                {field.upload && (
+                  <input
+                    type="file"
+                    accept={field.upload}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) uploadTo(field.key, file);
+                      e.target.value = "";
+                    }}
+                  />
+                )}
+              </label>
+            ))}
+            <button
+              onClick={saveSettings}
+              disabled={!settingsDirty}
+              className={`self-start bg-a-2 text-white px-4 py-1.5 text-sm font-bold duration-300 ${
+                settingsDirty ? "hover:opacity-90" : "opacity-40 cursor-not-allowed"
+              }`}
+            >
+              Save
+            </button>
+          </div>
+        ) : (
+        <>
 
         <button
           onClick={() => startAdd(table)}
@@ -719,7 +860,6 @@ export default function Admin() {
         >
           + Add
         </button>
-
         {/* ===== list; editor melorot (animasi) di bawah item yang diedit =====
             tabel dengan kolom group_name/category otomatis dikelompokkan dan
             bisa di-minimize per grup */}
@@ -826,6 +966,8 @@ export default function Admin() {
             </div>
           );
         })()}
+        </>
+        )}
 
         <p className="mt-8 text-xs opacity-60 italic">
           Perubahan tampil di situs publik maksimal {60} detik setelah disimpan.
