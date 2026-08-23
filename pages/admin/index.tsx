@@ -207,6 +207,13 @@ export default function Admin() {
   >({});
   // id row yang sedang dibuka di editor detail; null = tampilan list
   const [editingId, setEditingId] = useState<string | null>(null);
+  // modal konfirmasi sebelum aksi tulis (save/delete); action jalan saat setuju
+  const [confirm, setConfirm] = useState<{
+    title: string;
+    body: string;
+    label?: string;
+    action: () => void | Promise<void>;
+  } | null>(null);
   const [settingsValues, setSettingsValues] =
     useState<Record<string, string>>(SETTINGS_DEFAULTS);
   const [settingsOriginal, setSettingsOriginal] = useState<string>(
@@ -405,6 +412,15 @@ export default function Admin() {
       setMessage(`Error: ${(e as Error).message}`);
       return false;
     }
+  }
+
+  function askConfirm(
+    title: string,
+    body: string,
+    action: () => void | Promise<void>,
+    label = "Ya, lanjutkan"
+  ) {
+    setConfirm({ title, body, label, action });
   }
 
   async function updateRow(tableDef: TableDef, row: Row) {
@@ -927,7 +943,20 @@ export default function Admin() {
 
         <div className="flex gap-2 mt-3">
           <button
-            onClick={() => saveRow(table, row)}
+            onClick={() =>
+              askConfirm(
+                String(row.id).startsWith("draft-")
+                  ? "Tambah data baru?"
+                  : "Simpan perubahan?",
+                `"${String(row.name || "-")}" ${
+                  String(row.id).startsWith("draft-")
+                    ? `akan ditambahkan ke ${table.label}.`
+                    : `akan diperbarui di ${table.label}.`
+                }`,
+                () => saveRow(table, row),
+                "Save"
+              )
+            }
             disabled={!dirty}
             className={`bg-a-2 text-white px-3 py-1.5 text-sm duration-300 ${
               dirty ? "hover:opacity-90" : "opacity-40 cursor-not-allowed"
@@ -936,7 +965,14 @@ export default function Admin() {
             Save
           </button>
           <button
-            onClick={() => deleteRow(table.name, row.id)}
+            onClick={() =>
+              askConfirm(
+                "Hapus data?",
+                `"${String(row.name ?? "-")}" akan dihapus permanen dari ${table.label}.`,
+                () => deleteRow(table.name, row.id),
+                "Ya, hapus"
+              )
+            }
             className="border border-red-400 text-red-500 px-3 py-1.5 text-sm hover:bg-red-50 dark:hover:bg-red-950 duration-300"
           >
             Delete
@@ -1033,7 +1069,14 @@ export default function Admin() {
               </label>
             ))}
             <button
-              onClick={saveSettings}
+              onClick={() =>
+                askConfirm(
+                  "Simpan settings?",
+                  "Perubahan settings akan disimpan dan langsung tampil di halaman publik.",
+                  saveSettings,
+                  "Save"
+                )
+              }
               disabled={!settingsDirty}
               className={`self-start bg-a-2 text-white px-4 py-1.5 text-sm font-bold duration-300 ${
                 settingsDirty ? "hover:opacity-90" : "opacity-40 cursor-not-allowed"
@@ -1096,7 +1139,14 @@ export default function Admin() {
                       {isOpen ? "Tutup" : "Edit"}
                     </button>
                     <button
-                      onClick={() => deleteRow(table.name, row.id)}
+                      onClick={() =>
+                        askConfirm(
+                          "Hapus data?",
+                          `"${String(row.name ?? "-")}" akan dihapus permanen dari ${table.label}.`,
+                          () => deleteRow(table.name, row.id),
+                          "Ya, hapus"
+                        )
+                      }
                       className="border border-red-400 text-red-500 px-3 py-1.5 text-sm hover:bg-red-50 dark:hover:bg-red-950 duration-300"
                     >
                       Delete
@@ -1164,6 +1214,55 @@ export default function Admin() {
           Perubahan tampil di situs publik maksimal {60} detik setelah disimpan.
         </p>
       </div>
+
+      {/* modal konfirmasi -- gaya halaman publik: heading italic lime,
+          animasi framer-motion, garis dashed khas Background */}
+      <AnimatePresence>
+        {confirm && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setConfirm(null)}
+          >
+            <motion.div
+              className="relative w-full max-w-sm bg-white dark:bg-black border border-gray-200 dark:border-gray-800 p-8"
+              initial={{ scale: 0.9, y: 24, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 12, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="absolute inset-x-8 top-0 border-t border-dashed border-a-2/50" />
+              <h2 className="font-bold text-xl italic text-a-2 pb-3">
+                {confirm.title}
+              </h2>
+              <p className="text-sm opacity-70">{confirm.body}</p>
+              <div className="flex items-center gap-4 mt-6">
+                <button
+                  autoFocus
+                  onClick={() => {
+                    const { action } = confirm;
+                    setConfirm(null);
+                    void action();
+                  }}
+                  className="bg-a-2 text-white px-4 py-1.5 text-sm font-bold hover:opacity-90 duration-300"
+                >
+                  {confirm.label ?? "Ya"}
+                </button>
+                <button
+                  onClick={() => setConfirm(null)}
+                  className="italic text-sm text-black dark:text-white opacity-60 hover:opacity-100 duration-300"
+                >
+                  Batal
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
