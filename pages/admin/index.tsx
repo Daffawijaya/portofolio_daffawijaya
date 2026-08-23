@@ -147,8 +147,16 @@ export default function Admin() {
     const { data } = await supabase
       .from(table)
       .select("*")
-      .order("id", { ascending: false }); // item terbaru di atas
-    const list = (data ?? []).map((r) => ({ ...r, ...parseYearParts(r.year) }));
+      .order("id", { ascending: false });
+    // urutkan berdasarkan tanggal awal di kolom year (terbaru dulu)
+    const startDate = (r: Record<string, unknown>) => {
+      const first = String(r.year ?? "").split(" - ")[0];
+      const t = first ? new Date(first).getTime() : NaN;
+      return isNaN(t) ? 0 : t; // tanpa tanggal -> paling bawah
+    };
+    const list = (data ?? [])
+      .map((r) => ({ ...r, ...parseYearParts(r.year) }))
+      .sort((a, b) => startDate(b) - startDate(a));
     setRows((prev) => ({ ...prev, [table]: list }));
     setOriginals((prev) => ({
       ...prev,
