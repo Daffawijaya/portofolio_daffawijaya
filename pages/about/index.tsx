@@ -197,7 +197,7 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
                       <Link
                         href={exp.url}
                         key={exp.name}
-                        className="w-full lg:min-w-[240px] min-w-[80px] lg:h-28 h-20 flex items-center overflow-hidden"
+                        className="relative w-full lg:min-w-[240px] min-w-[80px] lg:h-28 h-20 flex items-center overflow-hidden"
                       >
                         <PannableImage
                           src={exp.image}
