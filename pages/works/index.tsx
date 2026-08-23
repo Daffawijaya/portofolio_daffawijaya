@@ -9,9 +9,11 @@ import ButtonWorks from "../../components/ButtonWorks";
 import { getWorks, REVALIDATE, type WorkItem } from "../../lib/content";
 
 const tabs = [
+  { label: "All Works", value: "all" },
   { label: "Frontend Developer", value: "frontend" },
   { label: "Fullstack Developer", value: "fullstack" },
   { label: "UI/UX Designer", value: "uiux" },
+  { label: "Mobile Developer", value: "mobile" },
 ];
 
 interface WorksProps {
@@ -19,7 +21,7 @@ interface WorksProps {
 }
 
 export default function Works({ works }: WorksProps) {
-  const [activeTab, setActiveTab] = useState("frontend");
+  const [activeTab, setActiveTab] = useState("all");
 
   return (
     <>
@@ -75,9 +77,11 @@ export default function Works({ works }: WorksProps) {
               activeTab === value && (
                 <WorkList
                   key={value}
-                  worksData={works.filter((work) =>
-                    work.category.includes(value)
-                  )}
+                  worksData={
+                    value === "all"
+                      ? works
+                      : works.filter((work) => work.category.includes(value))
+                  }
                 />
               )
           )}
