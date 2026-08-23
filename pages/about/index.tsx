@@ -8,6 +8,7 @@ import PageHead from "../../components/PageHead";
 import TechCard from "../../components/TechCard";
 import SectionHeader from "../../components/SectionHeader";
 import PannableImage from "../../components/PannableImage";
+import TechStackList from "../../components/TechStackList";
 import {
   getExperiences,
   getSkills,
@@ -114,55 +115,11 @@ const About = ({ techstack, skills, experiences }: AboutProps) => {
               title="Techstack"
               description="Technologies I use in my work as a web developer. This list continues to grow as I learn, build, and work with new technologies."
             />
-            <div className="flex flex-col w-full">
-              {techstack.map((category) => (
-                <div
-                  className="flex flex-col w-full lg:py-5 lg:pr-[20%]"
-                  key={category.title}
-                >
-                  <p className="text-black dark:text-white text-lg lg:text-2xl font-semibold pb-1 lg:pb-6">
-                    {category.title}
-                  </p>
-
-                  {/* <= 5 item: grid sama seperti Another Skills.
-                      > 5 item: satu baris auto-geser dalam lebar yang sama */}
-                  {category.items.length > 5 ? (
-                    <div className="overflow-hidden">
-                      <div
-                        className="flex w-max gap-4 hover:[animation-play-state:paused]"
-                        style={{
-                          animation: `marquee ${category.items.length * 3}s linear infinite`,
-                        }}
-                      >
-                        {[...category.items, ...category.items].map((tech, i) => (
-                          <TechCard
-                            key={`${tech.name}-${i}`}
-                            name={tech.name}
-                            icon={tech.icon}
-                            color={tech.color}
-                            hoveredTech={hoveredTech}
-                            setHoveredTech={setHoveredTech}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="grid lg:grid-cols-5 grid-cols-4 lg:gap-4">
-                      {category.items.map((tech) => (
-                        <TechCard
-                          key={tech.name}
-                          name={tech.name}
-                          icon={tech.icon}
-                          color={tech.color}
-                          hoveredTech={hoveredTech}
-                          setHoveredTech={setHoveredTech}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <TechStackList
+              categories={techstack}
+              hoveredTech={hoveredTech}
+              setHoveredTech={setHoveredTech}
+            />
           </div>
 
           <h1 className="absolute lg:flex hidden text-b-2 text-5xl right-0 bottom-40 -rotate-90 font-bold">

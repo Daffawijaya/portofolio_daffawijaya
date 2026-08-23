@@ -11,3 +11,13 @@
     transform: translateX(-50%);
   }
 }
+
+/* varian geser ke kanan */
+@keyframes marquee-r {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

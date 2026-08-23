@@ -6,6 +6,7 @@ interface TechCardProps {
   color: string;
   hoveredTech: string | null;
   setHoveredTech: (name: string | null) => void;
+  className?: string; // override lebar default (w-20), dipakai baris marquee
 }
 
 export default function TechCard({
@@ -14,12 +15,13 @@ export default function TechCard({
   color,
   hoveredTech,
   setHoveredTech,
+  className = "w-20",
 }: TechCardProps) {
   const Icon = getIcon(icon);
 
   return (
     <div
-      className="w-20 h-20 flex flex-col items-center justify-center space-y-1 lg:space-y-2 cursor-pointer"
+      className={`h-20 flex flex-col items-center justify-center space-y-1 lg:space-y-2 cursor-pointer ${className}`}
       onMouseEnter={() => setHoveredTech(name)}
       onMouseLeave={() => setHoveredTech(null)}
     >
