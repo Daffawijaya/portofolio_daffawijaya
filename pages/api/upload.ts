@@ -8,6 +8,19 @@ export const config = {
 
 const BUCKET = "images";
 
+// hapus file lama dari storage berdasarkan URL publiknya (abaikan jika
+// bukan file di bucket ini, mis. URL eksternal)
+async function deleteByPublicUrl(
+  client: NonNullable<typeof supabaseAdmin>,
+  url: string
+) {
+  const marker = `/storage/v1/object/public/${BUCKET}/`;
+  const i = url.indexOf(marker);
+  if (i === -1) return;
+  const path = decodeURIComponent(url.slice(i + marker.length).split("?")[0]);
+  if (path) await client.storage.from(BUCKET).remove([path]);
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -25,7 +38,11 @@ export default async function handler(
 
   if (req.method !== "POST") return res.status(405).end();
 
-  const { name, data } = req.body as { name?: string; data?: string };
+  const { name, data, oldUrl } = req.body as {
+    name?: string;
+    data?: string;
+    oldUrl?: string;
+  };
   if (!data) return res.status(400).json({ error: "No image data" });
 
   try {
@@ -48,6 +65,7 @@ export default async function handler(
           .upload(path, buffer, { contentType: "application/pdf" }));
       }
       if (error) return res.status(500).json({ error: error.message });
+      if (oldUrl) await deleteByPublicUrl(supabaseAdmin, oldUrl);
       const { data: pub } = supabaseAdmin.storage
         .from(BUCKET)
         .getPublicUrl(path);
@@ -80,6 +98,7 @@ export default async function handler(
     }
     if (error) return res.status(500).json({ error: error.message });
 
+    if (oldUrl) await deleteByPublicUrl(supabaseAdmin, oldUrl);
     const { data: pub } = supabaseAdmin.storage
       .from(BUCKET)
       .getPublicUrl(path);

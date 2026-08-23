@@ -101,15 +101,25 @@ function group<T extends Record<string, unknown>>(
   }[];
 }
 
+// urutkan berdasarkan tanggal awal di kolom year (terbaru di atas)
+function sortByYearDesc<T extends { year?: string }>(items: T[]): T[] {
+  const start = (year?: string) => {
+    const first = String(year ?? "").split(" - ")[0];
+    const t = first ? new Date(first).getTime() : NaN;
+    return isNaN(t) ? 0 : t; // tanpa tanggal -> paling bawah
+  };
+  return [...items].sort((a, b) => start(b.year) - start(a.year));
+}
+
 export async function getWorks(): Promise<WorkItem[]> {
   if (supabase) {
     const { data } = await supabase
       .from("works")
       .select("category, name, image, url, year, image_position, image_rotate, image_scale")
       .order("sort_order");
-    if (data && data.length > 0) return data;
+    if (data && data.length > 0) return sortByYearDesc(data);
   }
-  return [...frontendData, ...fullstackData, ...uiuxData];
+  return sortByYearDesc([...frontendData, ...fullstackData, ...uiuxData]);
 }
 
 export async function getExperiences(): Promise<ExperienceGroup[]> {
@@ -123,15 +133,31 @@ export async function getExperiences(): Promise<ExperienceGroup[]> {
   return experienceData;
 }
 
+// urutan kategori techstack yang tetap di halaman publik
+const TECHSTACK_ORDER = [
+  "Framework",
+  "Programming Language",
+  "Fullstack Development",
+  "Mobile Development",
+];
+
+function orderByTechstackOrder(groups: TechCategory[]): TechCategory[] {
+  return [...groups].sort((a, b) => {
+    const ia = TECHSTACK_ORDER.indexOf(a.title);
+    const ib = TECHSTACK_ORDER.indexOf(b.title);
+    return (ia === -1 ? TECHSTACK_ORDER.length : ia) - (ib === -1 ? TECHSTACK_ORDER.length : ib);
+  });
+}
+
 export async function getTechstack(): Promise<TechCategory[]> {
   if (supabase) {
     const { data } = await supabase
       .from("techstack")
       .select("category, name, icon, color")
       .order("sort_order");
-    if (data && data.length > 0) return group(data, "category");
+    if (data && data.length > 0) return orderByTechstackOrder(group(data, "category"));
   }
-  return techstackData;
+  return orderByTechstackOrder(techstackData);
 }
 
 export async function getSkills(): Promise<TechItem[]> {

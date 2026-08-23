@@ -89,10 +89,11 @@ const TABLES: TableDef[] = [
     label: "Contact Links",
     fields: [
       { key: "name", label: "Name" },
-      { key: "image", label: "Image class" },
       { key: "icon", label: "Icon", options: Object.keys(ICONS).sort() },
-      { key: "color", label: "Color" },
       { key: "url", label: "URL" },
+      // disimpan sebagai nilai CSS background (warna solid / linear-gradient);
+      // diedit lewat color picker di bawah, bukan input teks
+      { key: "color", label: "Background", hidden: true },
     ],
   },
 ];
@@ -174,6 +175,26 @@ function yearValue(row: Row): string {
   return to ? `${from} - ${to}`.replace(/^ - /, "") : from;
 }
 
+// ===== background builder (Contact Links) =====
+// format tersimpan: "#0A66C2" atau "linear-gradient(135deg, #a, #b, ...)"
+function parseBg(css: unknown): { __bgAngle: number; __bgStops: string[] } {
+  const s = String(css ?? "").trim();
+  const m = s.match(/linear-gradient\(([\d.]+)deg\s*,\s*(.+)\)/);
+  if (m)
+    return {
+      __bgAngle: Number(m[1]),
+      __bgStops: m[2].split(",").map((c) => c.trim()),
+    };
+  return { __bgAngle: 135, __bgStops: s ? [s] : ["#374151", "#6B7280"] };
+}
+
+function bgValue(row: Row): string {
+  const stops = Array.isArray(row.__bgStops) ? (row.__bgStops as string[]) : [];
+  if (stops.length === 0) return "#374151";
+  if (stops.length === 1) return stops[0];
+  return `linear-gradient(${Number(row.__bgAngle) || 135}deg, ${stops.join(", ")})`;
+}
+
 export default function Admin() {
   const [session, setSession] = useState<Session | null>(null);
   const [email, setEmail] = useState("");
@@ -214,7 +235,7 @@ export default function Admin() {
       return isNaN(t) ? 0 : t; // tanpa tanggal -> paling bawah
     };
     const list = (data ?? [])
-      .map((r) => ({ ...r, ...parseYearParts(r.year) }))
+      .map((r) => ({ ...r, ...parseYearParts(r.year), ...parseBg(r.color) }))
       .sort((a, b) => startDate(b) - startDate(a));
     setRows((prev) => ({ ...prev, [table]: list }));
     setOriginals((prev) => ({
@@ -249,15 +270,32 @@ export default function Admin() {
 
   async function saveSettings() {
     setMessage("Saving...");
-    const { error } = await supabase!
-      .from("settings")
-      .upsert(SETTING_FIELDS.map((f) => ({ key: f.key, value: settingsValues[f.key] ?? "" })));
-    if (error) {
-      setMessage(`Error: ${error.message}`);
-      return;
+    const orig: Record<string, string> = JSON.parse(settingsOriginal);
+    try {
+      const upserts = [];
+      for (const f of SETTING_FIELDS) {
+        let v = settingsValues[f.key] ?? "";
+        // pratinjau lokal (data URL) -> konversi & upload ke storage saat Save;
+        // file lama di storage ikut dihapus
+        if (v.startsWith("data:")) {
+          v = await uploadDataUrl(
+            v,
+            f.key === "cv_url" ? "cv.pdf" : "image",
+            orig[f.key]
+          );
+        }
+        upserts.push({ key: f.key, value: v });
+      }
+      const { error } = await supabase!.from("settings").upsert(upserts);
+      if (error) {
+        setMessage(`Error: ${error.message}`);
+        return;
+      }
+      setSettingsOriginal(JSON.stringify(settingsValues));
+      setMessage("Saved.");
+    } catch (e) {
+      setMessage(`Error: ${(e as Error).message}`);
     }
-    setSettingsOriginal(JSON.stringify(settingsValues));
-    setMessage("Saved.");
   }
 
   const settingsDirty = JSON.stringify(settingsValues) !== settingsOriginal;
@@ -292,25 +330,39 @@ export default function Admin() {
     return out;
   }
 
-  async function uploadTo(key: string, file: File) {
-    setMessage("Uploading...");
+  // kirim pratinjau (data URL) ke /api/upload -> dikonversi WebP server,
+  // disimpan ke storage, dan file lama (oldUrl) dihapus
+  async function uploadDataUrl(
+    data: string,
+    name: string,
+    oldUrl?: string
+  ): Promise<string> {
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session!.access_token}`,
+      },
+      body: JSON.stringify({
+        name,
+        data,
+        oldUrl: oldUrl?.startsWith("http") ? oldUrl : undefined,
+      }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok)
+      throw new Error(json.error ?? `Upload gagal (HTTP ${res.status})`);
+    return String(json.url);
+  }
+
+  // pilih file -> hanya pratinjau lokal; tersimpan ke storage saat Save
+  async function previewTo(key: string, file: File) {
     try {
       const data = /image\//.test(file.type)
         ? await compressImage(file)
         : await readAsDataUrl(file);
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session!.access_token}`,
-        },
-        body: JSON.stringify({ name: file.name || "file", data }),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok)
-        throw new Error(json.error ?? `Upload gagal (HTTP ${res.status})`);
-      setSettingsValues((prev) => ({ ...prev, [key]: json.url }));
-      setMessage("Upload berhasil. Klik Save untuk menyimpan.");
+      setSettingsValues((prev) => ({ ...prev, [key]: data }));
+      setMessage("Pratinjau dimuat. Klik Save untuk menyimpan.");
     } catch (e) {
       setMessage(`Error: ${(e as Error).message}`);
     }
@@ -326,6 +378,30 @@ export default function Admin() {
     if (error) setMessage(error.message);
   }
 
+  // jika kolom image berisi pratinjau lokal (data URL), konversi & upload ke
+  // storage dulu; URL lama (dari snapshot sebelum edit) ikut dihapus.
+  // return false jika upload gagal (message sudah diisi)
+  async function resolveImageUpload(
+    table: string,
+    row: Row,
+    values: Record<string, unknown>
+  ): Promise<boolean> {
+    const img = values.image;
+    if (typeof img !== "string" || !img.startsWith("data:")) return true;
+    let oldImage: string | undefined;
+    try {
+      const snap = originals[table]?.[String(row.id)];
+      if (snap) oldImage = JSON.parse(snap).image;
+    } catch {}
+    try {
+      values.image = await uploadDataUrl(img, "image", oldImage);
+      return true;
+    } catch (e) {
+      setMessage(`Error: ${(e as Error).message}`);
+      return false;
+    }
+  }
+
   async function updateRow(tableDef: TableDef, row: Row) {
     setMessage("");
     // only send real columns (skip __yf/__yt/__yp helpers)
@@ -336,6 +412,8 @@ export default function Admin() {
     for (const key of ["sort_order", "image_rotate", "image_scale"]) {
       if (key in values) values[key] = Number(values[key]) || (key === "image_scale" ? 100 : 0);
     }
+    if ("color" in values) values.color = bgValue(row);
+    if (!(await resolveImageUpload(tableDef.name, row, values))) return;
     const { error } = await supabase!
       .from(tableDef.name)
       .update(values)
@@ -395,6 +473,7 @@ export default function Admin() {
       ),
       sort_order: 0,
       ...parseYearParts(""),
+      ...parseBg(""),
     } as Row;
     setRows((prev) => ({ ...prev, [table.name]: [draft, ...(prev[table.name] ?? [])] }));
     setMessage("");
@@ -409,7 +488,10 @@ export default function Admin() {
       for (const field of tableDef.fields)
         if (!field.hidden || field.key === "image_position")
           values[field.key] = row[field.key];
-      if ("year" in values) values.year = yearValue(row);
+        if ("year" in values) values.year = yearValue(row);
+        if (tableDef.fields.some((f) => f.key === "color"))
+          values.color = bgValue(row);
+        if (!(await resolveImageUpload(tableDef.name, row, values))) return;
       const { data, error } = await supabase!
         .from(tableDef.name)
         .insert(values)
@@ -456,23 +538,13 @@ export default function Admin() {
     }));
   }
 
+  // pilih file -> hanya pratinjau lokal; konversi WebP + upload ke storage
+  // terjadi saat Save (lewat resolveImageUpload)
   async function uploadImage(table: string, id: number | string, file: File) {
-    setMessage("Uploading...");
     try {
       const data = await compressImage(file);
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session!.access_token}`,
-        },
-        body: JSON.stringify({ name: file.name, data }),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok)
-        throw new Error(json.error ?? `Upload gagal (HTTP ${res.status})`);
-      editRow(table, id, "image", json.url);
-      setMessage("Upload berhasil. Klik Save untuk menyimpan.");
+      editRow(table, id, "image", data);
+      setMessage("Pratinjau dimuat. Klik Save untuk menyimpan.");
     } catch (e) {
       setMessage(`Error: ${(e as Error).message}`);
     }
@@ -537,7 +609,8 @@ export default function Admin() {
         <div className="flex flex-wrap gap-x-4 gap-y-3 items-end">
           {table.fields.map((field) => {
             // hidden fields are managed by other controls
-            if (field.hidden) return null;
+            // (kecuali color: punya editor color picker sendiri)
+            if (field.hidden && field.key !== "color") return null;
 
             // image: preview (drag to pan) + upload + rotate/zoom sliders
             if (field.key === "image") {
@@ -679,6 +752,94 @@ export default function Admin() {
                       />
                       Present
                     </label>
+                  </div>
+                </div>
+              );
+            }
+
+            // background builder: color picker, mode solid/gradient + titik warna
+            if (field.key === "color") {
+              const stops = Array.isArray(row.__bgStops)
+                ? (row.__bgStops as string[])
+                : [];
+              const angle = Number(row.__bgAngle) || 135;
+              const gradient = stops.length > 1;
+              const setStops = (next: string[]) =>
+                editRow(table.name, row.id, "__bgStops", next as unknown as string);
+              const hex = (c: string) =>
+                /^#[0-9a-fA-F]{6}$/.test(c) ? c : "#000000";
+              return (
+                <div key={field.key} className="w-full">
+                  <span className="text-xs font-semibold opacity-70">
+                    Background
+                  </span>
+                  <div className="flex flex-wrap items-center gap-3 text-sm py-1.5">
+                    <div
+                      className="h-10 w-20 rounded border border-gray-300 dark:border-gray-700 shrink-0"
+                      style={{ background: bgValue(row) }}
+                    />
+                    <select
+                      className={`${inputClass} w-auto`}
+                      value={gradient ? "gradient" : "solid"}
+                      onChange={(e) => {
+                        if (e.target.value === "gradient") {
+                          if (!gradient)
+                            setStops([stops[0] ?? "#374151", "#6B7280"]);
+                        } else setStops([stops[0] ?? "#374151"]);
+                      }}
+                    >
+                      <option value="solid">Solid</option>
+                      <option value="gradient">Gradient</option>
+                    </select>
+                    {gradient && (
+                      <label className="flex items-center gap-2">
+                        <span className="text-xs opacity-70">Sudut</span>
+                        <input
+                          type="range"
+                          min={0}
+                          max={360}
+                          value={angle}
+                          onChange={(e) =>
+                            editRow(table.name, row.id, "__bgAngle", e.target.value)
+                          }
+                          className="w-24"
+                        />
+                        <span className="text-xs w-10 text-right">{angle}°</span>
+                      </label>
+                    )}
+                    {stops.map((c, i) => (
+                      <div key={i} className="flex items-center gap-1">
+                        <input
+                          type="color"
+                          value={hex(c)}
+                          onChange={(e) => {
+                            const next = [...stops];
+                            next[i] = e.target.value;
+                            setStops(next);
+                          }}
+                          className="h-8 w-10 cursor-pointer"
+                        />
+                        {gradient && stops.length > 2 && (
+                          <button
+                            onClick={() =>
+                              setStops(stops.filter((_, j) => j !== i))
+                            }
+                            className="text-red-500 text-lg leading-none"
+                            title="Hapus titik warna"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {gradient && (
+                      <button
+                        onClick={() => setStops([...stops, "#FFFFFF"])}
+                        className="border border-gray-300 dark:border-gray-700 px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-900 duration-300"
+                      >
+                        + Titik
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -859,7 +1020,7 @@ export default function Admin() {
                     accept={field.upload}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      if (file) uploadTo(field.key, file);
+                      if (file) previewTo(field.key, file);
                       e.target.value = "";
                     }}
                   />
@@ -898,9 +1059,9 @@ export default function Admin() {
             const category = Array.isArray(row.category)
               ? (row.category as string[]).join(", ")
               : String(row.group_name ?? row.category ?? "");
-            const subtitle =
-              [category, String(row.year ?? "")].filter(Boolean).join(" • ") ||
-              String(row.color ?? "");
+            const subtitle = [category, String(row.year ?? "")]
+              .filter(Boolean)
+              .join(" • ");
             const isOpen = String(row.id) === editingId;
             return (
               <div

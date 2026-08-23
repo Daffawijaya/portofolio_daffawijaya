@@ -105,14 +105,15 @@ export default function Contact({ contacts, settings }: ContactProps) {
                     Or you can find me at:
                   </h1>
                   <div className="flex flex-row space-x-0.5 lg:space-x-1.5 overflow-x-auto w-full">
-                    {contacts.map((item) => {
-                      const Icon = getIcon(item.icon);
-                      return (
-                        <Link
-                          href={item.url}
-                          key={item.name}
-                          className={`w-full min-w-[100px] h-14 lg:h-28 flex items-center ${item.image} bg-cover bg-center`}
-                        >
+                      {contacts.map((item) => {
+                        const Icon = getIcon(item.icon);
+                        return (
+                          <Link
+                            href={item.url}
+                            key={item.name}
+                            style={{ background: item.color || "#222" }}
+                            className="w-full min-w-[100px] h-14 lg:h-28 flex items-center"
+                          >
                           <div className="h-full w-full backdrop-brightness-[0.3] hover:backdrop-brightness-[0.5] backdrop-contrast-[0.9] hover:backdrop-contrast-[1]">
                             <div className="px-2 space-y-1 lg:space-y-2 absolute text-transparent flex flex-col items-center justify-center h-full w-full hover:text-white pt-4 hover:pt-0 duration-300">
                               <p className="uppercase text-center text-white">

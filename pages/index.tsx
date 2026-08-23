@@ -35,7 +35,7 @@ export default function Home({ position }: { position: string }) {
             className="relative flex flex-col items-center mr-[15%]"
           >
             <div className="bg-[url('/daaa.png')] lg:h-[240px] lg:w-[400px] sm:h-[180px] sm:w-[300px] bg-contain bg-center bg-no-repeat h-[145px] w-[240px]" />
-            <p className="font-hazard text-black dark:text-white text-[2.5rem] lg:text-[3.75rem] -mt-1">
+            <p className="font-hazard text-black dark:text-white text-[1.2rem] lg:text-[2.3rem] -mt-1">
               {position}
             </p>
           </motion.div>
