@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../../lib/supabase";
 import { ICONS } from "../../lib/icons";
@@ -462,6 +463,297 @@ export default function Admin() {
 
   const table = TABLES.find((t) => t.name === activeTable)!;
 
+  // editor detail untuk satu baris; dirender melorot di bawah item list yang diedit
+  const renderEditor = (row: Row) => {
+    const dirty = isDirty(table.name, row);
+    return (
+      <>
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => backToList(table.name)}
+            className="text-sm opacity-70 hover:opacity-100 duration-300 italic"
+          >
+            ← Tutup editor
+          </button>
+          <span className="text-xs opacity-50">id: {String(row.id)}</span>
+        </div>
+
+        <div className="flex flex-wrap gap-x-4 gap-y-3 items-end">
+          {table.fields.map((field) => {
+            // hidden fields are managed by other controls
+            if (field.hidden) return null;
+
+            // image: preview (drag to pan) + upload + rotate/zoom sliders
+            if (field.key === "image") {
+              const hasTransform = table.fields.some(
+                (f) => f.key === "image_position"
+              );
+              const bust = imageBust[String(row.id)];
+              const imageUrl = String(row.image ?? "");
+              const previewUrl =
+                imageUrl && bust
+                  ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}v=${bust}`
+                  : imageUrl;
+              const [px, py] = parsePos(row);
+              const rot = Number(row.image_rotate) || 0;
+              const zoom = Number(row.image_scale) || 100;
+              return (
+                <div key={field.key} className="w-full">
+                  <span className="text-xs font-semibold opacity-70">
+                    Image {hasTransform && "(drag gambar untuk menggeser)"}
+                  </span>
+                  <div className="flex flex-col sm:flex-row gap-3 mt-1">
+                    {/* preview pakai rasio yang sama dengan kartu di halaman works */}
+                    <div
+                      className={
+                        "relative sm:w-72 w-full aspect-[16/7] border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 overflow-hidden select-none touch-none " +
+                        (hasTransform ? "cursor-grab active:cursor-grabbing" : "")
+                      }
+                      onPointerDown={(e) =>
+                        hasTransform && previewPointerDown(e, table.name, row)
+                      }
+                      onPointerMove={(e) =>
+                        hasTransform && previewPointerMove(e, table.name, row)
+                      }
+                      onPointerUp={() => (dragRef.current = null)}
+                      onPointerCancel={() => (dragRef.current = null)}
+                    >
+                      {/* -inset-1/4: layer lebih besar supaya sudut tetap tertutup */}
+                      <div
+                        className="absolute -inset-1/4 bg-cover bg-center pointer-events-none"
+                        style={{
+                          backgroundImage: previewUrl
+                            ? `url(${previewUrl})`
+                            : undefined,
+                          transform: `translate(${px}%, ${py}%) rotate(${rot}deg) scale(${zoom / 100})`,
+                        }}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2 grow text-sm">
+                      <div className="flex gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) uploadImage(table.name, row.id, file);
+                            e.target.value = "";
+                          }}
+                        />
+                        {!!row.image && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              rotateImage(table.name, row.id, String(row.image))
+                            }
+                            className="border border-gray-300 dark:border-gray-700 px-3 py-1 whitespace-nowrap hover:bg-gray-100 dark:hover:bg-gray-900 duration-300"
+                          >
+                            ⟳ Putar 90°
+                          </button>
+                        )}
+                      </div>
+                      <input
+                        className={inputClass}
+                        value={String(row.image ?? "")}
+                        onChange={(e) =>
+                          editRow(table.name, row.id, "image", e.target.value)
+                        }
+                        placeholder="/path/atau/URL"
+                      />
+                      {hasTransform && (
+                        <>
+                          <label className="flex items-center gap-2">
+                            <span className="text-xs opacity-70 w-12">Rotasi</span>
+                            <input
+                              type="range"
+                              min={-180}
+                              max={180}
+                              step={1}
+                              value={rot}
+                              onChange={(e) =>
+                                editRow(
+                                  table.name,
+                                  row.id,
+                                  "image_rotate",
+                                  e.target.value
+                                )
+                              }
+                              className="grow"
+                            />
+                            <span className="text-xs w-10 text-right">{rot}°</span>
+                          </label>
+                          <label className="flex items-center gap-2">
+                            <span className="text-xs opacity-70 w-12">Zoom</span>
+                            <input
+                              type="range"
+                              min={67}
+                              max={300}
+                              step={1}
+                              value={zoom}
+                              onChange={(e) =>
+                                editRow(
+                                  table.name,
+                                  row.id,
+                                  "image_scale",
+                                  e.target.value
+                                )
+                              }
+                              className="grow"
+                            />
+                            <span className="text-xs w-10 text-right">{zoom}%</span>
+                          </label>
+                          <p className="text-[11px] opacity-60">
+                            Drag gambar untuk geser; perubahan tersimpan setelah klik
+                            Save.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            // year: two date inputs + "Present" checkbox
+            if (field.key === "year") {
+              return (
+                <div key={field.key} className="flex flex-col gap-1">
+                  <span className="text-xs font-semibold opacity-70">Year</span>
+                  <div className="flex gap-2 items-center text-sm">
+                    <input
+                      type="date"
+                      className={inputClass}
+                      value={String(row.__yf ?? "")}
+                      onChange={(e) =>
+                        editRow(table.name, row.id, "__yf", e.target.value)
+                      }
+                    />
+                    <span className="opacity-60">-</span>
+                    <input
+                      type="date"
+                      className={inputClass}
+                      value={String(row.__yt ?? "")}
+                      disabled={Boolean(row.__yp)}
+                      onChange={(e) =>
+                        editRow(table.name, row.id, "__yt", e.target.value)
+                      }
+                    />
+                    <label className="flex items-center gap-1 cursor-pointer whitespace-nowrap">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(row.__yp)}
+                        onChange={(e) =>
+                          editRow(
+                            table.name,
+                            row.id,
+                            "__yp",
+                            e.target.checked ? "1" : ""
+                          )
+                        }
+                      />
+                      Present
+                    </label>
+                  </div>
+                </div>
+              );
+            }
+
+            // multi-select: checkboxes, full-width row so nothing gets squeezed
+            if (field.options && field.multi) {
+              const current = Array.isArray(row[field.key])
+                ? (row[field.key] as string[])
+                : [];
+              return (
+                <div key={field.key} className="w-full">
+                  <span className="text-xs font-semibold opacity-70">
+                    {field.label}
+                  </span>
+                  <div className="flex gap-4 text-sm py-1.5">
+                    {field.options.map((opt) => (
+                      <label
+                        key={opt}
+                        className="flex items-center gap-1 cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={current.includes(opt)}
+                          onChange={() =>
+                            toggleMulti(table.name, row.id, field.key, opt)
+                          }
+                        />
+                        {opt}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
+            if (field.options) {
+              return (
+                <label key={field.key} className="flex flex-col gap-1">
+                  <span className="text-xs font-semibold opacity-70">
+                    {field.label}
+                  </span>
+                  <select
+                    className={inputClass}
+                    value={String(row[field.key] ?? "")}
+                    onChange={(e) =>
+                      editRow(table.name, row.id, field.key, e.target.value)
+                    }
+                  >
+                    <option value="">-</option>
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              );
+            }
+
+            return (
+              <label
+                key={field.key}
+                className="flex flex-col gap-1 grow min-w-[160px]"
+              >
+                <span className="text-xs font-semibold opacity-70">
+                  {field.label}
+                </span>
+                <input
+                  className={inputClass}
+                  value={String(row[field.key] ?? "")}
+                  onChange={(e) =>
+                    editRow(table.name, row.id, field.key, e.target.value)
+                  }
+                />
+              </label>
+            );
+          })}
+        </div>
+
+        <div className="flex gap-2 mt-3">
+          <button
+            onClick={() => saveRow(table, row)}
+            disabled={!dirty}
+            className={`bg-a-2 text-white px-3 py-1.5 text-sm duration-300 ${
+              dirty ? "hover:opacity-90" : "opacity-40 cursor-not-allowed"
+            }`}
+          >
+            Save
+          </button>
+          <button
+            onClick={() => deleteRow(table.name, row.id)}
+            className="border border-red-400 text-red-500 px-3 py-1.5 text-sm hover:bg-red-50 dark:hover:bg-red-950 duration-300"
+          >
+            Delete
+          </button>
+        </div>
+      </>
+    );
+  };
+
   return (
     <main className="min-h-screen p-6 bg-white dark:bg-black text-black dark:text-white">
       <PageHead title="Admin" />
@@ -501,33 +793,42 @@ export default function Admin() {
           + Add
         </button>
 
-        {/* ===== tampilan list ===== */}
-        {!editingId && (
-          <div className="flex flex-col">
-            {(rows[table.name] ?? []).map((row) => {
-              const category = Array.isArray(row.category)
-                ? (row.category as string[]).join(", ")
-                : String(row.group_name ?? row.category ?? "");
-              const subtitle =
-                [category, String(row.year ?? "")].filter(Boolean).join(" • ") ||
-                String(row.color ?? "");
-              return (
-                <div
-                  key={row.id}
-                  className="flex justify-between items-center gap-3 border border-gray-200 dark:border-gray-800 px-4 py-3 -mt-px"
-                >
+        {/* ===== list; editor melorot (animasi) di bawah item yang diedit ===== */}
+        <div className="flex flex-col">
+          {(rows[table.name] ?? []).map((row) => {
+            const category = Array.isArray(row.category)
+              ? (row.category as string[]).join(", ")
+              : String(row.group_name ?? row.category ?? "");
+            const subtitle =
+              [category, String(row.year ?? "")].filter(Boolean).join(" • ") ||
+              String(row.color ?? "");
+            const isOpen = String(row.id) === editingId;
+            return (
+              <div
+                key={row.id}
+                className="border border-gray-200 dark:border-gray-800 -mt-px first:mt-0"
+              >
+                <div className="flex justify-between items-center gap-3 px-4 py-3">
                   <div className="min-w-0">
-                    <p className="font-semibold truncate">{String(row.name ?? "-")}</p>
+                    <p className="font-semibold truncate">
+                      {String(row.name ?? "-")}
+                    </p>
                     {subtitle && (
-                      <p className="text-xs opacity-60 truncate italic">{subtitle}</p>
+                      <p className="text-xs opacity-60 truncate italic">
+                        {subtitle}
+                      </p>
                     )}
                   </div>
                   <div className="flex gap-2 shrink-0">
                     <button
-                      onClick={() => setEditingId(String(row.id))}
+                      onClick={() =>
+                        isOpen
+                          ? backToList(table.name)
+                          : setEditingId(String(row.id))
+                      }
                       className="bg-a-2 text-white px-3 py-1.5 text-sm hover:opacity-90 duration-300"
                     >
-                      Edit
+                      {isOpen ? "Tutup" : "Edit"}
                     </button>
                     <button
                       onClick={() => deleteRow(table.name, row.id)}
@@ -537,324 +838,27 @@ export default function Admin() {
                     </button>
                   </div>
                 </div>
-              );
-            })}
-            {(rows[table.name] ?? []).length === 0 && (
-              <p className="opacity-60 italic text-sm">Belum ada data.</p>
-            )}
-          </div>
-        )}
 
-        {/* ===== editor detail ===== */}
-        {editingId &&
-          (() => {
-            const row = (rows[table.name] ?? []).find(
-              (r) => String(r.id) === editingId
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="m-4 mt-0">{renderEditor(row)}</div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             );
-            if (!row) return null;
-            const dirty = isDirty(table.name, row);
-            return (
-              <div className="border border-gray-200 dark:border-gray-800 p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <button
-                    onClick={() => backToList(table.name)}
-                    className="text-sm opacity-70 hover:opacity-100 duration-300 italic"
-                  >
-                    ← Kembali ke list
-                  </button>
-                  <span className="text-xs opacity-50">id: {String(row.id)}</span>
-                </div>
-
-                <div className="flex flex-wrap gap-x-4 gap-y-3 items-end">
-                {table.fields.map((field) => {
-                  // hidden fields are managed by other controls
-                  if (field.hidden) return null;
-
-                  // image: preview (drag to pan) + upload + rotate/zoom sliders
-                  if (field.key === "image") {
-                    const hasTransform = table.fields.some(
-                      (f) => f.key === "image_position"
-                    );
-                    const bust = imageBust[String(row.id)];
-                    const imageUrl = String(row.image ?? "");
-                    const previewUrl =
-                      imageUrl && bust
-                        ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}v=${bust}`
-                        : imageUrl;
-                    const [px, py] = parsePos(row);
-                    const rot = Number(row.image_rotate) || 0;
-                    const zoom = Number(row.image_scale) || 100;
-                    return (
-                      <div key={field.key} className="w-full">
-                        <span className="text-xs font-semibold opacity-70">
-                          Image {hasTransform && "(drag gambar untuk menggeser)"}
-                        </span>
-                        <div className="flex flex-col sm:flex-row gap-3 mt-1">
-                          {/* preview pakai rasio yang sama dengan kartu di halaman works */}
-                          <div
-                            className={
-                              "relative sm:w-72 w-full aspect-[16/7] border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 overflow-hidden select-none touch-none " +
-                              (hasTransform ? "cursor-grab active:cursor-grabbing" : "")
-                            }
-                            onPointerDown={(e) =>
-                              hasTransform &&
-                              previewPointerDown(e, table.name, row)
-                            }
-                            onPointerMove={(e) =>
-                              hasTransform &&
-                              previewPointerMove(e, table.name, row)
-                            }
-                            onPointerUp={() => (dragRef.current = null)}
-                            onPointerCancel={() => (dragRef.current = null)}
-                          >
-                            {/* -inset-1/4: layer lebih besar supaya sudut tetap
-                                tertutup saat dirotasi/digeser */}
-                            <div
-                              className="absolute -inset-1/4 bg-cover bg-center pointer-events-none"
-                              style={{
-                                backgroundImage: previewUrl
-                                  ? `url(${previewUrl})`
-                                  : undefined,
-                                transform: `translate(${px}%, ${py}%) rotate(${rot}deg) scale(${zoom / 100})`,
-                              }}
-                            />
-                          </div>
-                          <div className="flex flex-col gap-2 grow text-sm">
-                            <div className="flex gap-2">
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) uploadImage(table.name, row.id, file);
-                                  e.target.value = "";
-                                }}
-                              />
-                              {!!row.image && (
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    rotateImage(table.name, row.id, String(row.image))
-                                  }
-                                  className="border border-gray-300 dark:border-gray-700 px-3 py-1 whitespace-nowrap hover:bg-gray-100 dark:hover:bg-gray-900 duration-300"
-                                >
-                                  ⟳ Putar 90°
-                                </button>
-                              )}
-                            </div>
-                            <input
-                              className={inputClass}
-                              value={String(row.image ?? "")}
-                              onChange={(e) =>
-                                editRow(
-                                  table.name,
-                                  row.id,
-                                  "image",
-                                  e.target.value
-                                )
-                              }
-                              placeholder="/path/atau/URL"
-                            />
-                            {hasTransform && (
-                              <>
-                                <label className="flex items-center gap-2">
-                                  <span className="text-xs opacity-70 w-12">
-                                    Rotasi
-                                  </span>
-                                  <input
-                                    type="range"
-                                    min={-180}
-                                    max={180}
-                                    step={1}
-                                    value={rot}
-                                    onChange={(e) =>
-                                      editRow(
-                                        table.name,
-                                        row.id,
-                                        "image_rotate",
-                                        e.target.value
-                                      )
-                                    }
-                                    className="grow"
-                                  />
-                                  <span className="text-xs w-10 text-right">
-                                    {rot}°
-                                  </span>
-                                </label>
-                                <label className="flex items-center gap-2">
-                                  <span className="text-xs opacity-70 w-12">
-                                    Zoom
-                                  </span>
-                                  <input
-                                    type="range"
-                                    min={67}
-                                    max={300}
-                                    step={1}
-                                    value={zoom}
-                                    onChange={(e) =>
-                                      editRow(
-                                        table.name,
-                                        row.id,
-                                        "image_scale",
-                                        e.target.value
-                                      )
-                                    }
-                                    className="grow"
-                                  />
-                                  <span className="text-xs w-10 text-right">
-                                    {zoom}%
-                                  </span>
-                                </label>
-                                <p className="text-[11px] opacity-60">
-                                  Drag gambar untuk geser; perubahan tersimpan
-                                  setelah klik Save.
-                                </p>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  // year: two date inputs + "Present" checkbox
-                  if (field.key === "year") {
-                    return (
-                      <div key={field.key} className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold opacity-70">
-                          Year
-                        </span>
-                        <div className="flex gap-2 items-center text-sm">
-                          <input
-                            type="date"
-                            className={inputClass}
-                            value={String(row.__yf ?? "")}
-                            onChange={(e) =>
-                              editRow(table.name, row.id, "__yf", e.target.value)
-                            }
-                          />
-                          <span className="opacity-60">-</span>
-                          <input
-                            type="date"
-                            className={inputClass}
-                            value={String(row.__yt ?? "")}
-                            disabled={Boolean(row.__yp)}
-                            onChange={(e) =>
-                              editRow(table.name, row.id, "__yt", e.target.value)
-                            }
-                          />
-                          <label className="flex items-center gap-1 cursor-pointer whitespace-nowrap">
-                            <input
-                              type="checkbox"
-                              checked={Boolean(row.__yp)}
-                              onChange={(e) =>
-                                editRow(
-                                  table.name,
-                                  row.id,
-                                  "__yp",
-                                  e.target.checked ? "1" : ""
-                                )
-                              }
-                            />
-                            Present
-                          </label>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  // multi-select: checkboxes, full-width row so nothing gets squeezed
-                  if (field.options && field.multi) {
-                    const current = Array.isArray(row[field.key])
-                      ? (row[field.key] as string[])
-                      : [];
-                    return (
-                      <div key={field.key} className="w-full">
-                        <span className="text-xs font-semibold opacity-70">
-                          {field.label}
-                        </span>
-                        <div className="flex gap-4 text-sm py-1.5">
-                          {field.options.map((opt) => (
-                            <label
-                              key={opt}
-                              className="flex items-center gap-1 cursor-pointer"
-                            >
-                              <input
-                                type="checkbox"
-                                checked={current.includes(opt)}
-                                onChange={() =>
-                                  toggleMulti(table.name, row.id, field.key, opt)
-                                }
-                              />
-                              {opt}
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  if (field.options) {
-                    return (
-                      <label key={field.key} className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold opacity-70">
-                          {field.label}
-                        </span>
-                        <select
-                          className={inputClass}
-                          value={String(row[field.key] ?? "")}
-                          onChange={(e) =>
-                            editRow(table.name, row.id, field.key, e.target.value)
-                          }
-                        >
-                          <option value="">-</option>
-                          {field.options.map((opt) => (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    );
-                  }
-
-                  return (
-                    <label key={field.key} className="flex flex-col gap-1 grow min-w-[160px]">
-                      <span className="text-xs font-semibold opacity-70">
-                        {field.label}
-                      </span>
-                      <input
-                        className={inputClass}
-                        value={String(row[field.key] ?? "")}
-                        onChange={(e) =>
-                          editRow(table.name, row.id, field.key, e.target.value)
-                        }
-                      />
-                    </label>
-                  );
-                })}
-              </div>
-
-              <div className="flex gap-2 mt-3">
-                <button
-                  onClick={() => saveRow(table, row)}
-                  disabled={!dirty}
-                  className={`bg-a-2 text-white px-3 py-1.5 text-sm duration-300 ${
-                    dirty ? "hover:opacity-90" : "opacity-40 cursor-not-allowed"
-                  }`}
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => deleteRow(table.name, row.id)}
-                  className="border border-red-400 text-red-500 px-3 py-1.5 text-sm hover:bg-red-50 dark:hover:bg-red-950 duration-300"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          );
-        })()}
+          })}
+          {(rows[table.name] ?? []).length === 0 && (
+            <p className="opacity-60 italic text-sm">Belum ada data.</p>
+          )}
+        </div>
 
         <p className="mt-8 text-xs opacity-60 italic">
           Perubahan tampil di situs publik maksimal {60} detik setelah disimpan.
