@@ -468,15 +468,7 @@ export default function Admin() {
     const dirty = isDirty(table.name, row);
     return (
       <>
-        <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={() => backToList(table.name)}
-            className="text-sm opacity-70 hover:opacity-100 duration-300 italic"
-          >
-            ← Tutup editor
-          </button>
-          <span className="text-xs opacity-50">id: {String(row.id)}</span>
-        </div>
+        <span className="block text-xs opacity-50 mb-3">id: {String(row.id)}</span>
 
         <div className="flex flex-wrap gap-x-4 gap-y-3 items-end">
           {table.fields.map((field) => {
@@ -755,7 +747,7 @@ export default function Admin() {
   };
 
   return (
-    <main className="min-h-screen p-6 bg-white dark:bg-black text-black dark:text-white">
+    <main className="h-screen overflow-y-auto scrollbar-hide p-6 bg-white dark:bg-black text-black dark:text-white">
       <PageHead title="Admin" />
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-6">
