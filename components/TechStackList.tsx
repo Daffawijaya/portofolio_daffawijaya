@@ -41,10 +41,12 @@ function useContainerColumns() {
 // jadi ujung kanan-kirinya sejajar dengan baris Another Skills
 function SlidingRow({
   items,
+  categoryTitle,
   hoveredTech,
   setHoveredTech,
 }: {
   items: TechCategory["items"];
+  categoryTitle: string;
   hoveredTech: string | null;
   setHoveredTech: (name: string | null) => void;
 }) {
@@ -72,6 +74,7 @@ function SlidingRow({
               name={tech.name}
               icon={tech.icon}
               color={tech.color}
+              id={`${categoryTitle}-${tech.name}-${i}`}
               hoveredTech={hoveredTech}
               setHoveredTech={setHoveredTech}
             />
@@ -108,6 +111,7 @@ export default function TechStackList({
           {category.items.length > 5 && !alwaysGrid ? (
             <SlidingRow
               items={category.items}
+              categoryTitle={category.title}
               hoveredTech={hoveredTech}
               setHoveredTech={setHoveredTech}
             />
@@ -119,6 +123,7 @@ export default function TechStackList({
                   name={tech.name}
                   icon={tech.icon}
                   color={tech.color}
+                  id={`${category.title}-${tech.name}`}
                   hoveredTech={hoveredTech}
                   setHoveredTech={setHoveredTech}
                 />
