@@ -111,15 +111,52 @@ function sortByYearDesc<T extends { year?: string }>(items: T[]): T[] {
   return [...items].sort((a, b) => start(b.year) - start(a.year));
 }
 
+// Normalisasi category ke string[] lowercase (tahan data lama string/null,
+// sekaligus hilangkan spasi/duplikat) supaya filter tab selalu akurat.
+function normalizeCategories(category: unknown): string[] {
+  const list = Array.isArray(category) ? category : category ? [category] : [];
+  return [
+    ...new Set(
+      list.map((c) => String(c).toLowerCase().trim()).filter(Boolean)
+    ),
+  ];
+}
+
+// Gabungkan baris duplikat (satu proyek disimpan sebagai 2 row / 2 file data,
+// mis. ["frontend"] + ["fullstack"]) jadi satu item dengan kategori union.
+// Kunci: url (fallback nama) supaya "All Works" tidak tampil dobel dan tiap
+// tab kategori hanya menampilkan proyek tersebut sekali.
+function dedupeWorks(items: WorkItem[]): WorkItem[] {
+  const byKey = new Map<string, WorkItem>();
+  for (const item of items) {
+    const category = normalizeCategories(item.category);
+    const key = (
+      item.url?.trim().toLowerCase() || item.name.trim().toLowerCase()
+    );
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, { ...item, category });
+    } else {
+      existing.category = [
+        ...new Set([...existing.category, ...category]),
+      ];
+    }
+  }
+  return [...byKey.values()];
+}
+
 export async function getWorks(): Promise<WorkItem[]> {
   if (supabase) {
     const { data } = await supabase
       .from("works")
       .select("category, name, image, url, year, image_position, image_rotate, image_scale")
       .order("sort_order");
-    if (data && data.length > 0) return sortByYearDesc(data);
+    if (data && data.length > 0)
+      return sortByYearDesc(dedupeWorks(data as WorkItem[]));
   }
-  return sortByYearDesc([...frontendData, ...fullstackData, ...uiuxData]);
+  return sortByYearDesc(
+    dedupeWorks([...frontendData, ...fullstackData, ...uiuxData])
+  );
 }
 
 export async function getExperiences(): Promise<ExperienceGroup[]> {

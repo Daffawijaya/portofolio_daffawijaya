@@ -80,7 +80,11 @@ export default function Works({ works }: WorksProps) {
                   worksData={
                     value === "all"
                       ? works
-                      : works.filter((work) => work.category.includes(value))
+                      : works.filter((work) =>
+                          Array.isArray(work.category)
+                            ? work.category.includes(value)
+                            : work.category === value
+                        )
                   }
                 />
               )

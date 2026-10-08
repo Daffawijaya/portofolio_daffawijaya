@@ -1,12 +1,5 @@
 const frontendData = [
   {
-    name: "etamhub: digital directory platform for UMKM in Kutai Kartanegara",
-    image: "/EtamHub2.png",
-    url: "https://etamhub.vercel.app/",
-    year: "January 2026 - Present",
-    category: ["frontend"],
-  },
-  {
     name: "SIPP: Sistem Informasi Penataan dan Penaatan Kota Batu",
     image: "batu.png",
     url: "https://sipp-dev.vercel.app",

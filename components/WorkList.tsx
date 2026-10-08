@@ -16,7 +16,7 @@ export default function WorkList({ worksData }: WorkListProps) {
 
           return (
             <motion.div
-              key={item.url}
+              key={`${item.url}::${item.name}`}
               initial={{ top: -400, opacity: 0 }}
               animate={{ top: 0, opacity: 1 }}
               transition={{ delay: 0.8, duration: 1 }}

@@ -4,7 +4,7 @@ const fullstackData = [
     image: "/EtamHub2.png",
     url: "https://etamhub.vercel.app/",
     year: "January 2026 - Present",
-    category: ["fullstack"],
+    category: ["frontend", "fullstack"],
   },
   {
     name: "Kumala: Kutai Kartanegara UMKM Enterpreneur-hub Collaborator",
@@ -18,7 +18,7 @@ const fullstackData = [
     image: "/experience/terapiku.png",
     url: "https://www.figma.com/proto/AIDl4kL0bSoXVtWyRAn4hl/TA?node-id=2994-10970&starting-point-node-id=2593%3A7694",
     year: "2025",
-    category: ["fullstack"],
+    category: ["fullstack", "uiux"],
   },
 ];
 
