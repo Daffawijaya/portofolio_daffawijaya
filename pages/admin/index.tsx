@@ -235,15 +235,24 @@ export default function Admin() {
       .from(table)
       .select("*")
       .order("id", { ascending: false });
-    // urutkan berdasarkan tanggal awal di kolom year (terbaru dulu)
+    // urutkan berdasarkan tanggal SELESAI di kolom year (terbaru dulu,
+    // "Present" paling atas) supaya urutan admin sama dengan halaman publik
+    const endDate = (r: Record<string, unknown>) => {
+      const parts = String(r.year ?? "").split(" - ");
+      const end = (parts[1] ?? parts[0] ?? "").trim();
+      if (/^present$/i.test(end)) return Infinity;
+      const t = end ? new Date(end).getTime() : NaN;
+      return isNaN(t) ? -Infinity : t; // tanpa tanggal -> paling bawah
+    };
     const startDate = (r: Record<string, unknown>) => {
-      const first = String(r.year ?? "").split(" - ")[0];
+      const first = String(r.year ?? "").split(" - ")[0].trim();
+      if (/^present$/i.test(first)) return -Infinity; // mulai tak diketahui -> di bawah yang bertanggal
       const t = first ? new Date(first).getTime() : NaN;
-      return isNaN(t) ? 0 : t; // tanpa tanggal -> paling bawah
+      return isNaN(t) ? -Infinity : t;
     };
     const list = (data ?? [])
       .map((r) => ({ ...r, ...parseYearParts(r.year), ...parseBg(r.color) }))
-      .sort((a, b) => startDate(b) - startDate(a));
+      .sort((a, b) => endDate(b) - endDate(a) || startDate(b) - startDate(a));
     setRows((prev) => ({ ...prev, [table]: list }));
     setOriginals((prev) => ({
       ...prev,

@@ -101,14 +101,29 @@ function group<T extends Record<string, unknown>>(
   }[];
 }
 
-// urutkan berdasarkan tanggal awal di kolom year (terbaru di atas)
+// urutkan berdasarkan tanggal SELESAI (terbaru di atas):
+// "Present" = masih berjalan -> paling atas; tanpa tanggal -> paling bawah.
+// Contoh: A "Januari - Desember" tampil di atas B "Maret - Mei".
+function endDate(year?: string): number {
+  const parts = String(year ?? "").split(" - ");
+  const end = (parts[1] ?? parts[0] ?? "").trim();
+  if (/^present$/i.test(end)) return Infinity;
+  const t = end ? new Date(end).getTime() : NaN;
+  return isNaN(t) ? -Infinity : t; // tanpa tanggal -> paling bawah
+}
+
+function startDate(year?: string): number {
+  const first = String(year ?? "").split(" - ")[0].trim();
+  if (/^present$/i.test(first)) return -Infinity; // mulai tak diketahui -> di bawah yang bertanggal
+  const t = first ? new Date(first).getTime() : NaN;
+  return isNaN(t) ? -Infinity : t;
+}
+
 function sortByYearDesc<T extends { year?: string }>(items: T[]): T[] {
-  const start = (year?: string) => {
-    const first = String(year ?? "").split(" - ")[0];
-    const t = first ? new Date(first).getTime() : NaN;
-    return isNaN(t) ? 0 : t; // tanpa tanggal -> paling bawah
-  };
-  return [...items].sort((a, b) => start(b.year) - start(a.year));
+  return [...items].sort(
+    (a, b) =>
+      endDate(b.year) - endDate(a.year) || startDate(b.year) - startDate(a.year)
+  );
 }
 
 // Normalisasi category ke string[] lowercase (tahan data lama string/null,
